@@ -8,6 +8,8 @@ class SDTM : JavaPlugin() {
         // Plugin startup logic
         // message on console
         logger.info("SDTM plugin enabled")
+        // register the OreRegeneration class
+        server.pluginManager.registerEvents(OreRegeneration(this), this)
     }
 
     override fun onDisable() {
