@@ -17,27 +17,9 @@ class SDTM : JavaPlugin() {
     override fun onEnable() {
         logger.info("SDTM plugin enabled")
 
-        // Register command using LifecycleEventManager
-        val manager = this.lifecycleManager
-        manager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
-            val commands = event.registrar()
-            val commandNode: LiteralCommandNode<CommandSourceStack> = LiteralArgumentBuilder.literal<CommandSourceStack>("sd")
-                .then(
-                    RequiredArgumentBuilder.argument<CommandSourceStack, String>("position", StringArgumentType.string())
-                        .executes { ctx: CommandContext<CommandSourceStack> ->
-                            val position = StringArgumentType.getString(ctx, "position")
-                            ctx.source.sender.sendMessage(Component.text("Nexus position set to: $position", NamedTextColor.AQUA))
-                            Command.SINGLE_SUCCESS
-                        }
-                )
-                .executes { ctx: CommandContext<CommandSourceStack> ->
-                    ctx.source.sender.sendMessage(Component.text("Hello World!", NamedTextColor.AQUA))
-                    Command.SINGLE_SUCCESS
-                }
-                .build()
-
-            commands.register(commandNode, "A command for 7DaysToMine plugin", listOf("sd-alias"))
-        }
+        // Register command using SDCommand class
+        val sdCommand = SDCommand(this)
+        sdCommand.registerCommands()
 
         // Register the OreRegeneration class
         server.pluginManager.registerEvents(OreRegeneration(this), this)
