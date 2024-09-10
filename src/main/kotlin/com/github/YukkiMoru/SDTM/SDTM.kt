@@ -1,16 +1,6 @@
 package com.github.YukkiMoru.SDTM
 
 import org.bukkit.plugin.java.JavaPlugin
-import com.mojang.brigadier.Command
-import com.mojang.brigadier.context.CommandContext
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.builder.RequiredArgumentBuilder
-import com.mojang.brigadier.tree.LiteralCommandNode
-import io.papermc.paper.command.brigadier.CommandSourceStack
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 
 class SDTM : JavaPlugin() {
 
