@@ -3,6 +3,8 @@ package com.github.YukkiMoru.SDTM
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Mob
+import org.bukkit.entity.Player
+import org.bukkit.entity.Zombie
 import org.bukkit.plugin.java.JavaPlugin
 
 class MobController(private val plugin: JavaPlugin) {
@@ -13,7 +15,7 @@ class MobController(private val plugin: JavaPlugin) {
         val scheduler = plugin.server.scheduler
         scheduler.scheduleSyncRepeatingTask(plugin, {
             moveMobsToLocation()
-        }, 0L, 100L) // 100 ticks = 5 seconds
+        }, 0L, 20L) // 20 ticks = 1 seconds
     }
 
     private fun moveMobsToLocation() {
@@ -21,6 +23,9 @@ class MobController(private val plugin: JavaPlugin) {
 
         world?.entities?.forEach { entity ->
             if (entity is Mob) {
+                if (entity is Zombie && entity.target is Player) {
+                    return@forEach
+                }
                 entity.pathfinder.moveTo(targetLocation)
             }
         }
