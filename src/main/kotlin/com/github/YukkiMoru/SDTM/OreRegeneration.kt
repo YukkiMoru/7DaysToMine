@@ -17,7 +17,9 @@ class OreRegeneration(private val plugin: JavaPlugin) : Listener {
         if (block.type == Material.COAL_ORE || block.type == Material.IRON_ORE) {
             val originalType = block.type
             val scheduler = plugin.server.scheduler
-            block.type = Material.BEDROCK
+            scheduler.scheduleSyncDelayedTask(plugin, {
+                block.type = Material.BEDROCK
+            }, 1L)
             scheduler.scheduleSyncDelayedTask(plugin, {
                 block.type = originalType
             }, 60L)
