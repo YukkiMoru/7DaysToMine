@@ -1,0 +1,6 @@
+name: 7DaysToMine
+version: '1.0'
+main: com.github.YukkiMoru.SDTM.SDTM
+api-version: '1.21'
+authors: [ YukkiMoru ]
+website: https://github.com/YukkiMoru
