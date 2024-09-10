@@ -36,10 +36,16 @@ class SDTM : JavaPlugin() {
             nexusScoreboard.checkZombiesNearNexus()
         }, 0L, 3L) // 20 ticks = 1 second
 
-        // trader
+        // Summon custom villager
         val itemShop = ItemShop(this)
         val location = Location(Bukkit.getWorld("world"), 6.0, -60.0, 53.0)
         itemShop.summonCustomVillager(location)
+
+        // Summon block_display entity
+        val summonCommand = "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}"
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), summonCommand)
+
+        // Register PlaceBlock as an event listener
     }
 
     override fun onDisable() {
