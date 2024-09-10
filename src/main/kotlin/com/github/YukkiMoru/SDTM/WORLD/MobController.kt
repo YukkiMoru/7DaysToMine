@@ -4,6 +4,7 @@ import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Mob
+import org.bukkit.entity.Villager
 import org.bukkit.entity.Zombie
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -23,7 +24,7 @@ class MobController(private val plugin: JavaPlugin, private val nexusScoreboard:
         val world = targetLocation.world
 
         world?.entities?.forEach { entity ->
-            if (entity is Mob) {
+            if (entity is Mob && entity !is Villager) {
                 entity.pathfinder.moveTo(targetLocation)
             }
         }
