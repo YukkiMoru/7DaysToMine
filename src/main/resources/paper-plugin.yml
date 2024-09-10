@@ -4,3 +4,8 @@ main: com.github.YukkiMoru.SDTM.SDTM
 api-version: '1.21'
 authors: [ YukkiMoru ]
 website: https://github.com/YukkiMoru
+
+commands:
+  sd:
+    description: A command for 7DaysToMine plugin
+    usage: /<command>
