@@ -14,8 +14,14 @@ class SDTM : JavaPlugin() {
         // Register the OreRegeneration class
         server.pluginManager.registerEvents(OreRegeneration(this), this)
 
+        // Initialize and set the NexusScoreboard
+        val nexusScoreboard = NexusScoreboard()
+        server.onlinePlayers.forEach { player ->
+            player.scoreboard = nexusScoreboard.getScoreboard()
+        }
+
         // Initialize MobController and start moving mobs to location
-        val mobController = MobController(this)
+        val mobController = MobController(this, nexusScoreboard)
         mobController.startMovingMobsToLocation()
     }
 
