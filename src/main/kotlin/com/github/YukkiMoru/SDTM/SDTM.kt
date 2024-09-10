@@ -13,6 +13,10 @@ class SDTM : JavaPlugin() {
 
         // Register the OreRegeneration class
         server.pluginManager.registerEvents(OreRegeneration(this), this)
+
+        // Initialize MobController and start moving mobs to location
+        val mobController = MobController(this)
+        mobController.startMovingMobsToLocation()
     }
 
     override fun onDisable() {
