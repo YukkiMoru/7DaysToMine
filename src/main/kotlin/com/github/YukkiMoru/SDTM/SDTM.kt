@@ -23,6 +23,11 @@ class SDTM : JavaPlugin() {
         // Initialize MobController and start moving mobs to location
         val mobController = MobController(this, nexusScoreboard)
         mobController.startMovingMobsToLocation()
+
+        // Schedule a repeating task to display particles around the target location
+        server.scheduler.scheduleSyncRepeatingTask(this, {
+            nexusScoreboard.checkZombiesNearNexus()
+        }, 0L, 3L) // 20 ticks = 1 second
     }
 
     override fun onDisable() {
