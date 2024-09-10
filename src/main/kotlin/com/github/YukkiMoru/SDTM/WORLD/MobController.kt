@@ -1,5 +1,6 @@
-package com.github.YukkiMoru.SDTM
+package com.github.YukkiMoru.SDTM.WORLD
 
+import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Mob

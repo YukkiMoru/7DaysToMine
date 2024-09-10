@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM
+package com.github.YukkiMoru.SDTM.WORLD
 
 //import net.kyori.adventure.text.Component
 import org.bukkit.Material

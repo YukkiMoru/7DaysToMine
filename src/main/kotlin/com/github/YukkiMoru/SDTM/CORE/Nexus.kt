@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM
+package com.github.YukkiMoru.SDTM.CORE
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor

@@ -1,5 +1,6 @@
-package com.github.YukkiMoru.SDTM
+package com.github.YukkiMoru.SDTM.UTILITY
 
+import com.github.YukkiMoru.SDTM.SDTM
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder

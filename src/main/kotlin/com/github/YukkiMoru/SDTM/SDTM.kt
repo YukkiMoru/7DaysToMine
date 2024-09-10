@@ -1,5 +1,9 @@
 package com.github.YukkiMoru.SDTM
 
+import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
+import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
+import com.github.YukkiMoru.SDTM.WORLD.MobController
+import com.github.YukkiMoru.SDTM.WORLD.OreRegeneration
 import org.bukkit.plugin.java.JavaPlugin
 
 class SDTM : JavaPlugin() {
