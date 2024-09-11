@@ -9,8 +9,8 @@ class LocateVillagers(private val plugin: JavaPlugin) : Listener {
     // VillagerWeaponクラスの村人を召喚
 
     fun summonVillagers() {
-        val villagerWeapon = VillagerWeapon(plugin)
-        val location = Location(plugin.server.getWorld("world"), 95.5, 10.0, 90.5)
-        villagerWeapon.summonCustomVillager(location)
+        VillagerWeapon(plugin).summonVillagerWeapon(Location(plugin.server.getWorld("world"), 95.5, 10.0, 90.5))
+
+        VillagerPotion(plugin).summonVillagerPotion(Location(plugin.server.getWorld("world"), 97.5, 10.0, 90.5))
     }
 }

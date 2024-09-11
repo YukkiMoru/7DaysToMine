@@ -11,14 +11,14 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class VillagerWeapon(private val plugin: JavaPlugin) {
 
-    fun summonCustomVillager(location: Location) {
+    fun summonVillagerWeapon(location: Location) {
         object : BukkitRunnable() {
             override fun run() {
                 val world = location.world ?: return
                 val villager = world.spawnEntity(location, EntityType.VILLAGER) as Villager
 
                 // Set villager properties
-                villager.profession = Villager.Profession.FARMER
+                villager.profession = Villager.Profession.WEAPONSMITH
                 villager.villagerLevel = 2
                 villager.villagerType = Villager.Type.PLAINS
                 villager.isCustomNameVisible = true

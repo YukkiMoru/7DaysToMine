@@ -42,8 +42,10 @@ class SDTM : JavaPlugin() {
         summonVillagers.summonVillagers() // Call the function to summon villagers
 
         // Summon block_display entity
-        val summonCommand = "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}"
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), summonCommand)
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}")
+
+        // kill all entities expect players
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=!player]")
 
         server.pluginManager.registerEvents(protectVillager(this), this)
     }
