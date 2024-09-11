@@ -1,13 +1,16 @@
 package com.github.YukkiMoru.SDTM
 
 import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
+import com.github.YukkiMoru.SDTM.TRADE.ItemShop
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
 import com.github.YukkiMoru.SDTM.WORLD.MobController
 import com.github.YukkiMoru.SDTM.WORLD.OreRegeneration
-import com.github.YukkiMoru.SDTM.TRADE.ItemShop
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.plugin.java.JavaPlugin
+
+import org.bukkit.configuration.file.YamlConfiguration
+import java.io.File
 
 class SDTM : JavaPlugin() {
 
@@ -38,7 +41,7 @@ class SDTM : JavaPlugin() {
 
         // Summon custom villager
         val itemShop = ItemShop(this)
-        val location = Location(Bukkit.getWorld("world"), 6.0, -60.0, 53.0)
+        val location = Location(Bukkit.getWorld("world"), 95.5, 10.0, 91.5)
         itemShop.summonCustomVillager(location)
 
         // Summon block_display entity
