@@ -15,7 +15,7 @@ class NexusScoreboard {
     private val scoreboard: Scoreboard = Bukkit.getScoreboardManager().newScoreboard
     private val objective: Objective
     private var nexusHealth: Int = 10000
-    private val targetLocation = Location(Bukkit.getWorld("world"), 8.0, -60.0, 61.0)
+    private val targetLocation = Location(Bukkit.getWorld("world"), 100.0, 10.1, 100.0)
 
     init {
         objective = scoreboard.registerNewObjective("nexusHealth", "dummy", "${ChatColor.GREEN}Nexus Health")
@@ -46,7 +46,7 @@ class NexusScoreboard {
             val angle = 2 * Math.PI * i / points
             val x = radius * Math.cos(angle)
             val z = radius * Math.sin(angle)
-            val particleLocation = targetLocation.clone().add(Vector(x+0.5, 0.5, z+0.5))
+            val particleLocation = targetLocation.clone().add(Vector(x+0.5, 0.0, z+0.5))
             world?.spawnParticle(Particle.COMPOSTER, particleLocation, 1)
         }
 
