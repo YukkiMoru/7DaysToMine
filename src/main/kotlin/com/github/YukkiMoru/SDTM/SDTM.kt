@@ -3,6 +3,7 @@ package com.github.YukkiMoru.SDTM
 import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import com.github.YukkiMoru.SDTM.TRADE.ItemShop
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
+import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
 import com.github.YukkiMoru.SDTM.WORLD.MobController
 import com.github.YukkiMoru.SDTM.WORLD.OreRegeneration
 import org.bukkit.Bukkit
@@ -48,7 +49,8 @@ class SDTM : JavaPlugin() {
         val summonCommand = "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}"
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), summonCommand)
 
-        // Register PlaceBlock as an event listener
+
+        server.pluginManager.registerEvents(protectVillager(this), this)
     }
 
     override fun onDisable() {
