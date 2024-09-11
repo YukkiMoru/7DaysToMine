@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
-import java.io.File
 
 class ItemShop(private val plugin: JavaPlugin) {
 
@@ -27,6 +26,12 @@ class ItemShop(private val plugin: JavaPlugin) {
                 villager.isCustomNameVisible = true
                 villager.customName = "Weapon Master"
                 villager.isPersistent = true
+
+                // Disable AI
+                villager.setAI(false)
+
+                // Set villager to face south
+                villager.location.yaw = 180f
 
                 // Create trades
                 val recipes = mutableListOf<MerchantRecipe>()
