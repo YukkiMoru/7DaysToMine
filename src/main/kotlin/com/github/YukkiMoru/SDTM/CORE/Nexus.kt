@@ -50,13 +50,5 @@ class NexusScoreboard {
             world?.spawnParticle(Particle.COMPOSTER, particleLocation, 1)
         }
 
-        world?.entities?.forEach { entity ->
-            if (entity is Zombie) {
-                if (entity.location.distance(targetLocation) <= radius) {
-                    val currentHealth = getNexusHealth()
-                    updateNexusHealth(currentHealth - 1)
-                }
-            }
-        }
     }
 }
