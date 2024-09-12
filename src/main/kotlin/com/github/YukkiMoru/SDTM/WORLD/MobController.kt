@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class MobController(private val plugin: JavaPlugin, private val nexusScoreboard: NexusScoreboard) {
 
-    private val targetLocation = Location(Bukkit.getWorld("world"), 8.0, -60.0, 61.0)
+    private val targetLocation = Location(Bukkit.getWorld("world"), 100.1, 11.1, 100.1)
 
     fun startMovingMobsToLocation() {
         val scheduler = plugin.server.scheduler
