@@ -13,41 +13,35 @@ class SDTM : JavaPlugin() {
 
     override fun onEnable() {
         logger.info("SDTM plugin enabled")
-
-        // Register command using SDCommand class
-        val sdCommand = SDCommand(this)
-        sdCommand.registerCommands()
-
-        // Register the OreRegeneration class
-        server.pluginManager.registerEvents(OreRegeneration(this), this)
-
-        // Initialize and set the NexusScoreboard
+// COMMANDS
+        // プレイヤー以外のエンティティを全て削除
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=!player]")
+        // ネクサスのエンドストーンを召喚
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+            "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}")
+// CORE
         val nexusScoreboard = NexusScoreboard()
         server.onlinePlayers.forEach { player ->
             player.scoreboard = nexusScoreboard.getScoreboard()
         }
+// TRADE
+        val summonVillagers = LocateVillagers(this)
+        server.pluginManager.registerEvents(summonVillagers, this)
+        summonVillagers.summonVillagers()
+// UTILITY
+        server.pluginManager.registerEvents(protectVillager(this), this)
 
-        // Initialize MobController and start moving mobs to location
+        SDCommand(this).registerCommands()
+
+// WORLD
         val mobController = MobController(this, nexusScoreboard)
         mobController.startMovingMobsToLocation()
 
-        // Schedule a repeating task to display particles around the target location
         server.scheduler.scheduleSyncRepeatingTask(this, {
             nexusScoreboard.checkZombiesNearNexus()
-        }, 0L, 3L) // 20 ticks = 1 second
+        }, 0L, 2L) // 2 ticks = 0.1 second
 
-        // Summon custom villagers using SummonVillagers
-        val summonVillagers = LocateVillagers(this)
-        server.pluginManager.registerEvents(summonVillagers, this)
-        summonVillagers.summonVillagers() // Call the function to summon villagers
-
-        // Summon block_display entity
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}")
-
-        // kill all entities expect players
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=!player]")
-
-        server.pluginManager.registerEvents(protectVillager(this), this)
+        server.pluginManager.registerEvents(OreRegeneration(this), this)
     }
 
     override fun onDisable() {
