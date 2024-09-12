@@ -109,18 +109,12 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 						LiteralArgumentBuilder.literal<CommandSourceStack>("help")
 							.executes { ctx: CommandContext<CommandSourceStack> ->
 								ctx.source.sender.sendMessage(
-									Component.text(
-										"Usage: /sd <command> <args>",
-										NamedTextColor.AQUA
-									)
+									Component.text("Usage: /sd <command> <args>", NamedTextColor.AQUA)
 								)
 								ctx.source.sender.sendMessage(Component.text("Commands: ", NamedTextColor.AQUA))
 								COMMANDS.forEach { (key, value) ->
 									ctx.source.sender.sendMessage(
-										Component.text(
-											"$key : ${value.joinToString(", ")}",
-											NamedTextColor.AQUA
-										)
+										Component.text("$key : ${value.joinToString(", ")}", NamedTextColor.AQUA)
 									)
 								}
 								com.mojang.brigadier.Command.SINGLE_SUCCESS
@@ -132,10 +126,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 								LiteralArgumentBuilder.literal<CommandSourceStack>("true")
 									.executes { ctx: CommandContext<CommandSourceStack> ->
 										ctx.source.sender.sendMessage(
-											Component.text(
-												"Debug mode set to: true",
-												NamedTextColor.AQUA
-											)
+											Component.text("Debug mode set to: true", NamedTextColor.AQUA)
 										)
 										com.mojang.brigadier.Command.SINGLE_SUCCESS
 									}
@@ -144,10 +135,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 								LiteralArgumentBuilder.literal<CommandSourceStack>("false")
 									.executes { ctx: CommandContext<CommandSourceStack> ->
 										ctx.source.sender.sendMessage(
-											Component.text(
-												"Debug mode set to: false",
-												NamedTextColor.AQUA
-											)
+											Component.text("Debug mode set to: false", NamedTextColor.AQUA)
 										)
 										com.mojang.brigadier.Command.SINGLE_SUCCESS
 									}
@@ -158,7 +146,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
 					}
 					.build()
-			commands.register(commandNode, "A command for 7DaysToMine plugin", listOf("sd-alias"))
+			commands.register(commandNode, "A command for 7DaysToMine plugin")
 		}
 	}
 }
