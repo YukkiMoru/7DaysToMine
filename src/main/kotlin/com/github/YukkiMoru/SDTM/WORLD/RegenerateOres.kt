@@ -1,5 +1,6 @@
 package com.github.YukkiMoru.SDTM.WORLD
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
@@ -8,45 +9,24 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.scheduler.BukkitRunnable
 
 class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 
-    @EventHandler
-    fun onBlockBreak(event: BlockBreakEvent) {
-        val block = event.block
-        val player = event.player
-        val itemInHand: ItemStack = player.inventory.itemInMainHand
 
-        // Check if the player is breaking the block with an empty hand
-        if (itemInHand.type == Material.AIR) {
-            event.isCancelled = true
-            return
-        }
-
-        // Check if the item in hand is the special pickaxe
-        if (itemInHand.type == Material.IRON_PICKAXE && itemInHand.itemMeta?.isUnbreakable == true) {
-            val container = itemInHand.itemMeta?.persistentDataContainer
-            val key = NamespacedKey(plugin, "destroyable_blocks")
-            val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: emptyList()
-            if (destroyableBlocks.contains(block.type.key.toString())) {
-                // Allow block break and regenerate the block
-                val originalType = block.type
-                val scheduler = plugin.server.scheduler
-                scheduler.scheduleSyncDelayedTask(plugin, {
-                    block.type = Material.BEDROCK
-                }, 1L)
-                scheduler.scheduleSyncDelayedTask(plugin, {
-                    block.type = originalType
-                }, 60L)
-                return
-            } else {
-                event.isCancelled = true
+    init {
+        // Schedule a repeating task to update the target block display
+        object : BukkitRunnable() {
+            override fun run() {
+                for (player in Bukkit.getOnlinePlayers()) {
+                    val targetBlock = player.getTargetBlockExact(5) // Get the block the player is looking at within 5 blocks
+                    if (targetBlock != null && targetBlock.type != Material.AIR) {
+                        player.sendActionBar("Target Block: ${targetBlock.type}")
+                    } else {
+                        player.sendActionBar("No target block")
+                    }
+                }
             }
-        } else {
-            // Cancel the event if the block is not breakable by the special pickaxe
-            if (block.type == Material.COAL_ORE || block.type == Material.IRON_ORE) {
-                event.isCancelled = true
-            }
-        }
+        }.runTaskTimer(plugin, 0L, 1L) // Run every second (20 ticks)
     }
 }

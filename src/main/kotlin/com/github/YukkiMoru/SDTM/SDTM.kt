@@ -14,6 +14,8 @@ class SDTM : JavaPlugin() {
     override fun onEnable() {
         logger.info("SDTM plugin enabled")
 // COMMANDS
+        // プレイヤーのブロック破壊速度を0に設定
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute @p player.block_break_speed base set 0")
         // プレイヤー以外のエンティティを全て削除
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=!player]")
         // ネクサスのエンドストーンを召喚
