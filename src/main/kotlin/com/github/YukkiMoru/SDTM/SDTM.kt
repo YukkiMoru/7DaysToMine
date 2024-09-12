@@ -4,8 +4,8 @@ import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import com.github.YukkiMoru.SDTM.TRADE.LocateVillagers
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
 import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
-import com.github.YukkiMoru.SDTM.WORLD.MobController
-import com.github.YukkiMoru.SDTM.WORLD.OreRegeneration
+import com.github.YukkiMoru.SDTM.WORLD.ControlMobs
+import com.github.YukkiMoru.SDTM.WORLD.RegenerateOres
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -34,14 +34,14 @@ class SDTM : JavaPlugin() {
         SDCommand(this).registerCommands()
 
 // WORLD
-        val mobController = MobController(this, nexusScoreboard)
+        val mobController = ControlMobs(this, nexusScoreboard)
         mobController.startMovingMobsToLocation()
 
         server.scheduler.scheduleSyncRepeatingTask(this, {
             nexusScoreboard.checkZombiesNearNexus()
         }, 0L, 2L) // 2 ticks = 0.1 second
 
-        server.pluginManager.registerEvents(OreRegeneration(this), this)
+        server.pluginManager.registerEvents(RegenerateOres(this), this)
     }
 
     override fun onDisable() {
