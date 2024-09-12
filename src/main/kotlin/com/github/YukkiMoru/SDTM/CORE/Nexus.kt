@@ -39,16 +39,16 @@ class NexusScoreboard {
     fun checkZombiesNearNexus() {
         val world = targetLocation.world
 
-        // Display particles in a circle around the target location
-        val radius = 5.0
-        val points = 100
-        for (i in 0 until points) {
-            val angle = 2 * Math.PI * i / points
-            val x = radius * Math.cos(angle)
-            val z = radius * Math.sin(angle)
-            val particleLocation = targetLocation.clone().add(Vector(x+0.5, 0.0, z+0.5))
-            world?.spawnParticle(Particle.COMPOSTER, particleLocation, 1)
-        }
+        // ネクサスを中心とした半径5ブロックの円を描画する
+//        val radius = 5.0
+//        val points = 100
+//        for (i in 0 until points) {
+//            val angle = 2 * Math.PI * i / points
+//            val x = radius * Math.cos(angle)
+//            val z = radius * Math.sin(angle)
+//            val particleLocation = targetLocation.clone().add(Vector(x+0.5, 0.0, z+0.5))
+//            world?.spawnParticle(Particle.COMPOSTER, particleLocation, 1)
+//        }
 
     }
 }
