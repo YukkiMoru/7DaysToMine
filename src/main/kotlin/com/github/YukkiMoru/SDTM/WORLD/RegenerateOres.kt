@@ -7,7 +7,10 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerItemHeldEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
@@ -34,24 +37,56 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 
                     if (targetBlock?.type != previousBlock) {
                         playerTargetBlocks[player.uniqueId] = targetBlock?.type
-
-                        val itemInHand: ItemStack = player.inventory.itemInMainHand
-                        if (itemInHand.type == Material.IRON_PICKAXE && itemInHand.itemMeta?.isUnbreakable == true) {
-                            val container = itemInHand.itemMeta?.persistentDataContainer
-                            val key = NamespacedKey(plugin, "destroyable_blocks")
-                            val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: emptyList<String>()
-                            if (targetBlock != null && destroyableBlocks.contains(targetBlock.type.key.toString())) {
-                                setBlockBreakSpeed(player, 1.0)
-                            } else {
-                                setBlockBreakSpeed(player, 0.0)
-                            }
-                        } else {
-                            setBlockBreakSpeed(player, 0.0)
-                        }
+                        checkAndSetBlockBreakSpeed(player, targetBlock?.type)
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0L, 5L) // Run every 5 ticks (0.25 seconds)
+        }.runTaskTimer(plugin, 0L, 1L) // Run every 1 ticks (0.05 seconds)
+    }
+
+    @EventHandler
+    fun onItemHeld(event: PlayerItemHeldEvent) {
+        val player = event.player
+        val targetBlock = player.getTargetBlockExact(5)
+        // wait 1 tick
+        Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+            checkAndSetBlockBreakSpeed(player, targetBlock?.type)
+        }, 1L)
+    }
+
+    @EventHandler
+    fun onSwapHandItems(event: PlayerSwapHandItemsEvent) {
+        val player = event.player
+        val targetBlock = player.getTargetBlockExact(5)
+        // wait 1 tick
+        Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+            checkAndSetBlockBreakSpeed(player, targetBlock?.type)
+        }, 1L)
+    }
+
+    private fun checkAndSetBlockBreakSpeed(player: Player, targetBlockType: Material?) {
+        val itemInHand: ItemStack = player.inventory.itemInMainHand
+        val itemInOffHand: ItemStack = player.inventory.itemInOffHand
+        val key = NamespacedKey(plugin, "destroyable_blocks")
+
+        if (isDestroyable(itemInHand, key, targetBlockType) || isDestroyable(itemInOffHand, key, targetBlockType)) {
+            setBlockBreakSpeed(player, 1.0)
+            //message to player
+            player.sendMessage("You can break this block!")
+        } else {
+            setBlockBreakSpeed(player, 0.0)
+            //message to player
+            player.sendMessage("You can't break this block!")
+        }
+    }
+
+    private fun isDestroyable(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Boolean {
+        if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
+            val container = item.itemMeta?.persistentDataContainer
+            val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: emptyList<String>()
+            return targetBlockType != null && destroyableBlocks.contains(targetBlockType.key.toString())
+        }
+        return false
     }
 
     private fun setBlockBreakSpeed(player: Player, speed: Double) {
