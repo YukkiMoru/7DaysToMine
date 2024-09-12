@@ -36,6 +36,7 @@ class ControlMobs(private val plugin: JavaPlugin, private val nexusScoreboard: N
         world?.entities?.forEach { entity ->
             if (entity is Zombie) {
                 if (entity.location.distance(targetLocation) <= 5) {
+                    entity.swingMainHand()
                     val currentHealth = nexusScoreboard.getNexusHealth()
                     nexusScoreboard.updateNexusHealth(currentHealth - 1)
                 }
