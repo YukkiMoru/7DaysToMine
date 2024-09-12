@@ -3,6 +3,10 @@ package com.github.YukkiMoru.SDTM.WORLD
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.attribute.AttributeModifier.Operation
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -37,16 +41,23 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
                             val key = NamespacedKey(plugin, "destroyable_blocks")
                             val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: emptyList<String>()
                             if (targetBlock != null && destroyableBlocks.contains(targetBlock.type.key.toString())) {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute ${player.name} player.block_break_speed base set 1")
+                                setBlockBreakSpeed(player, 1.0)
                             } else {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute ${player.name} player.block_break_speed base set 0")
+                                setBlockBreakSpeed(player, 0.0)
                             }
                         } else {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute ${player.name} player.block_break_speed base set 0")
+                            setBlockBreakSpeed(player, 0.0)
                         }
                     }
                 }
             }
         }.runTaskTimer(plugin, 0L, 5L) // Run every 5 ticks (0.25 seconds)
+    }
+
+    private fun setBlockBreakSpeed(player: Player, speed: Double) {
+        val attribute = player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)
+        attribute?.modifiers?.forEach { attribute.removeModifier(it) }
+        val modifier = AttributeModifier(NamespacedKey(plugin, "block_break_speed"), speed, Operation.ADD_NUMBER)
+        attribute?.addModifier(modifier)
     }
 }
