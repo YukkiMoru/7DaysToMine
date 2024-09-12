@@ -39,7 +39,7 @@ class SDTM : JavaPlugin() {
 
         server.scheduler.scheduleSyncRepeatingTask(this, {
             nexusScoreboard.checkZombiesNearNexus()
-        }, 0L, 2L) // 2 ticks = 0.1 second
+        }, 0L, 20L) // 20 ticks = 1 second
 
         server.pluginManager.registerEvents(RegenerateOres(this), this)
     }
