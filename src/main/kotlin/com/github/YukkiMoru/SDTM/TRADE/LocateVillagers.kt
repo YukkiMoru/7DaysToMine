@@ -12,5 +12,7 @@ class LocateVillagers(private val plugin: JavaPlugin) : Listener {
         VillagerWeapon(plugin).summonVillagerWeapon(Location(plugin.server.getWorld("world"), 95.5, 10.0, 90.5))
 
         VillagerPotion(plugin).summonVillagerPotion(Location(plugin.server.getWorld("world"), 97.5, 10.0, 90.5))
+
+        VillagerPickaxe(plugin).summonVillagerPickaxe(Location(plugin.server.getWorld("world"), 99.5, 10.0, 90.5))
     }
 }
