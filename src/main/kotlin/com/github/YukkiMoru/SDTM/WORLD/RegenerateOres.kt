@@ -38,6 +38,6 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0L, 20L) // Run every second (20 ticks)
+        }.runTaskTimer(plugin, 0L, 1L) // Run every second ( ticks)
     }
 }
