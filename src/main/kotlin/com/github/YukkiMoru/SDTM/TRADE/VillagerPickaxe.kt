@@ -2,11 +2,13 @@ package com.github.YukkiMoru.SDTM.TRADE
 
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Villager
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
@@ -35,23 +37,24 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
                 // Create trades
                 val recipes = mutableListOf<MerchantRecipe>()
 
-                // Trade 1: 10 iron blocks for 4 emerald blocks
+                // Trade 1: 10 emeralds for 1 unbreakable iron pickaxe that can break specific blocks
                 val buyItem1 = ItemStack(Material.EMERALD, 10)
                 val sellItem1 = ItemStack(Material.IRON_PICKAXE, 1)
                 val meta: ItemMeta = sellItem1.itemMeta
 
                 // Set the item to be unbreakable
                 meta.isUnbreakable = true
-                // ピッケルに破壊可能なアイテムを指定する（Iron_Ore,Coal_Ore）
 
+                // Set the item to be able to break specific blocks using PersistentDataContainer
+                val container = meta.persistentDataContainer
+                val key = NamespacedKey(plugin, "destroyable_blocks")
+                container.set(key, PersistentDataType.STRING, "minecraft:coal_ore,minecraft:iron_ore")
 
                 sellItem1.itemMeta = meta
 
                 val recipe1 = MerchantRecipe(sellItem1, 9999999)
                 recipe1.addIngredient(buyItem1)
                 recipes.add(recipe1)
-
-
 
                 // Trade 2: 2 diamond blocks for 20 emerald blocks
                 val buyItem2 = ItemStack(Material.DIAMOND_BLOCK, 2)
