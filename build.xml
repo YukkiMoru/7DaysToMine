@@ -1,0 +1,14 @@
+<target name="Build">
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes" classpath="${kotlin.stdlib}">
+        <include name="**/*.java"/>
+        <include name="**/*.kt"/>
+    </javac>
+    <copy file="src/main/resources/plugin.yml" todir="build/classes"/>
+    <jar jarfile="C:\Users\Yutak\デスクトップ\7DaysToMine\7DaysFolder\7DaysToMine_Server\plugins\SDTM-1.0.jar"
+         basedir="build/classes" includes="**/*">
+        <manifest>
+            <attribute name="Class-Path" value="${kotlin.stdlib}"/>
+        </manifest>
+    </jar>
+</target>
