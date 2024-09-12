@@ -17,6 +17,12 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
         val player = event.player
         val itemInHand: ItemStack = player.inventory.itemInMainHand
 
+        // Check if the player is breaking the block with an empty hand
+        if (itemInHand.type == Material.AIR) {
+            event.isCancelled = true
+            return
+        }
+
         // Check if the item in hand is the special pickaxe
         if (itemInHand.type == Material.IRON_PICKAXE && itemInHand.itemMeta?.isUnbreakable == true) {
             val container = itemInHand.itemMeta?.persistentDataContainer
