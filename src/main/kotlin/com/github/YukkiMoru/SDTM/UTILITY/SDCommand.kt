@@ -1,11 +1,5 @@
 package com.github.YukkiMoru.SDTM.UTILITY
-/*
-このファイルは、7DaysToMineプラグイン(sd)のコマンドクラスです。
-以下のコマンドを実装しています。
-/sd <kill>                       → プレイヤー以外の全てのエンティティを削除
-/sd <help>                       → ヘルプを表示
-/sd <debug> <true/false>         → デバッグモードを設定
-*/
+
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
@@ -41,6 +35,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		when (args[0]) {
 			"kill" -> executeDefaultCommand(args, "kill", "kill @e[type=!player]")
 			"help" -> handleHelpCommand(player)
+			"debug" -> handleDebugCommand(player, args)
 			else -> player.sendMessage("不明なコマンドです: ${args[0]}, 詳しくは/sd helpを入力してください")
 		}
 		return true
@@ -61,6 +56,15 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		}
 	}
 
+	private fun handleDebugCommand(player: Player, args: Array<String>) {
+		if (args.size < 2) {
+			player.sendMessage("Usage: /sd debug <true/false>")
+			return
+		}
+		val debugMode = args[1].toBoolean()
+		player.sendMessage("Debug mode set to: $debugMode")
+	}
+
 	override fun onTabComplete(
 		sender: CommandSender,
 		command: Command,
@@ -68,7 +72,11 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		args: Array<String>
 	): List<String>? {
 		return if (sender is Player) {
-			COMMANDS[args.getOrNull(0)] ?: emptyList()
+			if (args.size == 1) {
+				COMMANDS.keys.toList()
+			} else {
+				COMMANDS[args[0]] ?: emptyList()
+			}
 		} else {
 			null
 		}
@@ -97,12 +105,59 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 								com.mojang.brigadier.Command.SINGLE_SUCCESS
 							}
 					)
+					.then(
+						LiteralArgumentBuilder.literal<CommandSourceStack>("help")
+							.executes { ctx: CommandContext<CommandSourceStack> ->
+								ctx.source.sender.sendMessage(
+									Component.text(
+										"Usage: /sd <command> <args>",
+										NamedTextColor.AQUA
+									)
+								)
+								ctx.source.sender.sendMessage(Component.text("Commands: ", NamedTextColor.AQUA))
+								COMMANDS.forEach { (key, value) ->
+									ctx.source.sender.sendMessage(
+										Component.text(
+											"$key : ${value.joinToString(", ")}",
+											NamedTextColor.AQUA
+										)
+									)
+								}
+								com.mojang.brigadier.Command.SINGLE_SUCCESS
+							}
+					)
+					.then(
+						LiteralArgumentBuilder.literal<CommandSourceStack>("debug")
+							.then(
+								LiteralArgumentBuilder.literal<CommandSourceStack>("true")
+									.executes { ctx: CommandContext<CommandSourceStack> ->
+										ctx.source.sender.sendMessage(
+											Component.text(
+												"Debug mode set to: true",
+												NamedTextColor.AQUA
+											)
+										)
+										com.mojang.brigadier.Command.SINGLE_SUCCESS
+									}
+							)
+							.then(
+								LiteralArgumentBuilder.literal<CommandSourceStack>("false")
+									.executes { ctx: CommandContext<CommandSourceStack> ->
+										ctx.source.sender.sendMessage(
+											Component.text(
+												"Debug mode set to: false",
+												NamedTextColor.AQUA
+											)
+										)
+										com.mojang.brigadier.Command.SINGLE_SUCCESS
+									}
+							)
+					)
 					.executes { ctx: CommandContext<CommandSourceStack> ->
 						ctx.source.sender.sendMessage(Component.text("Hello World!", NamedTextColor.AQUA))
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
 					}
 					.build()
-
 			commands.register(commandNode, "A command for 7DaysToMine plugin", listOf("sd-alias"))
 		}
 	}
