@@ -37,6 +37,9 @@ class ControlMobs(private val plugin: JavaPlugin, private val nexusScoreboard: N
             if (entity is Zombie) {
                 if (entity.location.distance(targetLocation) <= 5) {
                     entity.swingMainHand()
+//                    world.playSound(entity.location, "entity.zombie.attack_wooden_door", 1.0f, 1.0f)
+                    world.playSound(entity.location, "minecraft:block.anvil.place", 1.0f, 0.1f)
+
                     val currentHealth = nexusScoreboard.getNexusHealth()
                     nexusScoreboard.updateNexusHealth(currentHealth - 1)
                 }
