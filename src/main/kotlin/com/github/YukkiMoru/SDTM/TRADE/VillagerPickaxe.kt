@@ -55,9 +55,9 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				// Add lore to display destroyable blocks
 				val lore = listOf(
 					"${ChatColor.GREEN}破壊可能なブロック:",
-					"${ChatColor.GREEN} - 石炭鉱石 (0.7)",
-					"${ChatColor.GREEN} - 鉄鉱石 (0.8)",
-					"${ChatColor.GREEN} - 深層鉄鉱石 (0.3)"
+					"${ChatColor.GREEN}⛏0.7 ☘1.0 石炭鉱石",
+					"${ChatColor.GREEN}⛏0.8 ☘1.0 鉄鉱石",
+					"${ChatColor.GREEN}⛏0.3 ☘1.0 深層鉄鉱石"
 				)
 				meta.lore = lore
 
