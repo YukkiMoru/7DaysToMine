@@ -25,29 +25,12 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 	}
 
 	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-		if (sender !is Player || args.isEmpty()) return false
-
-		val player = sender
-		when (args[0]) {
-			"kill" -> executeCommand("kill @e[type=!player]", "kill が実行されました!")
-			"help" -> sendHelpMessage(player)
-			"debug" -> player.sendMessage("Debug mode set to: ${args.getOrNull(1)}")
-			else -> player.sendMessage("不明なコマンドです: ${args[0]}, 詳しくは/sd helpを入力してください")
-		}
 		return true
 	}
 
 	private fun executeCommand(command: String, message: String) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
 		Bukkit.broadcastMessage(message)
-	}
-
-	private fun sendHelpMessage(player: Player) {
-		player.sendMessage("Usage: /sd <command> <args>")
-		player.sendMessage("Commands: ")
-		COMMANDS.forEach { (key, value) ->
-			player.sendMessage("$key : ${value.joinToString(", ")}")
-		}
 	}
 
 	override fun onTabComplete(
@@ -63,7 +46,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 
 	companion object {
 		private val COMMANDS = mapOf(
-			"" to listOf("kill", "help", "debug"),
+			"" to listOf("kill", "debug"),
 			"debug" to listOf("true", "false")
 		)
 	}
