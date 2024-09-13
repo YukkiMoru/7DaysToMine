@@ -49,13 +49,14 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				// Set the item to be able to break specific blocks using PersistentDataContainer
 				val container = meta.persistentDataContainer
 				val key = NamespacedKey(plugin, "destroyable_blocks")
-				val destroyableBlocks = "minecraft:coal_ore:0.7,minecraft:iron_ore:0.8,minecraft:deepslate_iron_ore:0.3"
+				val destroyableBlocks =
+					"minecraft:coal_ore:0.7:3.0,minecraft:iron_ore:0.8:1.0,minecraft:deepslate_iron_ore:0.3:1.0"
 				container.set(key, PersistentDataType.STRING, destroyableBlocks)
 
 				// Add lore to display destroyable blocks
 				val lore = listOf(
 					"${ChatColor.GREEN}破壊可能なブロック:",
-					"${ChatColor.GREEN}⛏0.7 ☘1.0 石炭鉱石",
+					"${ChatColor.GREEN}⛏0.7 ☘3.0 石炭鉱石",
 					"${ChatColor.GREEN}⛏0.8 ☘1.0 鉄鉱石",
 					"${ChatColor.GREEN}⛏0.3 ☘1.0 深層鉄鉱石"
 				)

@@ -5,6 +5,7 @@ import com.github.YukkiMoru.SDTM.TRADE.DeployVillagers
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
 import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
 import com.github.YukkiMoru.SDTM.WORLD.ControlMobs
+import com.github.YukkiMoru.SDTM.WORLD.DropOres
 import com.github.YukkiMoru.SDTM.WORLD.MiningOres
 import com.github.YukkiMoru.SDTM.WORLD.RegenerateOres
 import org.bukkit.Bukkit
@@ -47,6 +48,7 @@ class SDTM : JavaPlugin() {
 
 		server.pluginManager.registerEvents(MiningOres(this), this)
 		server.pluginManager.registerEvents(RegenerateOres(this), this)
+		server.pluginManager.registerEvents(DropOres(this), this)
 	}
 
 	override fun onDisable() {

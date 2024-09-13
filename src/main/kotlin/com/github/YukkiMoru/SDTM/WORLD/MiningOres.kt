@@ -1,7 +1,6 @@
 package com.github.YukkiMoru.SDTM.WORLD
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -24,31 +23,33 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 	private val playerTargetBlocks = mutableMapOf<UUID, Material?>()
 
 	init {
-		// Schedule a repeating task to update the target block display
 		object : BukkitRunnable() {
 			override fun run() {
 				for (player in Bukkit.getOnlinePlayers()) {
 					val targetBlock = player.getTargetBlockExact(5)
 					val previousBlock = playerTargetBlocks[player.uniqueId]
 					if (targetBlock != null && targetBlock.type != Material.AIR) {
-						if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value == 0.0) {
-							player.sendActionBar(
-								Component.text(
-									previousBlock?.name ?: "No previous block",
-									NamedTextColor.RED
-								)
-							)
-						} else {
-							player.sendActionBar(
-								Component.text(
-									previousBlock?.name ?: "No previous block",
-									NamedTextColor.GREEN
-								)
-							)
-						}
+//						if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value == 0.0) {
+//							player.sendActionBar(
+//								Component.text(
+//									previousBlock?.name ?: "No previous block",
+//									NamedTextColor.RED
+//								)
+//							)
+//						} else {
+//							player.sendActionBar(
+//								Component.text(
+//									previousBlock?.name ?: "No previous block",
+//									NamedTextColor.GREEN
+//								)
+//							)
+//						}
 					} else {
 						player.sendActionBar(Component.text(previousBlock?.name ?: "No previous block"))
 					}
+					// show pickaxe break speed from pickaxe data
+					player.sendActionBar(checkAndSetBlockBreakSpeed(player, targetBlock?.type).toString())
+
 
 					if (targetBlock?.type != previousBlock) {
 						playerTargetBlocks[player.uniqueId] = targetBlock?.type
@@ -73,7 +74,6 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 	fun onSwapHandItems(event: PlayerSwapHandItemsEvent) {
 		val player = event.player
 		val targetBlock = player.getTargetBlockExact(5)
-		// wait 1 tick
 		Bukkit.getScheduler().runTaskLater(plugin, Runnable {
 			checkAndSetBlockBreakSpeed(player, targetBlock?.type)
 		}, 1L)
@@ -91,6 +91,7 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 		setBlockBreakSpeed(player, speed)
 	}
 
+	// minecraft:coal_ore:0.7:3.0,minecraft:iron_ore:0.8:1.0,minecraft:deepslate_iron_ore:0.3:1.0
 	private fun getBlockBreakSpeed(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Double? {
 		if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
 			val container = item.itemMeta?.persistentDataContainer
@@ -98,7 +99,7 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 			for (blockData in destroyableBlocks) {
 				val parts = blockData.split(":")
 				if (parts.size == 3 && parts[0] == targetBlockType?.key?.namespace && parts[1] == targetBlockType.key.key) {
-					return parts[2].toDoubleOrNull()
+					return parts[1].toDoubleOrNull()
 				}
 			}
 		}
