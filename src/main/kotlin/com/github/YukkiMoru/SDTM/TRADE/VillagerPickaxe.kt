@@ -1,5 +1,6 @@
 package com.github.YukkiMoru.SDTM.TRADE
 
+import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -14,57 +15,66 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class VillagerPickaxe(private val plugin: JavaPlugin) {
 
-    fun summonVillagerPickaxe(location: Location) {
-        object : BukkitRunnable() {
-            override fun run() {
-                val world = location.world ?: return
-                val villager = world.spawnEntity(location, EntityType.VILLAGER) as Villager
+	fun summonVillagerPickaxe(location: Location) {
+		object : BukkitRunnable() {
+			override fun run() {
+				val world = location.world ?: return
+				val villager = world.spawnEntity(location, EntityType.VILLAGER) as Villager
 
-                // Set villager properties
-                villager.profession = Villager.Profession.TOOLSMITH
-                villager.villagerLevel = 2
-                villager.villagerType = Villager.Type.PLAINS
-                villager.isCustomNameVisible = true
-                villager.customName = "Pickaxe Master"
-                villager.isPersistent = true
+				// Set villager properties
+				villager.profession = Villager.Profession.TOOLSMITH
+				villager.villagerLevel = 2
+				villager.villagerType = Villager.Type.PLAINS
+				villager.isCustomNameVisible = true
+				villager.customName = "Pickaxe Master"
+				villager.isPersistent = true
 
-                // Disable AI
-                villager.setAI(false)
+				// Disable AI
+				villager.setAI(false)
 
-                // Set villager to face south
-                villager.location.yaw = 180f
+				// Set villager to face south
+				villager.location.yaw = 180f
 
-                // Create trades
-                val recipes = mutableListOf<MerchantRecipe>()
+				// Create trades
+				val recipes = mutableListOf<MerchantRecipe>()
 
-                // Trade 1: 10 emeralds for 1 unbreakable iron pickaxe that can break specific blocks
-                val buyItem1 = ItemStack(Material.EMERALD, 10)
-                val sellItem1 = ItemStack(Material.IRON_PICKAXE, 1)
-                val meta: ItemMeta = sellItem1.itemMeta
+				// Trade 1: 10 emeralds for 1 unbreakable iron pickaxe that can break specific blocks
+				val buyItem1 = ItemStack(Material.EMERALD, 10)
+				val sellItem1 = ItemStack(Material.IRON_PICKAXE, 1)
+				val meta: ItemMeta = sellItem1.itemMeta
 
-                // Set the item to be unbreakable
-                meta.isUnbreakable = true
+				// Set the item to be unbreakable
+				meta.isUnbreakable = true
 
-                // Set the item to be able to break specific blocks using PersistentDataContainer
-                val container = meta.persistentDataContainer
-                val key = NamespacedKey(plugin, "destroyable_blocks")
-                container.set(key, PersistentDataType.STRING, "minecraft:coal_ore,minecraft:iron_ore")
+				// Set the item to be able to break specific blocks using PersistentDataContainer
+				val container = meta.persistentDataContainer
+				val key = NamespacedKey(plugin, "destroyable_blocks")
+				val destroyableBlocks = "minecraft:coal_ore,minecraft:iron_ore"
+				container.set(key, PersistentDataType.STRING, destroyableBlocks)
 
-                sellItem1.itemMeta = meta
+				// Add lore to display destroyable blocks
+				val lore = listOf(
+					"${ChatColor.GREEN}Destroyable Blocks:",
+					"${ChatColor.GREEN} - Coal Ore",
+					"${ChatColor.GREEN} - Iron Ore"
+				)
+				meta.lore = lore
 
-                val recipe1 = MerchantRecipe(sellItem1, 9999999)
-                recipe1.addIngredient(buyItem1)
-                recipes.add(recipe1)
+				sellItem1.itemMeta = meta
 
-                // Trade 2: 2 diamond blocks for 20 emerald blocks
-                val buyItem2 = ItemStack(Material.DIAMOND_BLOCK, 2)
-                val sellItem2 = ItemStack(Material.EMERALD_BLOCK, 20)
-                val recipe2 = MerchantRecipe(sellItem2, 9999999)
-                recipe2.addIngredient(buyItem2)
-                recipes.add(recipe2)
+				val recipe1 = MerchantRecipe(sellItem1, 9999999)
+				recipe1.addIngredient(buyItem1)
+				recipes.add(recipe1)
 
-                villager.recipes = recipes
-            }
-        }.runTask(plugin)
-    }
+				// Trade 2: 2 diamond blocks for 20 emerald blocks
+				val buyItem2 = ItemStack(Material.DIAMOND_BLOCK, 2)
+				val sellItem2 = ItemStack(Material.EMERALD_BLOCK, 20)
+				val recipe2 = MerchantRecipe(sellItem2, 9999999)
+				recipe2.addIngredient(buyItem2)
+				recipes.add(recipe2)
+
+				villager.recipes = recipes
+			}
+		}.runTask(plugin)
+	}
 }

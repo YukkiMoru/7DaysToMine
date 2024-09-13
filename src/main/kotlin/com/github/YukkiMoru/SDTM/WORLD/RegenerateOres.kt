@@ -30,7 +30,6 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 				for (player in Bukkit.getOnlinePlayers()) {
 					val targetBlock = player.getTargetBlockExact(5)
 					val previousBlock = playerTargetBlocks[player.uniqueId]
-
 					if (targetBlock != null && targetBlock.type != Material.AIR) {
 						if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value == 0.0) {
 							player.sendActionBar(
