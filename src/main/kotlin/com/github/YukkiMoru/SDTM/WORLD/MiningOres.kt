@@ -98,8 +98,8 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
 			for (blockData in destroyableBlocks) {
 				val parts = blockData.split(":")
-				if (parts.size == 3 && parts[0] == targetBlockType?.key?.namespace && parts[1] == targetBlockType.key.key) {
-					return parts[1].toDoubleOrNull()
+				if (parts.size == 4 && parts[0] == targetBlockType?.key?.namespace && parts[1] == targetBlockType.key.key) {
+					return parts[2].toDoubleOrNull()
 				}
 			}
 		}
