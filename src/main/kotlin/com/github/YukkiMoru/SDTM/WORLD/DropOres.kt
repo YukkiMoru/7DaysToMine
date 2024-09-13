@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.random.Random
 
@@ -22,7 +21,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 			event.isDropItems = false // Prevent default drops
 
 			val key = NamespacedKey(plugin, "destroyable_blocks")
-			val luck = getLuckParameter(itemInHand, key) ?: 1.0
+			val luck = MiningOres.getBlockFortune(itemInHand, key, block.type) ?: 0.0
 
 			// message to player
 			player.sendMessage("Luck: $luck")
@@ -36,20 +35,6 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 
 			block.world.dropItemNaturally(block.location, ItemStack(dropItem, dropCount))
 		}
-	}
-
-	private fun getLuckParameter(item: ItemStack, key: NamespacedKey): Double? {
-		if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
-			val container = item.itemMeta?.persistentDataContainer
-			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
-			for (blockData in destroyableBlocks) {
-				val parts = blockData.split(":")
-				if (parts.size == 4) {
-					return parts[3].toDoubleOrNull()
-				}
-			}
-		}
-		return null
 	}
 
 	private fun calculateDropCount(luck: Double): Int {
