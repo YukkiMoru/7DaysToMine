@@ -16,7 +16,7 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 
 		// Check if the block is one of the ores
 		if (originalType == Material.COAL_ORE || originalType == Material.IRON_ORE || originalType == Material.DEEPSLATE_IRON_ORE) {
-			// Replace the broken block with bedrock
+//			event.isCancelled = true
 			object : BukkitRunnable() {
 				override fun run() {
 					block.type = Material.BEDROCK
