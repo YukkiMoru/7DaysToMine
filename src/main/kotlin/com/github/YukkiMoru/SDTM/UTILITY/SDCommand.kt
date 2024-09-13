@@ -57,10 +57,6 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 	}
 
 	private fun handleDebugCommand(player: Player, args: Array<String>) {
-		if (args.size < 2) {
-			player.sendMessage("Usage: /sd debug <true/false>")
-			return
-		}
 		val debugMode = args[1].toBoolean()
 		player.sendMessage("Debug mode set to: $debugMode")
 	}
@@ -84,10 +80,9 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 
 	companion object {
 		private val COMMANDS = mapOf(
-			"" to listOf("kill", "help", "debug", "gui", "config"),
+			"" to listOf("kill", "help", "debug"),
 			"debug" to listOf("true", "false"),
-			"gui" to listOf("PlatformGUI", "TowerGUI"),
-			"config" to listOf("show")
+//			"config" to listOf("show")
 		)
 	}
 
@@ -108,10 +103,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 					.then(
 						LiteralArgumentBuilder.literal<CommandSourceStack>("help")
 							.executes { ctx: CommandContext<CommandSourceStack> ->
-								ctx.source.sender.sendMessage(
-									Component.text("Usage: /sd <command> <args>", NamedTextColor.AQUA)
-								)
-								ctx.source.sender.sendMessage(Component.text("Commands: ", NamedTextColor.AQUA))
+								ctx.source.sender.sendMessage(Component.text("Commands:", NamedTextColor.AQUA))
 								COMMANDS.forEach { (key, value) ->
 									ctx.source.sender.sendMessage(
 										Component.text("$key : ${value.joinToString(", ")}", NamedTextColor.AQUA)
@@ -142,7 +134,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							)
 					)
 					.executes { ctx: CommandContext<CommandSourceStack> ->
-						ctx.source.sender.sendMessage(Component.text("Hello World!", NamedTextColor.AQUA))
+						ctx.source.sender.sendMessage(Component.text("[SDTM]Hello World!", NamedTextColor.AQUA))
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
 					}
 					.build()
