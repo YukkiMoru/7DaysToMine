@@ -1,5 +1,7 @@
 package com.github.YukkiMoru.SDTM.WORLD
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -30,11 +32,23 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 					val previousBlock = playerTargetBlocks[player.uniqueId]
 
 					if (targetBlock != null && targetBlock.type != Material.AIR) {
-//						player.sendActionBar("Target Block: ${targetBlock.type}")
-						player.sendActionBar(previousBlock?.name ?: "No previous block")
+						if (player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value == 0.0) {
+							player.sendActionBar(
+								Component.text(
+									previousBlock?.name ?: "No previous block",
+									NamedTextColor.RED
+								)
+							)
+						} else {
+							player.sendActionBar(
+								Component.text(
+									previousBlock?.name ?: "No previous block",
+									NamedTextColor.GREEN
+								)
+							)
+						}
 					} else {
-//						player.sendActionBar("No target block")
-						player.sendActionBar(previousBlock?.name ?: "No previous block")
+						player.sendActionBar(Component.text(previousBlock?.name ?: "No previous block"))
 					}
 
 
