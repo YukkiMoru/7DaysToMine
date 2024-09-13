@@ -50,7 +50,6 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 						player.sendActionBar(Component.text(previousBlock?.name ?: "No previous block"))
 					}
 
-
 					if (targetBlock?.type != previousBlock) {
 						playerTargetBlocks[player.uniqueId] = targetBlock?.type
 						checkAndSetBlockBreakSpeed(player, targetBlock?.type)
@@ -85,24 +84,25 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 		val itemInOffHand: ItemStack = player.inventory.itemInOffHand
 		val key = NamespacedKey(plugin, "destroyable_blocks")
 
-		if (isDestroyable(itemInHand, key, targetBlockType) || isDestroyable(itemInOffHand, key, targetBlockType)) {
-			setBlockBreakSpeed(player, 1.0)
-			//message to player
-//			player.sendMessage("You can break this block!")
-		} else {
-			setBlockBreakSpeed(player, 0.0)
-			//message to player
-//			player.sendMessage("You can't break this block!")
-		}
+		val speed = getBlockBreakSpeed(itemInHand, key, targetBlockType)
+			?: getBlockBreakSpeed(itemInOffHand, key, targetBlockType)
+			?: 0.0
+
+		setBlockBreakSpeed(player, speed)
 	}
 
-	private fun isDestroyable(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Boolean {
+	private fun getBlockBreakSpeed(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Double? {
 		if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
 			val container = item.itemMeta?.persistentDataContainer
-			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: emptyList<String>()
-			return targetBlockType != null && destroyableBlocks.contains(targetBlockType.key.toString())
+			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
+			for (blockData in destroyableBlocks) {
+				val parts = blockData.split(":")
+				if (parts.size == 3 && parts[0] == targetBlockType?.key?.namespace && parts[1] == targetBlockType.key.key) {
+					return parts[2].toDoubleOrNull()
+				}
+			}
 		}
-		return false
+		return null
 	}
 
 	private fun setBlockBreakSpeed(player: Player, speed: Double) {
@@ -110,8 +110,5 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 		attribute?.modifiers?.forEach { attribute.removeModifier(it) }
 		val modifier = AttributeModifier(NamespacedKey(plugin, "block_break_speed"), speed, Operation.ADD_NUMBER)
 		attribute?.addModifier(modifier)
-
-		//message to player
-//		player.sendMessage("Block break speed: $speed")
 	}
 }
