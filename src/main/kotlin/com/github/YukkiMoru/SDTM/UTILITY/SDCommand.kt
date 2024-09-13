@@ -41,20 +41,6 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							com.mojang.brigadier.Command.SINGLE_SUCCESS
 						}
 					)
-					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("help")
-						.executes { ctx: CommandContext<CommandSourceStack> ->
-							ctx.source.sender.sendMessage(Component.text("Commands:", NamedTextColor.AQUA))
-							COMMANDS.forEach { (key, value) ->
-								ctx.source.sender.sendMessage(
-									Component.text(
-										"$key : ${value.joinToString(", ")}",
-										NamedTextColor.AQUA
-									)
-								)
-							}
-							com.mojang.brigadier.Command.SINGLE_SUCCESS
-						}
-					)
 					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("debug")
 						.then(LiteralArgumentBuilder.literal<CommandSourceStack>("true")
 							.executes { ctx: CommandContext<CommandSourceStack> ->
@@ -107,6 +93,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		} else null
 	}
 
+	// tabの補完候補機能の定義
 	companion object {
 		private val COMMANDS = mapOf(
 			"" to listOf("kill", "debug"),
