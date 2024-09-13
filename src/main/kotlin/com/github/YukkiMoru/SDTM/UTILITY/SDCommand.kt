@@ -46,7 +46,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							.executes { ctx: CommandContext<CommandSourceStack> ->
 								ctx.source.sender.sendMessage(
 									Component.text(
-										"[SDTM]Debug mode set to: true",
+										"[SDTM]デバッグモードを有効にしました",
 										NamedTextColor.AQUA
 									)
 								)
@@ -57,7 +57,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							.executes { ctx: CommandContext<CommandSourceStack> ->
 								ctx.source.sender.sendMessage(
 									Component.text(
-										"[SDTM]Debug mode set to: false",
+										"[SDTM]デバッグモードを無効にしました",
 										NamedTextColor.AQUA
 									)
 								)
