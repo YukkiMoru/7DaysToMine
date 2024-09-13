@@ -6,6 +6,7 @@ import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
 import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
 import com.github.YukkiMoru.SDTM.WORLD.ControlMobs
 import com.github.YukkiMoru.SDTM.WORLD.MiningOres
+import com.github.YukkiMoru.SDTM.WORLD.RegenerateOres
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -45,6 +46,7 @@ class SDTM : JavaPlugin() {
 		}, 0L, 20L) // 20 ticks = 1 second
 
 		server.pluginManager.registerEvents(MiningOres(this), this)
+		server.pluginManager.registerEvents(RegenerateOres(this), this)
 	}
 
 	override fun onDisable() {
