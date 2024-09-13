@@ -46,7 +46,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							.executes { ctx: CommandContext<CommandSourceStack> ->
 								ctx.source.sender.sendMessage(
 									Component.text(
-										"Debug mode set to: true",
+										"[SDTM]Debug mode set to: true",
 										NamedTextColor.AQUA
 									)
 								)
@@ -57,7 +57,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							.executes { ctx: CommandContext<CommandSourceStack> ->
 								ctx.source.sender.sendMessage(
 									Component.text(
-										"Debug mode set to: false",
+										"[SDTM]Debug mode set to: false",
 										NamedTextColor.AQUA
 									)
 								)
@@ -70,7 +70,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
 					}
 					.build()
-			commands.register(commandNode, "A command for 7DaysToMine plugin")
+			commands.register(commandNode, "[SDTM]A command for 7DaysToMine plugin")
 		}
 	}
 
