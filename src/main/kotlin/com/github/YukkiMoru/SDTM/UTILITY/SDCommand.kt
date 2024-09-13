@@ -24,33 +24,6 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		}
 	}
 
-	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-		return true
-	}
-
-	private fun executeCommand(command: String, message: String) {
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
-		Bukkit.broadcastMessage(message)
-	}
-
-	override fun onTabComplete(
-		sender: CommandSender,
-		command: Command,
-		alias: String,
-		args: Array<String>
-	): List<String>? {
-		return if (sender is Player) {
-			if (args.size == 1) COMMANDS.keys.toList() else COMMANDS[args[0]] ?: emptyList()
-		} else null
-	}
-
-	companion object {
-		private val COMMANDS = mapOf(
-			"" to listOf("kill", "debug"),
-			"debug" to listOf("true", "false")
-		)
-	}
-
 	fun registerCommands() {
 		plugin.lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
 			val commands = event.registrar()
@@ -58,7 +31,13 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				LiteralArgumentBuilder.literal<CommandSourceStack>("sd")
 					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("kill")
 						.executes { ctx: CommandContext<CommandSourceStack> ->
-							executeCommand("kill @e[type=!player]", "kill が実行されました!")
+							executeCommand("kill @e[type=!player]")
+							ctx.source.sender.sendMessage(
+								Component.text(
+									"[SDTM]プレイヤー以外のエンティティを全て削除しました",
+									NamedTextColor.AQUA
+								)
+							)
 							com.mojang.brigadier.Command.SINGLE_SUCCESS
 						}
 					)
@@ -107,5 +86,31 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 					.build()
 			commands.register(commandNode, "A command for 7DaysToMine plugin")
 		}
+	}
+
+	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+		return true
+	}
+
+	private fun executeCommand(command: String) {
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
+	}
+
+	override fun onTabComplete(
+		sender: CommandSender,
+		command: Command,
+		alias: String,
+		args: Array<String>
+	): List<String>? {
+		return if (sender is Player) {
+			if (args.size == 1) COMMANDS.keys.toList() else COMMANDS[args[0]] ?: emptyList()
+		} else null
+	}
+
+	companion object {
+		private val COMMANDS = mapOf(
+			"" to listOf("kill", "debug"),
+			"debug" to listOf("true", "false")
+		)
 	}
 }
