@@ -1,6 +1,7 @@
 package com.github.YukkiMoru.SDTM.WORLD
 
 import org.bukkit.Material
+import org.bukkit.block.BlockState
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -21,9 +22,12 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 				Material.RED_STAINED_GLASS_PANE -> Material.GRAY_STAINED_GLASS_PANE
 				else -> Material.BEDROCK
 			}
+			val originalState: BlockState = block.state
+
 			object : BukkitRunnable() {
 				override fun run() {
 					block.type = temporaryType
+//					block.state.update(true, true) // Force block update to ensure it connects with surrounding blocks
 				}
 			}.runTaskLater(plugin, 1L)
 
@@ -31,6 +35,7 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 			object : BukkitRunnable() {
 				override fun run() {
 					block.type = originalType
+					originalState.update(true, true) // Restore the original state and force update
 				}
 			}.runTaskLater(plugin, 60L)
 		}
