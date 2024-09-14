@@ -50,7 +50,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				val container = meta.persistentDataContainer
 				val key = NamespacedKey(plugin, "destroyable_blocks")
 				val destroyableBlocks =
-					"minecraft:coal_ore:0.7:3.0,minecraft:iron_ore:0.8:1.0,minecraft:deepslate_iron_ore:0.3:1.0,minecraft:red_stained_glass:1.0:0.1"
+					"minecraft:coal_ore:0.7:3.0,minecraft:iron_ore:0.8:1.0,minecraft:deepslate_iron_ore:0.3:1.0,minecraft:red_stained_glass:1.0:1.0"
 				container.set(key, PersistentDataType.STRING, destroyableBlocks)
 
 				// Add lore to display destroyable blocks
@@ -59,7 +59,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 					"${ChatColor.GREEN}⛏0.7 ☘3.0 石炭鉱石",
 					"${ChatColor.GREEN}⛏0.8 ☘1.0 鉄鉱石",
 					"${ChatColor.GREEN}⛏0.3 ☘1.0 深層鉄鉱石",
-					"${ChatColor.GREEN}⛏1.0 ☘0.1 ルビー鉱石"
+					"${ChatColor.GREEN}⛏1.0 ☘1.0 ルビー鉱石"
 				)
 				meta.lore = lore
 
