@@ -44,9 +44,9 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 									NamedTextColor.GREEN
 								)
 							)
-							// message break speed and fortune
-							player.sendMessage("Break speed: ${player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value}")
-							player.sendMessage("Fortune: ${player.getAttribute(Attribute.GENERIC_LUCK)?.value}")
+//							// message break speed and fortune
+//							player.sendMessage("Break speed: ${player.getAttribute(Attribute.PLAYER_BLOCK_BREAK_SPEED)?.value}")
+//							player.sendMessage("Fortune: ${player.getAttribute(Attribute.GENERIC_LUCK)?.value}")
 						}
 					} else {
 						player.sendActionBar(Component.text(previousBlock?.name ?: "No previous block"))
