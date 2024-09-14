@@ -15,11 +15,15 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 		val originalType = block.type
 
 		// Check if the block is one of the ores
-		if (originalType == Material.COAL_ORE || originalType == Material.IRON_ORE || originalType == Material.DEEPSLATE_IRON_ORE || originalType == Material.RED_STAINED_GLASS) {
-//			event.isCancelled = true
+		if (originalType == Material.COAL_ORE || originalType == Material.IRON_ORE || originalType == Material.DEEPSLATE_IRON_ORE || originalType == Material.RED_STAINED_GLASS || originalType == Material.RED_STAINED_GLASS_PANE) {
+			val temporaryType = when (originalType) {
+				Material.RED_STAINED_GLASS -> Material.GRAY_STAINED_GLASS
+				Material.RED_STAINED_GLASS_PANE -> Material.GRAY_STAINED_GLASS_PANE
+				else -> Material.BEDROCK
+			}
 			object : BukkitRunnable() {
 				override fun run() {
-					block.type = Material.BEDROCK
+					block.type = temporaryType
 				}
 			}.runTaskLater(plugin, 1L)
 
