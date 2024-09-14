@@ -15,7 +15,7 @@ class RegenerateOres(private val plugin: JavaPlugin) : Listener {
 		val originalType = block.type
 
 		// Check if the block is one of the ores
-		if (originalType == Material.COAL_ORE || originalType == Material.IRON_ORE || originalType == Material.DEEPSLATE_IRON_ORE) {
+		if (originalType == Material.COAL_ORE || originalType == Material.IRON_ORE || originalType == Material.DEEPSLATE_IRON_ORE || originalType == Material.RED_STAINED_GLASS) {
 //			event.isCancelled = true
 			object : BukkitRunnable() {
 				override fun run() {
