@@ -35,21 +35,34 @@ class RegenerateBlocks(private val plugin: JavaPlugin) : Listener {
 				shardGemstones.contains(originalState.type) -> Material.GRAY_STAINED_GLASS_PANE
 				else -> Material.BEDROCK
 			}
+			if (ores.contains(originalState.type) || gemstones.contains(originalState.type)) {
+				object : BukkitRunnable() {
+					override fun run() {
+						block.type = temporaryState.type
+					}
+				}.runTaskLater(plugin, 1L)
 
+				object : BukkitRunnable() {
+					override fun run() {
+						block.type = originalState.type
+					}
+				}.runTaskLater(plugin, 60L)
 
-			object : BukkitRunnable() {
-				override fun run() {
-					block.type = temporaryState.type
-					temporaryState.update(true, true)
-				}
-			}.runTaskLater(plugin, 1L)
+			} else if (shardGemstones.contains(originalState.type)) {
+				object : BukkitRunnable() {
+					override fun run() {
+//						block.type = temporaryState.type
+						temporaryState.update(true, true)
+					}
+				}.runTaskLater(plugin, 1L)
 
-			object : BukkitRunnable() {
-				override fun run() {
-					block.type = originalState.type
-					originalState.update(true, true)
-				}
-			}.runTaskLater(plugin, 60L)
+				object : BukkitRunnable() {
+					override fun run() {
+						block.type = originalState.type
+						originalState.update(true, false)
+					}
+				}.runTaskLater(plugin, 30L)
+			}
 		}
 	}
 }
