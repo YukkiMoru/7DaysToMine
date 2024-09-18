@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
-class RegenerateOres(private val plugin: JavaPlugin) : Listener {
+class RegenerateBlocks(private val plugin: JavaPlugin) : Listener {
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
