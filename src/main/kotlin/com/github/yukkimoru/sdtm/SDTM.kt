@@ -13,7 +13,7 @@ import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
-class sdtm : JavaPlugin() {
+class SDTM : JavaPlugin() {
 	private lateinit var nexusScoreboard: NexusScoreboard
 
 	override fun onEnable() {
