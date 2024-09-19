@@ -20,7 +20,9 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 			val location = Location(world, loc["x"]!!.toDouble(), loc["y"]!!.toDouble(), loc["z"]!!.toDouble())
 			val zombiesToSpawn = zombiesPerLocation + if (index < extraZombies) 1 else 0
 			for (i in 1..zombiesToSpawn) {
-				world.spawnEntity(location, EntityType.ZOMBIE) as? Mob
+				val zombie = world.spawnEntity(location, EntityType.ZOMBIE) as? Mob
+				zombie?.customName = "weakzombie"
+				zombie?.isCustomNameVisible = true
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package com.github.YukkiMoru.SDTM
 
 import PlayerJoinListener
 import com.github.YukkiMoru.SDTM.CORE.ControlMobs
+import com.github.YukkiMoru.SDTM.CORE.DropMobs
 import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import com.github.YukkiMoru.SDTM.TRADE.DeployVillagers
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
@@ -42,6 +43,8 @@ class SDTM : JavaPlugin() {
 			player.scoreboard = nexusScoreboard.getScoreboard()
 		}
 		server.pluginManager.registerEvents(PlayerJoinListener(nexusScoreboard), this)
+
+		server.pluginManager.registerEvents(DropMobs(this), this)
 	}
 
 	private fun initializeTRADE() {
