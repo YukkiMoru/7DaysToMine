@@ -11,6 +11,8 @@ import kotlin.random.Random
 
 class DropOres(private val plugin: JavaPlugin) : Listener {
 
+	private val itemCreater = ItemCreater()
+
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
 		val block = event.block
@@ -25,28 +27,28 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 			val dropCount = calculateDropCount(luck)
 			if (dropCount > 0) {
 				val dropItem = when (block.type) {
-					Material.COAL_ORE -> CreateItemStack(
+					Material.COAL_ORE -> itemCreater.CreateItemStack(
 						Material.CHARCOAL,
 						dropCount,
 						"§7§l褐炭",
 						listOf("§7燃料として使える", "§c§l☀780秒", "§fコモン")
 					)
 
-					Material.IRON_ORE -> CreateItemStack(
+					Material.IRON_ORE -> itemCreater.CreateItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l低品質な鉄鉱石",
 						listOf("§7粗悪な鉄インゴットをつくれる", "§fコモン")
 					)
 
-					Material.DEEPSLATE_IRON_ORE -> CreateItemStack(
+					Material.DEEPSLATE_IRON_ORE -> itemCreater.CreateItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l普通の鉄鉱石",
 						listOf("§7そこそこの品質の鉄インゴットをつくれる", "§aアンコモン")
 					)
 
-					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> CreateItemStack(
+					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> itemCreater.CreateItemStack(
 						Material.RED_DYE,
 						dropCount,
 						"§c§lルビー",
@@ -68,19 +70,5 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 		} else {
 			baseDropCount
 		}
-	}
-
-	private fun CreateItemStack(
-		material: Material,
-		amount: Int,
-		name: String,
-		lore: List<String>
-	): ItemStack {
-		val itemStack = ItemStack(material, amount)
-		val itemMeta = itemStack.itemMeta
-		itemMeta.setDisplayName("${name}")
-		itemMeta.lore = lore
-		itemStack.itemMeta = itemMeta
-		return itemStack
 	}
 }
