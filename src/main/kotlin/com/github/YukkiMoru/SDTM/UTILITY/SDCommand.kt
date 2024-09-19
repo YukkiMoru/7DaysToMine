@@ -1,5 +1,6 @@
 package com.github.YukkiMoru.SDTM.UTILITY
 
+import com.github.YukkiMoru.SDTM.CORE.SpawnMobs
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
@@ -65,19 +66,25 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							}
 						)
 					)
-					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("horde")
-						.then(LiteralArgumentBuilder.literal<CommandSourceStack>("start")
-							.executes { ctx: CommandContext<CommandSourceStack> ->
-								startHorde()
-								ctx.source.sender.sendMessage(
-									Component.text(
-										"[SDTM]ホードが開始されました",
-										NamedTextColor.AQUA
+					.then(
+						LiteralArgumentBuilder.literal<CommandSourceStack>("horde")
+							.then(LiteralArgumentBuilder.literal<CommandSourceStack>("start").apply {
+								for (i in 1..3) {
+									then(LiteralArgumentBuilder.literal<CommandSourceStack>(i.toString())
+										.executes { ctx: CommandContext<CommandSourceStack> ->
+											startHorde(i)
+											ctx.source.sender.sendMessage(
+												Component.text(
+													"[SDTM]ホード$i が開始されました",
+													NamedTextColor.AQUA
+												)
+											)
+											com.mojang.brigadier.Command.SINGLE_SUCCESS
+										}
 									)
-								)
-								com.mojang.brigadier.Command.SINGLE_SUCCESS
+								}
 							}
-						)
+							)
 					)
 					.executes { ctx: CommandContext<CommandSourceStack> ->
 						ctx.source.sender.sendMessage(Component.text("[SDTM]Hello World!", NamedTextColor.AQUA))
@@ -96,9 +103,9 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
 	}
 
-	private fun startHorde() {
-
-		
+	private fun startHorde(level: Int) {
+		val spawnMobs = SpawnMobs(plugin)
+		spawnMobs.spawnHorde(level)
 	}
 
 	override fun onTabComplete(
