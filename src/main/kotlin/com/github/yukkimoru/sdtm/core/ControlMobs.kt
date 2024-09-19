@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class ControlMobs(private val plugin: JavaPlugin, private val nexusScoreboard: NexusScoreboard) {
 
 	private val targetLocation = Location(Bukkit.getWorld("world"), 100.1, 11.1, 100.1)
+	private val mobTargets = mutableMapOf<Mob, Player>()
 
 	fun startMovingMobsToLocation() {
 		val scheduler = plugin.server.scheduler
@@ -23,14 +24,20 @@ class ControlMobs(private val plugin: JavaPlugin, private val nexusScoreboard: N
 
 		world?.entities?.forEach { entity ->
 			if (entity is Mob && entity !is Villager) {
-				val nearestPlayer = world.getNearbyEntities(entity.location, 10.0, 10.0, 10.0)
-					.filterIsInstance<Player>()
-					.minByOrNull { it.location.distance(entity.location) }
-
-				if (nearestPlayer != null) {
-					entity.pathfinder.moveTo(nearestPlayer.location)
+				val currentTarget = mobTargets[entity]
+				if (currentTarget != null && currentTarget.isOnline && !currentTarget.isDead) {
+					entity.pathfinder.moveTo(currentTarget.location)
 				} else {
-					entity.pathfinder.moveTo(targetLocation)
+					val nearestPlayer = world.getNearbyEntities(entity.location, 10.0, 10.0, 10.0)
+						.filterIsInstance<Player>()
+						.minByOrNull { it.location.distance(entity.location) }
+
+					if (nearestPlayer != null) {
+						mobTargets[entity] = nearestPlayer
+						entity.pathfinder.moveTo(nearestPlayer.location)
+					} else {
+						entity.pathfinder.moveTo(targetLocation)
+					}
 				}
 			}
 		}
