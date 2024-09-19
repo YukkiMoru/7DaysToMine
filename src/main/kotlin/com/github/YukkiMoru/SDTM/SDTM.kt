@@ -1,11 +1,11 @@
 package com.github.YukkiMoru.SDTM
 
 import PlayerJoinListener
+import com.github.YukkiMoru.SDTM.CORE.ControlMobs
 import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
 import com.github.YukkiMoru.SDTM.TRADE.DeployVillagers
 import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
 import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
-import com.github.YukkiMoru.SDTM.WORLD.ControlMobs
 import com.github.YukkiMoru.SDTM.WORLD.DropOres
 import com.github.YukkiMoru.SDTM.WORLD.MiningOres
 import com.github.YukkiMoru.SDTM.WORLD.RegenerateBlocks
