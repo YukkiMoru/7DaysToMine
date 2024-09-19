@@ -1,7 +1,10 @@
 package com.github.YukkiMoru.SDTM.UTILITY
 
+import com.github.YukkiMoru.SDTM.CORE.ScanBlocks
 import com.github.YukkiMoru.SDTM.CORE.SpawnMobs
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.tree.LiteralCommandNode
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -86,6 +89,39 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							}
 							)
 					)
+					.then(
+						LiteralArgumentBuilder.literal<CommandSourceStack>("scan")
+							.then(LiteralArgumentBuilder.literal<CommandSourceStack>("spawnblock")
+								.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
+									"x",
+									IntegerArgumentType.integer()
+								)
+									.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
+										"y",
+										IntegerArgumentType.integer()
+									)
+										.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
+											"z",
+											IntegerArgumentType.integer()
+										)
+											.executes { ctx: CommandContext<CommandSourceStack> ->
+												val x = IntegerArgumentType.getInteger(ctx, "x")
+												val y = IntegerArgumentType.getInteger(ctx, "y")
+												val z = IntegerArgumentType.getInteger(ctx, "z")
+												scanSpawnBlock(x, y, z)
+												ctx.source.sender.sendMessage(
+													Component.text(
+														"[SDTM]スキャンを開始しました: ($x, $y, $z)",
+														NamedTextColor.AQUA
+													)
+												)
+												com.mojang.brigadier.Command.SINGLE_SUCCESS
+											}
+										)
+									)
+								)
+							)
+					)
 					.executes { ctx: CommandContext<CommandSourceStack> ->
 						ctx.source.sender.sendMessage(Component.text("[SDTM]Hello World!", NamedTextColor.AQUA))
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
@@ -108,6 +144,11 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		spawnMobs.spawnHorde(level)
 	}
 
+	private fun scanSpawnBlock(x: Int, y: Int, z: Int) {
+		val scanBlocks = ScanBlocks()
+		scanBlocks.scan(plugin, x, y, z)
+	}
+
 	override fun onTabComplete(
 		sender: CommandSender,
 		command: Command,
@@ -121,9 +162,10 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 
 	companion object {
 		private val COMMANDS = mapOf(
-			"" to listOf("kill", "debug", "horde"),
+			"" to listOf("kill", "debug", "horde", "scan"),
 			"debug" to listOf("true", "false"),
-			"horde" to listOf("start")
+			"horde" to listOf("start"),
+			"scan" to listOf("spawnblock")
 		)
 	}
 }
