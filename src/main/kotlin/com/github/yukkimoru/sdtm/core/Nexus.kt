@@ -1,7 +1,6 @@
 package com.github.yukkimoru.sdtm.core
 
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
@@ -15,14 +14,14 @@ class NexusScoreboard {
 	private val targetLocation = Location(Bukkit.getWorld("world"), 100.0, 10.1, 100.0)
 
 	init {
-		objective = scoreboard.registerNewObjective("nexusHealth", "dummy", "${ChatColor.GREEN}Nexus Health")
+		objective = scoreboard.registerNewObjective("nexusHealth", "dummy", "§aNexus Health")
 		objective.displaySlot = DisplaySlot.SIDEBAR
 		updateNexusHealth(nexusHealth)
 	}
 
 	fun updateNexusHealth(health: Int) {
 		nexusHealth = health
-		objective.getScore("${ChatColor.RED}Nexus Health:").score = nexusHealth
+		objective.getScore("§cNexus Health:").score = nexusHealth
 	}
 
 	fun getNexusHealth(): Int {
