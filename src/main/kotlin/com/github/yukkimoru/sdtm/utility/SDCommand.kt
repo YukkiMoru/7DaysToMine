@@ -78,7 +78,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 											startHorde(i)
 											ctx.source.sender.sendMessage(
 												Component.text(
-													"[SDTM]ホード$i 11121が開始されました",
+													"[SDTM]ホード$i が開始されました",
 													NamedTextColor.AQUA
 												)
 											)
