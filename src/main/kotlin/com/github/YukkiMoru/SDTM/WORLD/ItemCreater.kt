@@ -9,7 +9,7 @@ import java.util.*
 
 class ItemCreater(private val plugin: JavaPlugin) {
 
-	public fun CreateItemStack(
+	fun CreateItemStack(
 		material: Material,
 		amount: Int,
 		name: String,
