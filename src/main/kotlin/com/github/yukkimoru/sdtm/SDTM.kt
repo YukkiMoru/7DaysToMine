@@ -56,6 +56,9 @@ class SDTM : JavaPlugin() {
 	private fun initializeUTILITY() {
 		server.pluginManager.registerEvents(protectVillager(this), this)
 		SDCommand(this).registerCommands()
+
+		// プレイヤーのボスバーにモブの体力を表示
+//		HealthIndicator(this).startHealthIndicator()
 	}
 
 	private fun initializeWORLD() {
