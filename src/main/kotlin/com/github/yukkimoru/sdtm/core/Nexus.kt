@@ -2,6 +2,7 @@ package com.github.yukkimoru.sdtm.core
 
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.entity.Zombie
 import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
@@ -46,5 +47,16 @@ class NexusScoreboard {
 //            world?.spawnParticle(Particle.COMPOSTER, particleLocation, 1)
 //        }
 
+		world?.entities?.forEach { entity ->
+			if (entity is Zombie) {
+				if (entity.location.distance(targetLocation) <= 5) {
+					entity.swingMainHand()
+					world.playSound(entity.location, "minecraft:block.anvil.place", 1.0f, 0.1f)
+
+					val currentHealth = getNexusHealth()
+					updateNexusHealth(currentHealth - 1)
+				}
+			}
+		}
 	}
 }
