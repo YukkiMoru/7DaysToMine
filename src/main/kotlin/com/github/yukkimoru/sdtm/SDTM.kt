@@ -6,6 +6,7 @@ import com.github.yukkimoru.sdtm.core.DropMobs
 import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.utility.DamageIndicator
+import com.github.yukkimoru.sdtm.utility.DoubleJump
 import com.github.yukkimoru.sdtm.utility.SDCommand
 import com.github.yukkimoru.sdtm.utility.protectVillager
 import com.github.yukkimoru.sdtm.world.DropOres
@@ -63,6 +64,8 @@ class SDTM : JavaPlugin() {
 
 		// ダメージを受けた際にダメージ量を表示
 		server.pluginManager.registerEvents(DamageIndicator(this), this)
+
+		server.pluginManager.registerEvents(DoubleJump(this), this)
 	}
 
 	private fun initializeWORLD() {
