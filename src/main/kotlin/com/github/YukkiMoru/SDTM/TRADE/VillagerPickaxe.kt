@@ -1,7 +1,6 @@
 package com.github.YukkiMoru.SDTM.TRADE
 
 import com.github.YukkiMoru.SDTM.WORLD.ItemCreater
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -46,11 +45,11 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				val buyItem1 = ItemStack(Material.EMERALD, 10)
 				val sellItem1 = itemCreater.CreateItemStack(
 					Material.IRON_PICKAXE, 1, "Unbreakable Iron Pickaxe", listOf(
-						"${ChatColor.GREEN}破壊可能なブロック:",
-						"${ChatColor.GREEN}⛏1.0 ☘1.0 石炭鉱石",
-						"${ChatColor.GREEN}⛏1.0 ☘1.0 鉄鉱石",
-						"${ChatColor.GREEN}⛏0.8 ☘1.5 深層鉄鉱石",
-						"${ChatColor.GREEN}⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
+						"破壊可能なブロック:",
+						"§a⛏1.0 ☘1.0 石炭鉱石",
+						"§a⛏1.0 ☘1.0 鉄鉱石",
+						"§a⛏0.8 ☘1.5 深層鉄鉱石",
+						"§a⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
 					),
 					"rare"
 				)
@@ -77,11 +76,11 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				// Trade 3: 1 unbreakable iron pickaxe for 10 emeralds
 				val buyItem3 = itemCreater.CreateItemStack(
 					Material.IRON_PICKAXE, 1, "Unbreakable Iron Pickaxe", listOf(
-						"${ChatColor.GREEN}破壊可能なブロック:",
-						"${ChatColor.GREEN}⛏1.0 ☘1.0 石炭鉱石",
-						"${ChatColor.GREEN}⛏1.0 ☘1.0 鉄鉱石",
-						"${ChatColor.GREEN}⛏0.8 ☘1.5 深層鉄鉱石",
-						"${ChatColor.GREEN}⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
+						"破壊可能なブロック:",
+						"§a⛏1.0 ☘1.0 石炭鉱石",
+						"§a⛏1.0 ☘1.0 鉄鉱石",
+						"§a⛏0.8 ☘1.5 深層鉄鉱石",
+						"§a⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
 					),
 					"rare"
 				)

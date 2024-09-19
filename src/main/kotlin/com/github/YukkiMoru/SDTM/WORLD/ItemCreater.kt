@@ -1,5 +1,6 @@
 package com.github.YukkiMoru.SDTM.WORLD
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -18,8 +19,8 @@ class ItemCreater(private val plugin: JavaPlugin) {
 	): ItemStack {
 		val itemStack = ItemStack(material, amount)
 		val itemMeta = itemStack.itemMeta
-		itemMeta.setDisplayName(name)
-		itemMeta.lore = lore + getRarityDisplayName(rarity)
+		itemMeta.displayName(Component.text(name))
+		itemMeta.lore(lore.map { Component.text(it) } + Component.text(getRarityDisplayName(rarity)))
 
 		// Add rarity to the item
 		val container = itemMeta.persistentDataContainer
