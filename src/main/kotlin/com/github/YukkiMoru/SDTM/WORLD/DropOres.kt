@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class DropOres(private val plugin: JavaPlugin) : Listener {
 
-	private val itemCreater = ItemCreater()
+	private val itemCreater = ItemCreater(plugin)
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
@@ -31,28 +31,32 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						Material.CHARCOAL,
 						dropCount,
 						"§7§l褐炭",
-						listOf("§7燃料として使える", "§c§l☀780秒", "§fコモン")
+						listOf("§7燃料として使える", "§c§l☀780秒"),
+						"common"
 					)
 
 					Material.IRON_ORE -> itemCreater.CreateItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l低品質な鉄鉱石",
-						listOf("§7粗悪な鉄インゴットをつくれる", "§fコモン")
+						listOf("§7粗悪な鉄インゴットをつくれる"),
+						"common"
 					)
 
 					Material.DEEPSLATE_IRON_ORE -> itemCreater.CreateItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l普通の鉄鉱石",
-						listOf("§7そこそこの品質の鉄インゴットをつくれる", "§aアンコモン")
+						listOf("§7そこそこの品質の鉄インゴットをつくれる"),
+						"uncommon"
 					)
 
 					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> itemCreater.CreateItemStack(
 						Material.RED_DYE,
 						dropCount,
 						"§c§lルビー",
-						listOf("§c古代から愛され続けている宝石", "§fコモン")
+						listOf("§c古代から愛され続けている宝石"),
+						"common"
 					)
 
 					else -> return

@@ -40,7 +40,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				val recipes = mutableListOf<MerchantRecipe>()
 
 				// Create an instance of ItemCreater
-				val itemCreater = ItemCreater()
+				val itemCreater = ItemCreater(plugin)
 
 				// Trade 1: 10 emeralds for 1 unbreakable iron pickaxe that can break specific blocks
 				val buyItem1 = ItemStack(Material.EMERALD, 10)
@@ -51,7 +51,8 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 						"${ChatColor.GREEN}⛏1.0 ☘1.0 鉄鉱石",
 						"${ChatColor.GREEN}⛏0.8 ☘1.5 深層鉄鉱石",
 						"${ChatColor.GREEN}⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
-					)
+					),
+					"rare"
 				)
 				val meta: ItemMeta = sellItem1.itemMeta
 				meta.isUnbreakable = true
@@ -81,7 +82,8 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 						"${ChatColor.GREEN}⛏1.0 ☘1.0 鉄鉱石",
 						"${ChatColor.GREEN}⛏0.8 ☘1.5 深層鉄鉱石",
 						"${ChatColor.GREEN}⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
-					)
+					),
+					"rare"
 				)
 				val meta3: ItemMeta = buyItem3.itemMeta
 				meta3.isUnbreakable = true
