@@ -3,6 +3,7 @@ package com.github.YukkiMoru.SDTM.CORE
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Mob
+import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.plugin.java.JavaPlugin
 
 class SpawnMobs(private val plugin: JavaPlugin) {
@@ -21,8 +22,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 			val zombiesToSpawn = zombiesPerLocation + if (index < extraZombies) 1 else 0
 			for (i in 1..zombiesToSpawn) {
 				val zombie = world.spawnEntity(location, EntityType.ZOMBIE) as? Mob
-				zombie?.customName = "weakzombie"
-				zombie?.isCustomNameVisible = true
+				zombie?.setMetadata("weakzombie", FixedMetadataValue(plugin, true))
 			}
 		}
 	}

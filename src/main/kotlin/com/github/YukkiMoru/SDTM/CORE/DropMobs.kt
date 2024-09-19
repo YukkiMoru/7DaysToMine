@@ -19,7 +19,7 @@ class DropMobs(private val plugin: JavaPlugin) : Listener {
 		val entity = event.entity
 		val drops = event.drops
 
-		if (entity.type == EntityType.ZOMBIE && entity.customName == "weakzombie") {
+		if (entity.type == EntityType.ZOMBIE && entity.hasMetadata("weakzombie")) {
 			drops.clear()
 			drops.add(ItemStack(Material.DIAMOND, 1))
 		} else {
