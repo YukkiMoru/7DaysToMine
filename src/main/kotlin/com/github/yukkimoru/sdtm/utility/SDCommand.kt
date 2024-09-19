@@ -1,7 +1,7 @@
-package com.github.YukkiMoru.SDTM.UTILITY
+package com.github.yukkimoru.sdtm.utility
 
-import com.github.YukkiMoru.SDTM.CORE.ScanBlocks
-import com.github.YukkiMoru.SDTM.CORE.SpawnMobs
+import com.github.yukkimoru.sdtm.core.ScanBlocks
+import com.github.yukkimoru.sdtm.core.SpawnMobs
 import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder

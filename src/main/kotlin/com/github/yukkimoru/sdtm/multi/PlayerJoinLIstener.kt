@@ -1,4 +1,4 @@
-import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
+import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

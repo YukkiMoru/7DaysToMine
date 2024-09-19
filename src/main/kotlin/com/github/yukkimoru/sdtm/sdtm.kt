@@ -1,19 +1,19 @@
-package com.github.YukkiMoru.SDTM
+package com.github.yukkimoru.sdtm
 
 import PlayerJoinListener
-import com.github.YukkiMoru.SDTM.CORE.ControlMobs
-import com.github.YukkiMoru.SDTM.CORE.DropMobs
-import com.github.YukkiMoru.SDTM.CORE.NexusScoreboard
-import com.github.YukkiMoru.SDTM.TRADE.DeployVillagers
-import com.github.YukkiMoru.SDTM.UTILITY.SDCommand
-import com.github.YukkiMoru.SDTM.UTILITY.protectVillager
-import com.github.YukkiMoru.SDTM.WORLD.DropOres
-import com.github.YukkiMoru.SDTM.WORLD.MiningOres
-import com.github.YukkiMoru.SDTM.WORLD.RegenerateBlocks
+import com.github.yukkimoru.sdtm.core.ControlMobs
+import com.github.yukkimoru.sdtm.core.DropMobs
+import com.github.yukkimoru.sdtm.core.NexusScoreboard
+import com.github.yukkimoru.sdtm.trade.DeployVillagers
+import com.github.yukkimoru.sdtm.utility.SDCommand
+import com.github.yukkimoru.sdtm.utility.protectVillager
+import com.github.yukkimoru.sdtm.world.DropOres
+import com.github.yukkimoru.sdtm.world.MiningOres
+import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
-class SDTM : JavaPlugin() {
+class sdtm : JavaPlugin() {
 	private lateinit var nexusScoreboard: NexusScoreboard
 
 	override fun onEnable() {

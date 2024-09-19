@@ -1,6 +1,6 @@
-package com.github.YukkiMoru.SDTM.TRADE
+package com.github.yukkimoru.sdtm.trade
 
-import com.github.YukkiMoru.SDTM.WORLD.ItemCreater
+import com.github.yukkimoru.sdtm.world.ItemCreater
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey

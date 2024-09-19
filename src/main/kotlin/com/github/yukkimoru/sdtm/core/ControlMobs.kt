@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM.CORE
+package com.github.yukkimoru.sdtm.core
 
 import org.bukkit.Bukkit
 import org.bukkit.Location

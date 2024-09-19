@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM.TRADE
+package com.github.yukkimoru.sdtm.trade
 
 import org.bukkit.Location
 import org.bukkit.Material

@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM.CORE
+package com.github.yukkimoru.sdtm.core
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

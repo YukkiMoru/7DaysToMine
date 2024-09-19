@@ -1,4 +1,4 @@
-package com.github.YukkiMoru.SDTM.WORLD
+package com.github.yukkimoru.sdtm.world
 
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
