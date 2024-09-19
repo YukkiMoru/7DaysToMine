@@ -5,6 +5,7 @@ import com.github.yukkimoru.sdtm.core.ControlMobs
 import com.github.yukkimoru.sdtm.core.DropMobs
 import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
+import com.github.yukkimoru.sdtm.utility.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.SDCommand
 import com.github.yukkimoru.sdtm.utility.protectVillager
 import com.github.yukkimoru.sdtm.world.DropOres
@@ -59,6 +60,9 @@ class SDTM : JavaPlugin() {
 
 		// プレイヤーのボスバーにモブの体力を表示
 //		HealthIndicator(this).startHealthIndicator()
+
+		// ダメージを受けた際にダメージ量を表示
+		server.pluginManager.registerEvents(DamageIndicator(this), this)
 	}
 
 	private fun initializeWORLD() {
