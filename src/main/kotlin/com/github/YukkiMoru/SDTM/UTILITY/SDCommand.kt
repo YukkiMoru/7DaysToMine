@@ -65,6 +65,20 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 							}
 						)
 					)
+					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("horde")
+						.then(LiteralArgumentBuilder.literal<CommandSourceStack>("start")
+							.executes { ctx: CommandContext<CommandSourceStack> ->
+								startHorde()
+								ctx.source.sender.sendMessage(
+									Component.text(
+										"[SDTM]ホードが開始されました",
+										NamedTextColor.AQUA
+									)
+								)
+								com.mojang.brigadier.Command.SINGLE_SUCCESS
+							}
+						)
+					)
 					.executes { ctx: CommandContext<CommandSourceStack> ->
 						ctx.source.sender.sendMessage(Component.text("[SDTM]Hello World!", NamedTextColor.AQUA))
 						com.mojang.brigadier.Command.SINGLE_SUCCESS
@@ -82,6 +96,11 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
 	}
 
+	private fun startHorde() {
+
+		
+	}
+
 	override fun onTabComplete(
 		sender: CommandSender,
 		command: Command,
@@ -93,11 +112,11 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		} else null
 	}
 
-	// tabの補完候補機能の定義
 	companion object {
 		private val COMMANDS = mapOf(
-			"" to listOf("kill", "debug"),
-			"debug" to listOf("true", "false")
+			"" to listOf("kill", "debug", "horde"),
+			"debug" to listOf("true", "false"),
+			"horde" to listOf("start")
 		)
 	}
 }
