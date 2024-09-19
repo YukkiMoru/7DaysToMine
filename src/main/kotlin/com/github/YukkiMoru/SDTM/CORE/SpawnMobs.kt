@@ -10,12 +10,17 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 	fun spawnHorde(level: Int) {
 		val scanBlocks = ScanBlocks()
 		val spawnerLocations = scanBlocks.loadFromJson()
-		val world = plugin.server.getWorld("world")
+		val world = plugin.server.getWorld("world") ?: return
 
-		spawnerLocations.forEach { loc ->
+		val totalZombies = level * 10
+		val zombiesPerLocation = totalZombies / spawnerLocations.size
+		val extraZombies = totalZombies % spawnerLocations.size
+
+		spawnerLocations.forEachIndexed { index, loc ->
 			val location = Location(world, loc["x"]!!.toDouble(), loc["y"]!!.toDouble(), loc["z"]!!.toDouble())
-			for (i in 1..(level * 10)) {
-				world?.spawnEntity(location, EntityType.ZOMBIE) as? Mob
+			val zombiesToSpawn = zombiesPerLocation + if (index < extraZombies) 1 else 0
+			for (i in 1..zombiesToSpawn) {
+				world.spawnEntity(location, EntityType.ZOMBIE) as? Mob
 			}
 		}
 	}
