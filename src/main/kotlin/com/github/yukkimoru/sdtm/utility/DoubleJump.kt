@@ -35,20 +35,25 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		if (doubleJumpPlayers.contains(player.name)) {
 			player.allowFlight = false
 			doubleJumpPlayers.remove(player.name)
+			object : BukkitRunnable() {
+				override fun run() {
+					player.allowFlight = true
+				}
+			}.runTaskLater(plugin, 40L)
 		} else {
 			val lastJump = lastJumpTime[playerUUID] ?: 0
 			if (currentTime - lastJump >= cooldownTime) {
 				player.velocity = player.location.direction.multiply(1.5).setY(1)
 				doubleJumpPlayers.add(player.name)
 				lastJumpTime[playerUUID] = currentTime
+				object : BukkitRunnable() {
+					override fun run() {
+						player.allowFlight = true
+						player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
+					}
+				}.runTaskLater(plugin, 40L)
 			}
 		}
-		object : BukkitRunnable() {
-			override fun run() {
-				player.allowFlight = true
-				player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
-			}
-		}.runTaskLater(plugin, 40L)
 	}
 
 	@EventHandler
