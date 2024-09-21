@@ -1,8 +1,10 @@
 package com.github.yukkimoru.sdtm.core
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Zombie
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
@@ -10,22 +12,22 @@ import org.bukkit.scoreboard.Scoreboard
 class NexusScoreboard {
 
 	private val scoreboard: Scoreboard = Bukkit.getScoreboardManager().newScoreboard
-	private val objective: Objective
+	private val objective: Objective =
+		scoreboard.registerNewObjective("nexusHealth", Criteria.DUMMY, Component.text("§aNexus Health"))
 	private var nexusHealth: Int = 10000
 	private val targetLocation = Location(Bukkit.getWorld("world"), 100.0, 10.1, 100.0)
 
 	init {
-		objective = scoreboard.registerNewObjective("nexusHealth", "dummy", "§aNexus Health")
 		objective.displaySlot = DisplaySlot.SIDEBAR
 		updateNexusHealth(nexusHealth)
 	}
 
-	fun updateNexusHealth(health: Int) {
+	private fun updateNexusHealth(health: Int) {
 		nexusHealth = health
 		objective.getScore("§cNexus Health:").score = nexusHealth
 	}
 
-	fun getNexusHealth(): Int {
+	private fun getNexusHealth(): Int {
 		return nexusHealth
 	}
 
