@@ -24,6 +24,8 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
 		val player = event.player
+		// message to player
+		player.sendMessage("§cDouble Jump")
 
 		if (player.gameMode == GameMode.CREATIVE) return
 
@@ -34,24 +36,23 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 
 		if (doubleJumpPlayers.contains(player.name)) {
 			player.allowFlight = false
-			doubleJumpPlayers.remove(player.name)
-			object : BukkitRunnable() {
-				override fun run() {
-					player.allowFlight = true
-				}
-			}.runTaskLater(plugin, 40L)
+			player.sendMessage("§aDouble Jump is on cooldown!")
+//			doubleJumpPlayers.remove(player.name)
 		} else {
 			val lastJump = lastJumpTime[playerUUID] ?: 0
 			if (currentTime - lastJump >= cooldownTime) {
-				player.velocity = player.location.direction.multiply(1.5).setY(1)
+				player.velocity = player.location.direction.multiply(110.0).setY(1)
 				doubleJumpPlayers.add(player.name)
 				lastJumpTime[playerUUID] = currentTime
+
 				object : BukkitRunnable() {
 					override fun run() {
 						player.allowFlight = true
 						player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
+						player.sendMessage("§aDouble Jump is ready!")
+						doubleJumpPlayers.remove(player.name)
 					}
-				}.runTaskLater(plugin, 40L)
+				}.runTaskLater(plugin, (cooldownTime / 50).toLong()) // Convert milliseconds to ticks
 			}
 		}
 	}
