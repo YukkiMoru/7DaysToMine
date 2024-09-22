@@ -23,7 +23,7 @@ class SDTM : JavaPlugin() {
 
 	override fun onEnable() {
 		logger.info("SDTM plugin enabled")
-		initializeCommands()
+//		initializeCommands()
 		initializeCORE()
 		initializeTRADE()
 		initializeUTILITY()
@@ -60,7 +60,6 @@ class SDTM : JavaPlugin() {
 
 	private fun initializeUTILITY() {
 		server.pluginManager.registerEvents(ProtectVillagers(), this)
-		SDCommand(this).registerCommands()
 
 		// プレイヤーのボスバーにモブの体力を表示
 //		HealthIndicator(this).startHealthIndicator()
@@ -73,6 +72,10 @@ class SDTM : JavaPlugin() {
 		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
 
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
+
+		synchronized(this) {
+			SDCommand(this)
+		}
 	}
 
 	private fun initializeWORLD() {

@@ -2,13 +2,6 @@ package com.github.yukkimoru.sdtm.utility
 
 import com.github.yukkimoru.sdtm.core.ScanBlocks
 import com.github.yukkimoru.sdtm.core.SpawnMobs
-import com.mojang.brigadier.arguments.IntegerArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.builder.RequiredArgumentBuilder
-import com.mojang.brigadier.context.CommandContext
-import com.mojang.brigadier.tree.LiteralCommandNode
-import io.papermc.paper.command.brigadier.CommandSourceStack
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -28,110 +21,79 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		}
 	}
 
-	fun registerCommands() {
-		plugin.lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
-			val commands = event.registrar()
-			val commandNode: LiteralCommandNode<CommandSourceStack> =
-				LiteralArgumentBuilder.literal<CommandSourceStack>("sd")
-					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("kill")
-						.executes { ctx: CommandContext<CommandSourceStack> ->
-							executeCommand("kill @e[type=!minecraft:player,type=!minecraft:block_display,type=!minecraft:villager]")
-							ctx.source.sender.sendMessage(
+	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+		plugin.logger.info("SDCommand onCommand called with args: ${args.joinToString()}")
+
+		synchronized(this) {
+			if (args.isEmpty()) {
+				sender.sendMessage(Component.text("[SDTM] Hello World!", NamedTextColor.AQUA))
+				return true
+			}
+
+			when (args[0].lowercase()) {
+				"kill" -> {
+					executeCommand("kill @e[type=!minecraft:player,type=!minecraft:block_display,type=!minecraft:villager]")
+					sender.sendMessage(
+						Component.text(
+							"[SDTM] プレイヤー以外のエンティティを全て削除しました",
+							NamedTextColor.AQUA
+						)
+					)
+				}
+
+				"debug" -> {
+					if (args.size > 1) {
+						when (args[1].lowercase()) {
+							"true" -> sender.sendMessage(
 								Component.text(
-									"[SDTM]プレイヤー以外のエンティティを全て削除しました",
+									"[SDTM] デバッグモードを有効にしました",
 									NamedTextColor.AQUA
 								)
 							)
-							com.mojang.brigadier.Command.SINGLE_SUCCESS
-						}
-					)
-					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("debug")
-						.then(LiteralArgumentBuilder.literal<CommandSourceStack>("true")
-							.executes { ctx: CommandContext<CommandSourceStack> ->
-								ctx.source.sender.sendMessage(
-									Component.text(
-										"[SDTM]デバッグモードを有効にしました",
-										NamedTextColor.AQUA
-									)
-								)
-								com.mojang.brigadier.Command.SINGLE_SUCCESS
-							}
-						)
-						.then(LiteralArgumentBuilder.literal<CommandSourceStack>("false")
-							.executes { ctx: CommandContext<CommandSourceStack> ->
-								ctx.source.sender.sendMessage(
-									Component.text(
-										"[SDTM]デバッグモードを無効にしました",
-										NamedTextColor.AQUA
-									)
-								)
-								com.mojang.brigadier.Command.SINGLE_SUCCESS
-							}
-						)
-					)
-					.then(
-						LiteralArgumentBuilder.literal<CommandSourceStack>("horde")
-							.then(LiteralArgumentBuilder.literal<CommandSourceStack>("start").apply {
-								for (i in 1..3) {
-									then(LiteralArgumentBuilder.literal<CommandSourceStack>(i.toString())
-										.executes { ctx: CommandContext<CommandSourceStack> ->
-											startHorde(i)
-											ctx.source.sender.sendMessage(
-												Component.text(
-													"[SDTM]ホード$i が開始されました",
-													NamedTextColor.AQUA
-												)
-											)
-											com.mojang.brigadier.Command.SINGLE_SUCCESS
-										}
-									)
-								}
-							}
-							)
-					)
-					.then(
-						LiteralArgumentBuilder.literal<CommandSourceStack>("scan")
-							.then(LiteralArgumentBuilder.literal<CommandSourceStack>("spawnblock")
-								.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
-									"x",
-									IntegerArgumentType.integer()
-								)
-									.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
-										"y",
-										IntegerArgumentType.integer()
-									)
-										.then(RequiredArgumentBuilder.argument<CommandSourceStack, Int>(
-											"z",
-											IntegerArgumentType.integer()
-										)
-											.executes { ctx: CommandContext<CommandSourceStack> ->
-												val x = IntegerArgumentType.getInteger(ctx, "x")
-												val y = IntegerArgumentType.getInteger(ctx, "y")
-												val z = IntegerArgumentType.getInteger(ctx, "z")
-												scanSpawnBlock(x, y, z)
-												ctx.source.sender.sendMessage(
-													Component.text(
-														"[SDTM]スキャンを開始しました: ($x, $y, $z)",
-														NamedTextColor.AQUA
-													)
-												)
-												com.mojang.brigadier.Command.SINGLE_SUCCESS
-											}
-										)
-									)
-								)
-							)
-					)
-					.executes { ctx: CommandContext<CommandSourceStack> ->
-						ctx.source.sender.sendMessage(Component.text("[SDTM]Hello World!", NamedTextColor.AQUA))
-						com.mojang.brigadier.Command.SINGLE_SUCCESS
-					}
-					.build()
-			commands.register(commandNode, "[SDTM]A command for 7DaysToMine plugin")
-		}
-	}
 
-	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+							"false" -> sender.sendMessage(
+								Component.text(
+									"[SDTM] デバッグモードを無効にしました",
+									NamedTextColor.AQUA
+								)
+							)
+						}
+					}
+				}
+
+				"horde" -> {
+					if (args.size > 1 && args[1].lowercase() == "start" && args.size > 2) {
+						val level = args[2].toIntOrNull()
+						if (level != null) {
+							startHorde(level)
+							sender.sendMessage(
+								Component.text(
+									"[SDTM] ホード$level が開始されました",
+									NamedTextColor.AQUA
+								)
+							)
+						}
+					}
+				}
+
+				"scan" -> {
+					if (args.size > 4 && args[1].lowercase() == "spawnblock") {
+						val x = args[2].toIntOrNull()
+						val y = args[3].toIntOrNull()
+						val z = args[4].toIntOrNull()
+						if (x != null && y != null && z != null) {
+							scanSpawnBlock(x, y, z)
+							sender.sendMessage(
+								Component.text(
+									"[SDTM] スキャンを開始しました: ($x, $y, $z)",
+									NamedTextColor.AQUA
+								)
+							)
+						}
+					}
+				}
+			}
+		}
 		return true
 	}
 
@@ -156,16 +118,17 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		args: Array<String>
 	): List<String>? {
 		return if (sender is Player) {
-			if (args.size == 1) COMMANDS.keys.toList() else COMMANDS[args[0]] ?: emptyList()
-		} else null
-	}
+			when (args.size) {
+				1 -> listOf("kill", "debug", "horde", "scan")
+				2 -> when (args[0].lowercase()) {
+					"debug" -> listOf("true", "false")
+					"horde" -> listOf("start")
+					"scan" -> listOf("spawnblock")
+					else -> emptyList()
+				}
 
-	companion object {
-		private val COMMANDS = mapOf(
-			"" to listOf("kill", "debug", "horde", "scan"),
-			"debug" to listOf("true", "false"),
-			"horde" to listOf("start"),
-			"scan" to listOf("spawnblock")
-		)
+				else -> emptyList()
+			}
+		} else null
 	}
 }
