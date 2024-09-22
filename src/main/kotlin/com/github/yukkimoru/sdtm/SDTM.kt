@@ -23,7 +23,7 @@ class SDTM : JavaPlugin() {
 
 	override fun onEnable() {
 		logger.info("SDTM plugin enabled")
-//		initializeCommands()
+		initializeCommands()
 		initializeCORE()
 		initializeTRADE()
 		initializeUTILITY()
@@ -64,7 +64,6 @@ class SDTM : JavaPlugin() {
 		// プレイヤーのボスバーにモブの体力を表示
 //		HealthIndicator(this).startHealthIndicator()
 
-		// ダメージを受けた際にダメージ量を表示
 		server.pluginManager.registerEvents(DamageIndicator(this), this)
 
 		server.pluginManager.registerEvents(DoubleJump(this), this)
