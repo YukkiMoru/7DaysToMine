@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.trade
+package com.github.yukkimoru.sdtm.trade.Villagers
 
 import org.bukkit.Location
 import org.bukkit.Material

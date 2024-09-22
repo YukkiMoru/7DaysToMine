@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility
+package com.github.yukkimoru.sdtm.utility.Items
 
 import org.bukkit.Material
 import org.bukkit.event.EventHandler

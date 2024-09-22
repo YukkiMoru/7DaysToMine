@@ -6,10 +6,10 @@ import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
-import com.github.yukkimoru.sdtm.utility.DamageIndicator
-import com.github.yukkimoru.sdtm.utility.DoubleJump
-import com.github.yukkimoru.sdtm.utility.EnderPack
+import com.github.yukkimoru.sdtm.utility.Items.EnderPack
 import com.github.yukkimoru.sdtm.utility.SDCommand
+import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
+import com.github.yukkimoru.sdtm.utility.ability.DoubleJump
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks

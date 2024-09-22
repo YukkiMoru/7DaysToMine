@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility
+package com.github.yukkimoru.sdtm.utility.ability
 
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
