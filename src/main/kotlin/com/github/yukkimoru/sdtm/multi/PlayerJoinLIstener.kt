@@ -1,3 +1,5 @@
+package com.github.yukkimoru.sdtm.multi
+
 import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

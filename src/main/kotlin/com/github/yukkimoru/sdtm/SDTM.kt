@@ -1,15 +1,11 @@
 package com.github.yukkimoru.sdtm
 
-import PlayerJoinListener
 import com.github.yukkimoru.sdtm.core.ControlMobs
 import com.github.yukkimoru.sdtm.core.DropMobs
 import com.github.yukkimoru.sdtm.core.NexusScoreboard
+import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
-import com.github.yukkimoru.sdtm.utility.DamageIndicator
-import com.github.yukkimoru.sdtm.utility.DoubleJump
-import com.github.yukkimoru.sdtm.utility.EnderPack
-import com.github.yukkimoru.sdtm.utility.SDCommand
-import com.github.yukkimoru.sdtm.utility.protectVillager
+import com.github.yukkimoru.sdtm.utility.*
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
@@ -72,7 +68,7 @@ class SDTM : JavaPlugin() {
 	}
 
 	private fun initializeWORLD() {
-		val mobController = ControlMobs(this, nexusScoreboard)
+		val mobController = ControlMobs(this)
 		mobController.startMovingMobsToLocation()
 
 		server.scheduler.scheduleSyncRepeatingTask(this, {
