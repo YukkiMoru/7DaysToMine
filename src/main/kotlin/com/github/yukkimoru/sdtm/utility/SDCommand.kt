@@ -35,7 +35,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				LiteralArgumentBuilder.literal<CommandSourceStack>("sd")
 					.then(LiteralArgumentBuilder.literal<CommandSourceStack>("kill")
 						.executes { ctx: CommandContext<CommandSourceStack> ->
-							executeCommand("kill @e[type=!player]")
+							executeCommand("kill @e[type=!minecraft:player,type=!minecraft:block_display,type=!minecraft:villager]")
 							ctx.source.sender.sendMessage(
 								Component.text(
 									"[SDTM]プレイヤー以外のエンティティを全て削除しました",
