@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
-import com.github.yukkimoru.sdtm.world.ItemCreater
+import com.github.yukkimoru.sdtm.world.ItemCreate
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -39,12 +39,12 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				// Create trades
 				val recipes = mutableListOf<MerchantRecipe>()
 
-				// Create an instance of ItemCreater
-				val itemCreater = ItemCreater(plugin)
+				// Create an instance of ItemCreate
+				val itemCreate = ItemCreate(plugin)
 
 				// Trade 1: 10 emeralds for 1 unbreakable iron pickaxe that can break specific blocks
 				val buyItem1 = ItemStack(Material.EMERALD, 10)
-				val sellItem1 = itemCreater.CreateItemStack(
+				val sellItem1 = itemCreate.createItemStack(
 					Material.IRON_PICKAXE, 1, "Unbreakable Iron Pickaxe", listOf(
 						"破壊可能なブロック:",
 						"§a⛏1.0 ☘1.0 石炭鉱石",
@@ -75,7 +75,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				recipes.add(recipe2)
 
 				// Trade 3: 1 unbreakable iron pickaxe for 10 emeralds
-				val buyItem3 = itemCreater.CreateItemStack(
+				val buyItem3 = itemCreate.createItemStack(
 					Material.IRON_PICKAXE, 1, "Unbreakable Iron Pickaxe", listOf(
 						"破壊可能なブロック:",
 						"§a⛏1.0 ☘1.0 石炭鉱石",

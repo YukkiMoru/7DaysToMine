@@ -8,9 +8,9 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
-class ItemCreater(private val plugin: JavaPlugin) {
+class ItemCreate(private val plugin: JavaPlugin) {
 
-	fun CreateItemStack(
+	fun createItemStack(
 		material: Material,
 		amount: Int,
 		name: String,

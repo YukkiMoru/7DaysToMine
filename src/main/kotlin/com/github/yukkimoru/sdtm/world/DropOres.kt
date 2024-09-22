@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class DropOres(private val plugin: JavaPlugin) : Listener {
 
-	private val itemCreater = ItemCreater(plugin)
+	private val itemCreater = ItemCreate(plugin)
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
@@ -27,7 +27,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 			val dropCount = calculateDropCount(luck)
 			if (dropCount > 0) {
 				val dropItem = when (block.type) {
-					Material.COAL_ORE -> itemCreater.CreateItemStack(
+					Material.COAL_ORE -> itemCreater.createItemStack(
 						Material.CHARCOAL,
 						dropCount,
 						"§7§l褐炭",
@@ -35,7 +35,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"common"
 					)
 
-					Material.IRON_ORE -> itemCreater.CreateItemStack(
+					Material.IRON_ORE -> itemCreater.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l低品質な鉄鉱石",
@@ -43,7 +43,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"common"
 					)
 
-					Material.DEEPSLATE_IRON_ORE -> itemCreater.CreateItemStack(
+					Material.DEEPSLATE_IRON_ORE -> itemCreater.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l普通の鉄鉱石",
@@ -51,7 +51,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"uncommon"
 					)
 
-					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> itemCreater.CreateItemStack(
+					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> itemCreater.createItemStack(
 						Material.RED_DYE,
 						dropCount,
 						"§c§lルビー",
