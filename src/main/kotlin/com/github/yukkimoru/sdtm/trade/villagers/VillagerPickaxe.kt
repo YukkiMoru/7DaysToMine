@@ -1,6 +1,7 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
 import com.github.yukkimoru.sdtm.world.ItemCreater
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -26,7 +27,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				villager.villagerLevel = 2
 				villager.villagerType = Villager.Type.PLAINS
 				villager.isCustomNameVisible = true
-				villager.customName = "Pickaxe Master"
+				villager.customName(Component.text("Pickaxe Master"))
 				villager.isPersistent = true
 
 				// Disable AI

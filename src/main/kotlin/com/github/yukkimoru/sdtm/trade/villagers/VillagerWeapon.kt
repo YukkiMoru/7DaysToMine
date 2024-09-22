@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
@@ -22,7 +23,7 @@ class VillagerWeapon(private val plugin: JavaPlugin) {
 				villager.villagerLevel = 2
 				villager.villagerType = Villager.Type.PLAINS
 				villager.isCustomNameVisible = true
-				villager.customName = "Weapon Master"
+				villager.customName(Component.text("Weapon Master"))
 				villager.isPersistent = true
 
 				// Disable AI
