@@ -5,7 +5,11 @@ import com.github.yukkimoru.sdtm.core.DropMobs
 import com.github.yukkimoru.sdtm.core.NexusScoreboard
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
-import com.github.yukkimoru.sdtm.utility.*
+import com.github.yukkimoru.sdtm.trade.ProtectVillagers
+import com.github.yukkimoru.sdtm.utility.DamageIndicator
+import com.github.yukkimoru.sdtm.utility.DoubleJump
+import com.github.yukkimoru.sdtm.utility.EnderPack
+import com.github.yukkimoru.sdtm.utility.SDCommand
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
@@ -54,7 +58,7 @@ class SDTM : JavaPlugin() {
 	}
 
 	private fun initializeUTILITY() {
-		server.pluginManager.registerEvents(protectVillager(this), this)
+		server.pluginManager.registerEvents(ProtectVillagers(), this)
 		SDCommand(this).registerCommands()
 
 		// プレイヤーのボスバーにモブの体力を表示
