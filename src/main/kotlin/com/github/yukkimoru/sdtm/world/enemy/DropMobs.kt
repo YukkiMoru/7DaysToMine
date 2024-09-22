@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.core
+package com.github.yukkimoru.sdtm.world.enemy
 
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
