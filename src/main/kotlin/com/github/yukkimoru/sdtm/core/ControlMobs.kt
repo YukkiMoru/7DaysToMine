@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.Villager
 import org.bukkit.plugin.java.JavaPlugin
 
-class ControlMobs(private val plugin: JavaPlugin, private val nexusScoreboard: NexusScoreboard) {
+class ControlMobs(private val plugin: JavaPlugin) {
 
 	private val targetLocation = Location(Bukkit.getWorld("world"), 100.1, 11.1, 100.1)
 	private val mobTargets = mutableMapOf<Mob, Player>()

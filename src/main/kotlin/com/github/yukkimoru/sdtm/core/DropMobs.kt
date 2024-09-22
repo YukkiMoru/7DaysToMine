@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
-class DropMobs(private val plugin: JavaPlugin) : Listener {
+class DropMobs(plugin: JavaPlugin) : Listener {
 
 	init {
 		plugin.server.pluginManager.registerEvents(this, plugin)
