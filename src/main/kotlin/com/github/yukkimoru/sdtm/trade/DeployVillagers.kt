@@ -14,5 +14,7 @@ class DeployVillagers(private val plugin: JavaPlugin) : Listener {
 		VillagerPotion(plugin).summonVillagerPotion(Location(plugin.server.getWorld("world"), 97.5, 10.0, 90.5))
 
 		VillagerPickaxe(plugin).summonVillagerPickaxe(Location(plugin.server.getWorld("world"), 99.5, 10.0, 90.5))
+
+		VillagerUtility(plugin).summonVillagerUtility(Location(plugin.server.getWorld("world"), 101.5, 10.0, 90.5))
 	}
 }
