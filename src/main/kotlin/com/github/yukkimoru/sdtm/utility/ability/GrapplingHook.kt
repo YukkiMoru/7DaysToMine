@@ -6,7 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerFishEvent
 import org.bukkit.util.Vector
 
-class GrappingHook : Listener {
+class GrapplingHook : Listener {
 
 	@EventHandler
 	fun onPlayerFish(event: PlayerFishEvent) {
@@ -16,6 +16,8 @@ class GrappingHook : Listener {
 			val playerLocation: Location = player.location
 
 			val direction: Vector = hookLocation.toVector().subtract(playerLocation.toVector()).normalize()
+			direction.y = 0.5 // Y軸を固定
+
 			player.velocity = direction.multiply(2)
 		}
 	}

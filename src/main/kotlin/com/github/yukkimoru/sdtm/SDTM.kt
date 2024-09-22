@@ -10,7 +10,7 @@ import com.github.yukkimoru.sdtm.utility.Items.EnderPack
 import com.github.yukkimoru.sdtm.utility.SDCommand
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.ability.DoubleJump
-import com.github.yukkimoru.sdtm.utility.ability.GrappingHook
+import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
@@ -72,7 +72,7 @@ class SDTM : JavaPlugin() {
 
 		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
 
-		server.pluginManager.registerEvents(GrappingHook(), this)
+		server.pluginManager.registerEvents(GrapplingHook(), this)
 	}
 
 	private fun initializeWORLD() {
