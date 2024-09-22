@@ -5,10 +5,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.plugin.java.JavaPlugin
 
 class EnderPack {
-    class OpenEnderChest(private val plugin: JavaPlugin) : Listener {
+    class OpenEnderChest() : Listener {
 
         @EventHandler
         fun onPlayerInteract(event: PlayerInteractEvent) {

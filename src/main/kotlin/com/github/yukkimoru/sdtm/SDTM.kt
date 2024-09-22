@@ -68,7 +68,7 @@ class SDTM : JavaPlugin() {
 
 		server.pluginManager.registerEvents(DoubleJump(this), this)
 
-		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(this), this)
+		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
 	}
 
 	private fun initializeWORLD() {
