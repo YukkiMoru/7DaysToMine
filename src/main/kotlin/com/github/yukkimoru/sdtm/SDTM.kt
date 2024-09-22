@@ -73,9 +73,7 @@ class SDTM : JavaPlugin() {
 
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
 
-		synchronized(this) {
-			SDCommand(this)
-		}
+		SDCommand(this)
 	}
 
 	private fun initializeWORLD() {
