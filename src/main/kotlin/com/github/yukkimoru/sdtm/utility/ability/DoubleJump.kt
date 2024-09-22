@@ -41,7 +41,7 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		} else {
 			val lastJump = lastJumpTime[playerUUID] ?: 0
 			if (currentTime - lastJump >= cooldownTime) {
-				player.velocity = player.location.direction.multiply(110.0).setY(1)
+				player.velocity = player.location.direction.multiply(1.0).setY(1)
 				doubleJumpPlayers.add(player.name)
 				lastJumpTime[playerUUID] = currentTime
 
