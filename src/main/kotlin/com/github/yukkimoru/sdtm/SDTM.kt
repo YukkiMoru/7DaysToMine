@@ -12,6 +12,7 @@ import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
+@Suppress("unused")
 class SDTM : JavaPlugin() {
 	private lateinit var nexusScoreboard: NexusScoreboard
 
