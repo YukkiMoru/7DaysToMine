@@ -1,6 +1,5 @@
 package com.github.yukkimoru.sdtm.utility
 
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
@@ -28,7 +27,7 @@ class DamageIndicator(private val plugin: JavaPlugin) : Listener {
 
 		armorStand.isVisible = false
 		armorStand.isCustomNameVisible = true
-		armorStand.customName = "${ChatColor.RED}-${damage.toInt()}"
+		armorStand.customName = "§c-${damage.toInt()}"
 		armorStand.isMarker = true
 		armorStand.setGravity(false)
 
