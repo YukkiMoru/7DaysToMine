@@ -32,8 +32,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				EntityType.BLAZE
 			)
 			for (i in 1..mobsToSpawn) {
-				val mobType = mobTypes[Random.nextInt(mobTypes.size)]
-				when (mobType) {
+				when (val mobType = mobTypes[Random.nextInt(mobTypes.size)]) {
 					EntityType.ZOMBIE -> spawnCustomMob(
 						location,
 						mobType,
@@ -118,10 +117,10 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 		mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = health
 		mob.health = health
 
-		weapon?.let { mob.equipment?.setItemInMainHand(it) }
-		helmet?.let { mob.equipment?.helmet = it }
-		chestplate?.let { mob.equipment?.chestplate = it }
-		leggings?.let { mob.equipment?.leggings = it }
-		boots?.let { mob.equipment?.boots = it }
+		weapon?.let { mob.equipment.setItemInMainHand(it) }
+		helmet?.let { mob.equipment.helmet = it }
+		chestplate?.let { mob.equipment.chestplate = it }
+		leggings?.let { mob.equipment.leggings = it }
+		boots?.let { mob.equipment.boots = it }
 	}
 }
