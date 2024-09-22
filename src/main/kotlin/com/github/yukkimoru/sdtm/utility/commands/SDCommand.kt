@@ -1,7 +1,5 @@
-package com.github.yukkimoru.sdtm.utility
+package com.github.yukkimoru.sdtm.utility.commands
 
-import com.github.yukkimoru.sdtm.core.ScanBlocks
-import com.github.yukkimoru.sdtm.core.SpawnMobs
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
