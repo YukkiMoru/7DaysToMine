@@ -72,7 +72,7 @@ class SDTM : JavaPlugin() {
 
 		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
 
-		server.pluginManager.registerEvents(GrapplingHook(), this)
+		server.pluginManager.registerEvents(GrapplingHook(this), this)
 	}
 
 	private fun initializeWORLD() {
