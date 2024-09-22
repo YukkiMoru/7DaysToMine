@@ -1,9 +1,9 @@
 package com.github.yukkimoru.sdtm.trade
 
-import com.github.yukkimoru.sdtm.trade.Villagers.VillagerPickaxe
-import com.github.yukkimoru.sdtm.trade.Villagers.VillagerPotion
-import com.github.yukkimoru.sdtm.trade.Villagers.VillagerUtility
-import com.github.yukkimoru.sdtm.trade.Villagers.VillagerWeapon
+import com.github.yukkimoru.sdtm.trade.villagers.VillagerPickaxe
+import com.github.yukkimoru.sdtm.trade.villagers.VillagerPotion
+import com.github.yukkimoru.sdtm.trade.villagers.VillagerUtility
+import com.github.yukkimoru.sdtm.trade.villagers.VillagerWeapon
 import org.bukkit.Location
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
