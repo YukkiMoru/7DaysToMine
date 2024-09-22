@@ -25,12 +25,12 @@ class SDTM : JavaPlugin() {
 		logger.info("SDTM plugin enabled")
 		// プラグイン開始時に実行するマイクラコマンド
 		executeCommand()
-		// 各機能の初期化
+		// 各機能の初期化(諸事情によりinitWorld()を最初に実行)
+		initWORLD()
 		initMaster()
 		initMulti()
 		initTRADE()
 		initUTILITY()
-		initWORLD()
 	}
 
 	private fun executeCommand() {
