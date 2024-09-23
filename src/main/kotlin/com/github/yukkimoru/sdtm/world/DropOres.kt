@@ -56,7 +56,8 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						dropCount,
 						"§c§lルビー",
 						listOf("§c古代から愛され続けている宝石"),
-						"common"
+						"common",
+						1
 					)
 
 					else -> return

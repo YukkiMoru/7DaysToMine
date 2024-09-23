@@ -15,7 +15,8 @@ class ItemCreate(private val plugin: JavaPlugin) {
 		amount: Int,
 		name: String,
 		lore: List<String>,
-		rarity: String
+		rarity: String,
+		customModelData: Int? = null
 	): ItemStack {
 		val itemStack = ItemStack(material, amount)
 		val itemMeta = itemStack.itemMeta
@@ -26,6 +27,11 @@ class ItemCreate(private val plugin: JavaPlugin) {
 		val container = itemMeta.persistentDataContainer
 		val key = NamespacedKey(plugin, "rarity")
 		container.set(key, PersistentDataType.STRING, rarity)
+
+		// Add custom model data if provided
+		customModelData?.let {
+			itemMeta.setCustomModelData(it)
+		}
 
 		itemStack.itemMeta = itemMeta
 		return itemStack
