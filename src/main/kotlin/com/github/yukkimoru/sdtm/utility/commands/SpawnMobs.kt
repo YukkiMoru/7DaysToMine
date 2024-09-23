@@ -18,83 +18,86 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 		val world = plugin.server.getWorld("world") ?: return
 
 		val totalMobs = level * 10
-		val mobsPerLocation = totalMobs / spawnerLocations.size
-		val extraMobs = totalMobs % spawnerLocations.size
+		val mobTypes = listOf(
+			EntityType.ZOMBIE,
+			EntityType.SKELETON,
+			EntityType.SPIDER,
+			EntityType.WITCH,
+			EntityType.BLAZE
+		)
 
-		spawnerLocations.forEachIndexed { index, loc ->
-			val location = Location(world, loc["x"]!!.toDouble(), loc["y"]!!.toDouble(), loc["z"]!!.toDouble())
-			val mobsToSpawn = mobsPerLocation + if (index < extraMobs) 1 else 0
-			val mobTypes = listOf(
-				EntityType.ZOMBIE,
-				EntityType.SKELETON,
-				EntityType.SPIDER,
-				EntityType.WITCH,
-				EntityType.BLAZE
+		for (i in 1..totalMobs) {
+			val randomLocation = spawnerLocations.random()
+			val location = Location(
+				world,
+				randomLocation["x"]!!.toDouble(),
+				randomLocation["y"]!!.toDouble(),
+				randomLocation["z"]!!.toDouble()
 			)
-			for (i in 1..mobsToSpawn) {
-				when (val mobType = mobTypes[Random.nextInt(mobTypes.size)]) {
-					EntityType.ZOMBIE -> spawnCustomMob(
-						location,
-						mobType,
-						"weakzombie",
-						20.0,
-						ItemStack(Material.IRON_SWORD),
-						ItemStack(Material.IRON_HELMET),
-						ItemStack(Material.IRON_CHESTPLATE),
-						ItemStack(Material.IRON_LEGGINGS),
-						ItemStack(Material.IRON_BOOTS)
-					)
+			val mobType = mobTypes[Random.nextInt(mobTypes.size)]
 
-					EntityType.SKELETON -> spawnCustomMob(
-						location,
-						mobType,
-						"archerskeleton",
-						20.0,
-						ItemStack(Material.BOW),
-						ItemStack(Material.CHAINMAIL_HELMET),
-						ItemStack(Material.CHAINMAIL_CHESTPLATE),
-						ItemStack(Material.CHAINMAIL_LEGGINGS),
-						ItemStack(Material.CHAINMAIL_BOOTS)
-					)
+			when (mobType) {
+				EntityType.ZOMBIE -> spawnCustomMob(
+					location,
+					mobType,
+					"weakzombie",
+					20.0,
+					ItemStack(Material.IRON_SWORD),
+					ItemStack(Material.IRON_HELMET),
+					ItemStack(Material.IRON_CHESTPLATE),
+					ItemStack(Material.IRON_LEGGINGS),
+					ItemStack(Material.IRON_BOOTS)
+				)
 
-					EntityType.SPIDER -> spawnCustomMob(
-						location,
-						mobType,
-						"fastspider",
-						16.0,
-						null,
-						null,
-						null,
-						null,
-						null
-					)
+				EntityType.SKELETON -> spawnCustomMob(
+					location,
+					mobType,
+					"archerskeleton",
+					20.0,
+					ItemStack(Material.BOW),
+					ItemStack(Material.CHAINMAIL_HELMET),
+					ItemStack(Material.CHAINMAIL_CHESTPLATE),
+					ItemStack(Material.CHAINMAIL_LEGGINGS),
+					ItemStack(Material.CHAINMAIL_BOOTS)
+				)
 
-					EntityType.WITCH -> spawnCustomMob(
-						location,
-						mobType,
-						"dangerouswitch",
-						26.0,
-						null,
-						null,
-						null,
-						null,
-						null
-					)
+				EntityType.SPIDER -> spawnCustomMob(
+					location,
+					mobType,
+					"fastspider",
+					16.0,
+					null,
+					null,
+					null,
+					null,
+					null
+				)
 
-					EntityType.BLAZE -> spawnCustomMob(
-						location,
-						mobType,
-						"fieryblaze",
-						20.0,
-						null,
-						null,
-						null,
-						null,
-						null
-					)
+				EntityType.WITCH -> spawnCustomMob(
+					location,
+					mobType,
+					"dangerouswitch",
+					26.0,
+					null,
+					null,
+					null,
+					null,
+					null
+				)
 
-					else -> {}
-				}
+				EntityType.BLAZE -> spawnCustomMob(
+					location,
+					mobType,
+					"fieryblaze",
+					20.0,
+					null,
+					null,
+					null,
+					null,
+					null
+				)
+
+				else -> {}
 			}
 		}
 	}
