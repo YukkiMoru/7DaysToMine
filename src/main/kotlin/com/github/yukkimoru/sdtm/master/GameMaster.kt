@@ -12,74 +12,32 @@ class GameMaster(private val plugin: JavaPlugin) : Listener {
 		when (day) {
 			0 -> {
 				// ゲーム開始までのカウントダウン(10秒)プレイヤーにメッセージを送信
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで10秒",
-								NamedTextColor.AQUA
+				val world = Bukkit.getWorld("world") // Replace "world_name" with the actual world name
+				val entity = Bukkit.getOnlinePlayers()
+					.firstOrNull() // Assuming you want to use the first online player as the entity
+				val countdownMessages = listOf(
+					Pair("[SDTM] ゲーム開始まで10秒", 1L),
+					Pair("[SDTM] ゲーム開始まで5秒!", 100L),
+					Pair("[SDTM] ゲーム開始まで4秒!", 120L),
+					Pair("[SDTM] ゲーム開始まで3秒!", 140L),
+					Pair("[SDTM] ゲーム開始まで2秒!", 160L),
+					Pair("[SDTM] ゲーム開始まで1秒!", 180L),
+					Pair("[SDTM] ゲーム開始!", 200L)
+				)
+
+				countdownMessages.forEach { (message, delay) ->
+					Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+						Bukkit.getOnlinePlayers().forEach { player: Player ->
+							player.sendMessage(
+								Component.text(message, NamedTextColor.AQUA)
 							)
-						)
-					}
-				}, 1L)
+							world?.playSound(player.location, "minecraft:block.note_block.hat", 1.2f, 0.1f)
+						}
+					}, delay)
+				}
 				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで5秒!",
-								NamedTextColor.AQUA
-							)
-						)
-					}
-				}, 100L)
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで4秒!",
-								NamedTextColor.AQUA
-							)
-						)
-					}
-				}, 120L)
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで3秒!",
-								NamedTextColor.AQUA
-							)
-						)
-					}
-				}, 140L)
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで2秒!",
-								NamedTextColor.AQUA
-							)
-						)
-					}
-				}, 160L)
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始まで1秒!",
-								NamedTextColor.AQUA
-							)
-						)
-					}
-				}, 180L)
-				Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-					Bukkit.getOnlinePlayers().forEach { player: Player ->
-						player.sendMessage(
-							Component.text(
-								"[SDTM] ゲーム開始!",
-								NamedTextColor.AQUA
-							)
-						)
+					entity?.let {
+						world?.playSound(it.location, "minecraft:ambient.basalt_deltas.mood", 1.0f, 0.1f)
 					}
 				}, 200L)
 			}
