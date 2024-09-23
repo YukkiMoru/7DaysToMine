@@ -46,7 +46,8 @@ class SDTM : JavaPlugin() {
 	}
 
 	private fun initMaster() {
-
+		// GameMasterを登録
+//		server.pluginManager.registerEvents(GameMaster(this), this)
 	}
 
 	private fun initMulti() {

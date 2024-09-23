@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.utility.commands
 
+import com.github.yukkimoru.sdtm.master.GameMaster
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -90,6 +91,22 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 						}
 					}
 				}
+
+				"game" -> {
+					if (args.size > 2 && args[1].lowercase() == "start") {
+						val day = args[2].toIntOrNull()
+						if (day != null) {
+							val gameMaster = GameMaster(this.plugin)
+							gameMaster.startGameDay(day)
+							sender.sendMessage(
+								Component.text(
+									"[SDTM] ゲームの $day 日目が開始されました",
+									NamedTextColor.AQUA
+								)
+							)
+						}
+					}
+				}
 			}
 		}
 		return true
@@ -117,11 +134,18 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 	): List<String>? {
 		return if (sender is Player) {
 			when (args.size) {
-				1 -> listOf("kill", "debug", "horde", "scan")
+				1 -> listOf("kill", "debug", "horde", "scan", "game")
 				2 -> when (args[0].lowercase()) {
 					"debug" -> listOf("true", "false")
 					"horde" -> listOf("start")
 					"scan" -> listOf("100 60 100")
+					"game" -> listOf("start")
+					else -> emptyList()
+				}
+
+				3 -> when (args[0].lowercase()) {
+					"horde" -> listOf("1", "2", "3", "4", "5")
+					"game" -> listOf("0", "1", "2", "3", "4", "5")
 					else -> emptyList()
 				}
 
