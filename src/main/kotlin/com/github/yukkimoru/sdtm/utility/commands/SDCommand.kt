@@ -75,10 +75,10 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				}
 
 				"scan" -> {
-					if (args.size > 4 && args[1].lowercase() == "spawnblock") {
-						val x = args[2].toIntOrNull()
-						val y = args[3].toIntOrNull()
-						val z = args[4].toIntOrNull()
+					if (args.size > 3) {
+						val x = args[1].toIntOrNull()
+						val y = args[2].toIntOrNull()
+						val z = args[3].toIntOrNull()
 						if (x != null && y != null && z != null) {
 							scanSpawnBlock(x, y, z)
 							sender.sendMessage(
@@ -121,7 +121,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				2 -> when (args[0].lowercase()) {
 					"debug" -> listOf("true", "false")
 					"horde" -> listOf("start")
-					"scan" -> listOf("spawnblock")
+					"scan" -> listOf("100 60 100")
 					else -> emptyList()
 				}
 
