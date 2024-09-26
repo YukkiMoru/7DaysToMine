@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class VillagerUtility(private val plugin: JavaPlugin) {
 
-	fun summonVillagerUtility(location: Location) {
+	fun summonVillagerUtility(location: Location, yaw: Float) {
 		object : BukkitRunnable() {
 			override fun run() {
 				val world = location.world ?: return
@@ -31,8 +31,10 @@ class VillagerUtility(private val plugin: JavaPlugin) {
 				// Disable AI
 				villager.setAI(false)
 
-				// Set villager to face south
-				villager.location.yaw = 180f
+				// Set villager to face
+				val newLocation = villager.location
+				newLocation.yaw = yaw
+				villager.teleport(newLocation)
 
 				// Create trades
 				val recipes = mutableListOf<MerchantRecipe>()
