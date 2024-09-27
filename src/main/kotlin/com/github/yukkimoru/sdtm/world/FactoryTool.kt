@@ -57,40 +57,48 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	fun createEarlyStagePickaxe(): ItemStack {
-		val destroyableBlocks = "minecraft:coal_ore:1.0:1.0"
+		val destroyableBlocks = EarlyStagePickaxe.entries.joinToString(",") {
+			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		}
+		val lore = EarlyStagePickaxe.entries.map {
+			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+		}
 		return createUnbreakableTool(
 			Material.IRON_PICKAXE,
 			"序盤のピッケル",
-			listOf("破壊可能なブロック:", "§a⛏1.0 ☘1.0 石炭鉱石"),
+			listOf("破壊可能なブロック:") + lore,
 			"common",
 			destroyableBlocks
 		)
 	}
 
 	fun createMidStagePickaxe(): ItemStack {
-		val destroyableBlocks = "minecraft:coal_ore:1.0:1.0,minecraft:iron_ore:1.0:1.0"
+		val destroyableBlocks = MidStagePickaxe.entries.joinToString(",") {
+			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		}
+		val lore = MidStagePickaxe.entries.map {
+			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+		}
 		return createUnbreakableTool(
 			Material.DIAMOND_PICKAXE,
 			"中盤のピッケル",
-			listOf("破壊可能なブロック:", "§a⛏1.0 ☘1.0 石炭鉱石", "§a⛏1.0 ☘1.0 鉄鉱石"),
+			listOf("破壊可能なブロック:") + lore,
 			"rare",
 			destroyableBlocks
 		)
 	}
 
 	fun createLateStagePickaxe(): ItemStack {
-		val destroyableBlocks =
-			"minecraft:coal_ore:1.0:1.0,minecraft:iron_ore:1.0:1.0,minecraft:deepslate_iron_ore:0.8:1.5,minecraft:red_stained_glass:0.5:1.0,minecraft:red_stained_glass_pane:0.7:0.5"
+		val destroyableBlocks = EndStagePickaxe.entries.joinToString(",") {
+			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		}
+		val lore = EndStagePickaxe.entries.map {
+			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
 			"終盤のピッケル",
-			listOf(
-				"破壊可能なブロック:",
-				"§a⛏1.0 ☘1.0 石炭鉱石",
-				"§a⛏1.0 ☘1.0 鉄鉱石",
-				"§a⛏0.8 ☘1.5 深層鉄鉱石",
-				"§a⛏0.5(0.7) ☘1.0(0.5) ルビー鉱石"
-			),
+			listOf("破壊可能なブロック:") + lore,
 			"legendary",
 			destroyableBlocks
 		)
