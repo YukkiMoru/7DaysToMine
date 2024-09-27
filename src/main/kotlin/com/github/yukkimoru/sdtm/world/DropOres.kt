@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class DropOres(private val plugin: JavaPlugin) : Listener {
 
-	private val itemCreater = ItemCreate(plugin)
+	private val itemCreater = ItemFactory(plugin)
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
