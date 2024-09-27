@@ -38,7 +38,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	)
 
 
-	fun createUnbreakableTool(
+	private fun createUnbreakableTool(
 		material: Material,
 		name: String,
 		lore: List<String>,
@@ -80,7 +80,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
-			Material.DIAMOND_PICKAXE,
+			Material.IRON_PICKAXE,
 			"中盤のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"rare",
@@ -96,7 +96,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
-			Material.NETHERITE_PICKAXE,
+			Material.IRON_PICKAXE,
 			"終盤のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"legendary",
