@@ -17,9 +17,8 @@ class DamageIndicator(private val plugin: JavaPlugin) : Listener {
 	fun onEntityDamage(event: EntityDamageByEntityEvent) {
 		val entity = event.entity
 		if (entity is LivingEntity) {
-			val damage = event.damage
-			//
-			showDamageIndicator(entity.location.add(0.0, 1.0, 0.0), damage)
+			val finalDamage = event.finalDamage
+			showDamageIndicator(entity.location.add(0.0, 1.0, 0.0), finalDamage)
 		}
 	}
 
