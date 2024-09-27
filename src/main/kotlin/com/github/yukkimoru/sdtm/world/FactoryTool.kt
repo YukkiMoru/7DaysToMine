@@ -42,10 +42,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		name: String,
 		lore: List<String>,
 		rarity: String,
-		destroyableBlocks: String
+		destroyableBlocks: String,
+		customModelData: Int? = null
 	): ItemStack {
 		val factoryItem = FactoryItem(plugin)
-		val itemStack = factoryItem.createItemStack(material, 1, name, lore, rarity)
+		val itemStack = factoryItem.createItemStack(material, 1, name, lore, rarity, customModelData)
 		val meta: ItemMeta = itemStack.itemMeta
 		meta.isUnbreakable = true
 		val container = meta.persistentDataContainer
@@ -63,11 +64,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
-			Material.IRON_PICKAXE,
+			Material.NETHERITE_PICKAXE,
 			"序盤のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"common",
-			destroyableBlocks
+			destroyableBlocks,
+			200
 		)
 	}
 
@@ -79,11 +81,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
-			Material.IRON_PICKAXE,
+			Material.NETHERITE_PICKAXE,
 			"中盤のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"rare",
-			destroyableBlocks
+			destroyableBlocks,
+			201
 		)
 	}
 
@@ -95,11 +98,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
-			Material.IRON_PICKAXE,
+			Material.NETHERITE_PICKAXE,
 			"終盤のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"legendary",
-			destroyableBlocks
+			destroyableBlocks,
+			202
 		)
 	}
 }
