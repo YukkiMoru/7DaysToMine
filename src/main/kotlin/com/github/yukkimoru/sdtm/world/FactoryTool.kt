@@ -13,29 +13,31 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val displayName: String,
 		val miningSpeed: Double,
 		val dropRate: Double,
-		val magicFind: Double
 	)
 
 	private val earlyStagePickaxe: Map<Material, OreData> = mapOf(
-		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.01),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.01),
+		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
 	)
 
 	private val midStagePickaxe: Map<Material, OreData> = mapOf(
-		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.02),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.02),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5, 0.02),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0, 0.02),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5, 0.02),
+		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5),
+		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5),
 	)
 
 	private val endStagePickaxe: Map<Material, OreData> = mapOf(
-		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.03),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.03),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5, 0.03),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0, 0.03),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5, 0.03),
+		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5),
+		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5),
 	)
+
+	val allBreakableMaterials: List<Material> =
+		(earlyStagePickaxe.keys + midStagePickaxe.keys + endStagePickaxe.keys).toSet().toList()
 
 	private fun createUnbreakableTool(
 		material: Material,
