@@ -16,12 +16,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val magicFind: Double
 	)
 
-	private val EarlyStagePickaxe: Map<Material, OreData> = mapOf(
+	private val earlyStagePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.01),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.01),
 	)
 
-	private val MidStagePickaxe: Map<Material, OreData> = mapOf(
+	private val midStagePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.02),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.02),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5, 0.02),
@@ -29,14 +29,13 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5, 0.02),
 	)
 
-	private val EndStagePickaxe: Map<Material, OreData> = mapOf(
+	private val endStagePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0, 0.03),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0, 0.03),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5, 0.03),
 		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0, 0.03),
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5, 0.03),
 	)
-
 
 	private fun createUnbreakableTool(
 		material: Material,
@@ -57,10 +56,10 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	fun createEarlyStagePickaxe(): ItemStack {
-		val destroyableBlocks = EarlyStagePickaxe.entries.joinToString(",") {
+		val destroyableBlocks = earlyStagePickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = EarlyStagePickaxe.entries.map {
+		val lore = earlyStagePickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
@@ -73,10 +72,10 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	fun createMidStagePickaxe(): ItemStack {
-		val destroyableBlocks = MidStagePickaxe.entries.joinToString(",") {
+		val destroyableBlocks = midStagePickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = MidStagePickaxe.entries.map {
+		val lore = midStagePickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
@@ -89,10 +88,10 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	fun createLateStagePickaxe(): ItemStack {
-		val destroyableBlocks = EndStagePickaxe.entries.joinToString(",") {
+		val destroyableBlocks = endStagePickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = EndStagePickaxe.entries.map {
+		val lore = endStagePickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
