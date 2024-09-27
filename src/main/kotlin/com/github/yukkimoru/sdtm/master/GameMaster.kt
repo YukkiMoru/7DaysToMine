@@ -43,7 +43,7 @@ class GameMaster(private val plugin: JavaPlugin) : Listener {
 							player.teleport(targetLocation)
 						}
 						Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-							entity?.let {
+							entity.let {
 								world?.playSound(it.location, "minecraft:ambient.basalt_deltas.mood", 1.0f, 0.1f)
 							}
 						}, 1L)
