@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.world
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
@@ -9,9 +10,9 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.random.Random
 
-class DropOres(private val plugin: JavaPlugin) : Listener {
+class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryTool) : Listener {
 
-	private val itemCreater = ItemFactory(plugin)
+	private val factoryItem = FactoryItem(plugin)
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
@@ -19,7 +20,13 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 		val player = event.player
 		val itemInHand: ItemStack = player.inventory.itemInMainHand
 
-		if (block.type == Material.COAL_ORE || block.type == Material.IRON_ORE || block.type == Material.DEEPSLATE_IRON_ORE || block.type == Material.RED_STAINED_GLASS || block.type == Material.RED_STAINED_GLASS_PANE) {
+		// Debugging: Log the block type and all breakable materials
+		Bukkit.getLogger().info("Block type: ${block.type}")
+		Bukkit.getLogger().info("All breakable materials: ${factoryTool.allBreakableMaterials}")
+
+		if (block.type in factoryTool.allBreakableMaterials) {
+			// message
+			Bukkit.getLogger().info("yes you digged")
 			event.isDropItems = false
 			val key = NamespacedKey(plugin, "destroyable_blocks")
 			val luck = MiningOres.getBlockFortune(itemInHand, key, block.type) ?: 0.0
@@ -27,7 +34,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 			val dropCount = calculateDropCount(luck)
 			if (dropCount > 0) {
 				val dropItem = when (block.type) {
-					Material.COAL_ORE -> itemCreater.createItemStack(
+					Material.COAL_ORE -> factoryItem.createItemStack(
 						Material.CHARCOAL,
 						dropCount,
 						"§7§l褐炭",
@@ -35,7 +42,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"common"
 					)
 
-					Material.IRON_ORE -> itemCreater.createItemStack(
+					Material.IRON_ORE -> factoryItem.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l低品質な鉄鉱石",
@@ -43,7 +50,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"common"
 					)
 
-					Material.DEEPSLATE_IRON_ORE -> itemCreater.createItemStack(
+					Material.DEEPSLATE_IRON_ORE -> factoryItem.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l普通の鉄鉱石",
@@ -51,7 +58,7 @@ class DropOres(private val plugin: JavaPlugin) : Listener {
 						"uncommon"
 					)
 
-					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> itemCreater.createItemStack(
+					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> factoryItem.createItemStack(
 						Material.RED_DYE,
 						dropCount,
 						"§c§lルビー",

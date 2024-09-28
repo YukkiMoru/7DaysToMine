@@ -8,7 +8,7 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
-class ItemFactory(private val plugin: JavaPlugin) {
+class FactoryItem(private val plugin: JavaPlugin) {
 
 	fun createItemStack(
 		material: Material,

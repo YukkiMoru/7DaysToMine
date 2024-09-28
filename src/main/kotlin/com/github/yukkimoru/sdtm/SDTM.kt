@@ -9,6 +9,7 @@ import com.github.yukkimoru.sdtm.utility.ability.DoubleJump
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.world.DropOres
+import com.github.yukkimoru.sdtm.world.FactoryTool
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import com.github.yukkimoru.sdtm.world.enemy.ControlMobs
@@ -97,7 +98,7 @@ class SDTM : JavaPlugin() {
 		initNexus()
 
 		// MiningOresを登録 (鉱石の採掘)
-		server.pluginManager.registerEvents(DropOres(this), this)
+		server.pluginManager.registerEvents(DropOres(this, FactoryTool(this)), this)
 		// ItemCreateは登録していない (アイテムの生成)、各インスタンスで使う(e.g.村人)
 		// MiningOresを登録 (プレイヤーによるブロックの破壊速度の変更)
 		server.pluginManager.registerEvents(MiningOres(this), this)

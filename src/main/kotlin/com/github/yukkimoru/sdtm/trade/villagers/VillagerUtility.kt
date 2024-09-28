@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
-import com.github.yukkimoru.sdtm.world.ItemFactory
+import com.github.yukkimoru.sdtm.world.FactoryItem
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -40,7 +40,7 @@ class VillagerUtility(private val plugin: JavaPlugin) {
 				val recipes = mutableListOf<MerchantRecipe>()
 
 				// Create an instance of ItemCreate
-				val itemCreate = ItemFactory(plugin)
+				val itemCreate = FactoryItem(plugin)
 
 				// Trade 1: 10 emeralds for 1 Ender Pack
 				val buyItem1 = ItemStack(Material.EMERALD, 10)
