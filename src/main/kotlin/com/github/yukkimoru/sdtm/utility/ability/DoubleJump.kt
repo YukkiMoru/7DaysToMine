@@ -35,7 +35,6 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 			player.sendMessage("§cYou can't double jump!")
 			return
 		}
-		player.sendMessage("§cDouble Jump")
 
 		if (player.gameMode == GameMode.CREATIVE) return
 
@@ -45,9 +44,11 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		val playerUUID = player.uniqueId
 
 		if (doubleJumpPlayers.contains(player.name)) {
-			player.allowFlight = false
+			//↓使うとクールダウン中に２段ジャンプすると落下ダメージを食らう
+//			player.allowFlight = false
 			player.sendMessage("§aDouble Jump is on cooldown!")
 		} else {
+			player.sendMessage("§cDouble Jump")
 			val lastJump = lastJumpTime[playerUUID] ?: 0
 			if (currentTime - lastJump >= cooldownTime) {
 				player.velocity = player.location.direction.multiply(1.0).setY(1)
