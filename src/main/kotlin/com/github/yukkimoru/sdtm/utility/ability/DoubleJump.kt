@@ -1,10 +1,13 @@
 package com.github.yukkimoru.sdtm.utility.ability
 
 import org.bukkit.GameMode
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
@@ -21,14 +24,18 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 	private val lastJumpTime = mutableMapOf<UUID, Long>()
 	private val cooldownTime = 3000 // 3 seconds in milliseconds
 
+	fun isWearingDoubleJumperBoots(player: Player): Boolean {
+		val boots: ItemStack? = player.inventory.boots
+		return boots != null && boots.hasItemMeta() && boots.itemMeta?.displayName == "§r§2§lDouble Jumper"
+	}
+	
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
 		val player = event.player
 
-		// Check if player is wearing Double Jumper boots
-		val boots = player.inventory.boots
-		if (boots == null || !boots.hasItemMeta() || boots.itemMeta?.displayName != "§r§2§lDouble Jumper") {
+		if (!isWearingDoubleJumperBoots(player)) {
 			player.allowFlight = false
+			player.sendMessage("§cYou can't double jump!")
 			return
 		}
 
@@ -69,6 +76,20 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		val player = event.player
 		if (flyingPlayers.contains(player.uniqueId)) {
 			player.allowFlight = true
+		}
+	}
+
+	@EventHandler
+	fun onPlayerItemHeld(event: PlayerItemHeldEvent) {
+		val player = event.player
+		val boots = player.inventory.boots
+
+		if (boots == null || !boots.hasItemMeta() || boots.itemMeta?.displayName != "§r§2§lDouble Jumper") {
+			player.allowFlight = false
+		} else {
+			player.allowFlight = true
+			// message to player
+			player.sendMessage("§aYou can now double jump!")
 		}
 	}
 }
