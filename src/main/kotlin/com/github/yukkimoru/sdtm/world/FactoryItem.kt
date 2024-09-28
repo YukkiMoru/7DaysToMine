@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
@@ -47,5 +48,14 @@ class FactoryItem(private val plugin: JavaPlugin) {
 			"mythic" -> "§dミシック"
 			else -> "§fコモン"
 		}
+	}
+
+	fun getCustomModelData(item: ItemStack): Int? {
+		val meta: ItemMeta = item.itemMeta ?: return null
+		return meta.customModelData
+	}
+
+	fun isItemWithCustomModelData(item: ItemStack, modelData: Int): Boolean {
+		return getCustomModelData(item) == modelData
 	}
 }
