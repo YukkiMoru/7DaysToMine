@@ -50,9 +50,10 @@ class FactoryItem(private val plugin: JavaPlugin) {
 		}
 	}
 
+	// カスタムモデルデータ(ID)を取得、ない場合はnullを返す
 	fun getCustomModelData(item: ItemStack): Int? {
 		val meta: ItemMeta = item.itemMeta ?: return null
-		return meta.customModelData
+		return if (meta.hasCustomModelData()) meta.customModelData else null
 	}
 
 	fun isItemWithCustomModelData(item: ItemStack, modelData: Int): Boolean {
