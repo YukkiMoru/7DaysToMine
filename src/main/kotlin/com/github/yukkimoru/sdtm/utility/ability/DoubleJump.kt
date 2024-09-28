@@ -18,11 +18,12 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 	private val doubleJumpPlayers = mutableSetOf<String>()
 	private val flyingPlayers = mutableSetOf<UUID>()
 	private val lastJumpTime = mutableMapOf<UUID, Long>()
-	private val cooldownTime = 3000 // 3 seconds in milliseconds
+	private val cooldownTime = 3000 // 3 seconds
 
+	// なにも装備していない(null), または301のカスタムモデルデータを持つアイテムを装備しているか
 	private fun isWearingDoubleJumperBoots(player: Player): Boolean {
 		val boots: ItemStack? = player.inventory.boots
-		return boots != null && FactoryItem(plugin).isItemWithCustomModelData(boots, 301)
+		return boots?.let { FactoryItem(plugin).isItemWithCustomModelData(it, 301) } ?: false
 	}
 
 	@EventHandler
@@ -34,8 +35,6 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 			player.sendMessage("§cYou can't double jump!")
 			return
 		}
-
-		// message to player
 		player.sendMessage("§cDouble Jump")
 
 		if (player.gameMode == GameMode.CREATIVE) return
@@ -82,9 +81,9 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 
 		if (boots == null || !FactoryItem(plugin).isItemWithCustomModelData(boots, 301)) {
 			player.allowFlight = false
+			doubleJumpPlayers.remove(player.name)
 		} else {
 			player.allowFlight = true
-			// message to player
 			player.sendMessage("§aYou can now double jump!")
 		}
 	}
