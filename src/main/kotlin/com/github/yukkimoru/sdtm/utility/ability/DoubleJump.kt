@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.utility.ability
 
+import com.github.yukkimoru.sdtm.world.FactoryItem
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -13,22 +14,17 @@ import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
 class DoubleJump(private val plugin: JavaPlugin) : Listener {
-	init {
-		plugin.server.onlinePlayers.forEach { player ->
-			player.allowFlight = true
-		}
-	}
 
 	private val doubleJumpPlayers = mutableSetOf<String>()
 	private val flyingPlayers = mutableSetOf<UUID>()
 	private val lastJumpTime = mutableMapOf<UUID, Long>()
 	private val cooldownTime = 3000 // 3 seconds in milliseconds
 
-	fun isWearingDoubleJumperBoots(player: Player): Boolean {
+	private fun isWearingDoubleJumperBoots(player: Player): Boolean {
 		val boots: ItemStack? = player.inventory.boots
-		return boots != null && boots.hasItemMeta() && boots.itemMeta?.displayName == "§r§2§lDouble Jumper"
+		return boots != null && FactoryItem(plugin).isItemWithCustomModelData(boots, 301)
 	}
-	
+
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
 		val player = event.player
@@ -84,7 +80,7 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		val player = event.player
 		val boots = player.inventory.boots
 
-		if (boots == null || !boots.hasItemMeta() || boots.itemMeta?.displayName != "§r§2§lDouble Jumper") {
+		if (boots == null || !FactoryItem(plugin).isItemWithCustomModelData(boots, 301)) {
 			player.allowFlight = false
 		} else {
 			player.allowFlight = true
