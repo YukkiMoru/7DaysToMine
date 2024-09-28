@@ -24,6 +24,14 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
 		val player = event.player
+
+		// Check if player is wearing Double Jumper boots
+		val boots = player.inventory.boots
+		if (boots == null || !boots.hasItemMeta() || boots.itemMeta?.displayName != "§r§2§lDouble Jumper") {
+			player.allowFlight = false
+			return
+		}
+
 		// message to player
 		player.sendMessage("§cDouble Jump")
 
@@ -37,7 +45,6 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 		if (doubleJumpPlayers.contains(player.name)) {
 			player.allowFlight = false
 			player.sendMessage("§aDouble Jump is on cooldown!")
-//			doubleJumpPlayers.remove(player.name)
 		} else {
 			val lastJump = lastJumpTime[playerUUID] ?: 0
 			if (currentTime - lastJump >= cooldownTime) {

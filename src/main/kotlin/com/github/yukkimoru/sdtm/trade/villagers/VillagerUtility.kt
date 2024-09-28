@@ -48,7 +48,8 @@ class VillagerUtility(private val plugin: JavaPlugin) {
 					Material.RECOVERY_COMPASS, 1, "§r§1§lEnder Pack", listOf(
 						"§7右クリックでエンダーチェストを開く"
 					),
-					"uncommon"
+					"uncommon",
+					300
 				)
 				val meta: ItemMeta = sellItem1.itemMeta
 				sellItem1.itemMeta = meta
@@ -57,9 +58,14 @@ class VillagerUtility(private val plugin: JavaPlugin) {
 				recipe1.addIngredient(buyItem1)
 				recipes.add(recipe1)
 
-				// Trade 2: 2 diamond blocks for 20 emerald blocks
-				val buyItem2 = ItemStack(Material.DIAMOND_BLOCK, 2)
-				val sellItem2 = ItemStack(Material.EMERALD_BLOCK, 20)
+				val buyItem2 = ItemStack(Material.EMERALD, 5)
+				val sellItem2 = itemCreate.createItemStack(
+					Material.IRON_BOOTS, 1, "§r§2§lDouble Jumper", listOf(
+						"§7２段ジャンプができる"
+					),
+					"rare",
+					301
+				)
 				val recipe2 = MerchantRecipe(sellItem2, 9999999)
 				recipe2.addIngredient(buyItem2)
 				recipes.add(recipe2)
