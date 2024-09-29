@@ -54,8 +54,8 @@ class DoubleJump(private val plugin: JavaPlugin) : Listener {
 								player.allowFlight = true
 								player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
 								player.sendMessage("§aDouble Jump is ready!")
-								doubleJumpPlayers.remove(player.name)
 							}
+							doubleJumpPlayers.remove(player.name)
 						}
 					}.runTaskLater(plugin, (cooldownTime / 50).toLong()) // Convert milliseconds to ticks
 				}
