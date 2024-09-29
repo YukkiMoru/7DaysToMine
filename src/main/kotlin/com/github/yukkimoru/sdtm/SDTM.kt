@@ -75,8 +75,6 @@ class SDTM : JavaPlugin() {
 	private fun initAbility() {
 		// DamageIndicatorを登録 (プレイヤーがダメージを受けた際にダメージ量を表示)
 		server.pluginManager.registerEvents(DamageIndicator(this), this)
-		// DoubleJumpを登録 (プレイヤーが2段ジャンプできるようにする)
-		server.pluginManager.registerEvents(DoubleJumper(this), this)
 		// GrapplingHookを登録 (グラップリングフック)
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
 		// HealthIndicatorを登録 (プレイヤーのボスバーにモブの体力を表示)
@@ -84,8 +82,10 @@ class SDTM : JavaPlugin() {
 	}
 
 	private fun initItems() {
-		// EnderPackを登録 (エンダーチェストを開く)
+		// EnderPackを登録 (エンダーチェストを開けるアイテム)
 		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
+		// DoubleJumperを登録 (プレイヤーが2段ジャンプできる靴)
+		server.pluginManager.registerEvents(DoubleJumper(this), this)
 	}
 
 	private fun initCommands() {
