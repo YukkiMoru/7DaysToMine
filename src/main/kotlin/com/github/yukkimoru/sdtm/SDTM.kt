@@ -3,9 +3,9 @@ package com.github.yukkimoru.sdtm
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
+import com.github.yukkimoru.sdtm.utility.Items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.Items.EnderPack
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
-import com.github.yukkimoru.sdtm.utility.ability.DoubleJump
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.world.DropOres
@@ -76,7 +76,7 @@ class SDTM : JavaPlugin() {
 		// DamageIndicatorを登録 (プレイヤーがダメージを受けた際にダメージ量を表示)
 		server.pluginManager.registerEvents(DamageIndicator(this), this)
 		// DoubleJumpを登録 (プレイヤーが2段ジャンプできるようにする)
-		server.pluginManager.registerEvents(DoubleJump(this), this)
+		server.pluginManager.registerEvents(DoubleJumper(this), this)
 		// GrapplingHookを登録 (グラップリングフック)
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
 		// HealthIndicatorを登録 (プレイヤーのボスバーにモブの体力を表示)

@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility.ability
+package com.github.yukkimoru.sdtm.utility.Items
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
 import com.github.yukkimoru.sdtm.world.FactoryItem
@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
-class DoubleJump(private val plugin: JavaPlugin) : Listener {
+class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 
 	private val doubleJumpPlayers = mutableSetOf<String>()
 	private val lastJumpTime = mutableMapOf<UUID, Long>()
