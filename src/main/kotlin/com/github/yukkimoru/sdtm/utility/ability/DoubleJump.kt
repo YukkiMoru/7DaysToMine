@@ -15,7 +15,6 @@ import java.util.*
 class DoubleJump(private val plugin: JavaPlugin) : Listener {
 
 	private val doubleJumpPlayers = mutableSetOf<String>()
-	private val flyingPlayers = mutableSetOf<UUID>()
 	private val lastJumpTime = mutableMapOf<UUID, Long>()
 	private val cooldownTime = 3000 // 3 seconds
 	private var wearArmor: Boolean = false
