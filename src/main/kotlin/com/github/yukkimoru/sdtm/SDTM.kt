@@ -5,6 +5,7 @@ import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
 import com.github.yukkimoru.sdtm.utility.Items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.Items.EnderPack
+import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
@@ -21,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin
 @Suppress("unused")
 class SDTM : JavaPlugin() {
 	private lateinit var nexusScoreboard: NexusScoreboard
+	private lateinit var playerList: TabList
 
 	override fun onEnable() {
 		logger.info("SDTM plugin enabled")
@@ -70,6 +72,8 @@ class SDTM : JavaPlugin() {
 		initAbility()
 		initItems()
 		initCommands()
+		playerList = TabList()
+		playerList.setTabListHeaderAndFooter("§aWelcome to the server!", "§bEnjoy your stay!")
 	}
 
 	private fun initAbility() {
