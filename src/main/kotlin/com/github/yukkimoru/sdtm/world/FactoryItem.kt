@@ -1,6 +1,7 @@
 package com.github.yukkimoru.sdtm.world
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -21,8 +22,10 @@ class FactoryItem(private val plugin: JavaPlugin) {
 	): ItemStack {
 		val itemStack = ItemStack(material, amount)
 		val itemMeta = itemStack.itemMeta
-		itemMeta.displayName(Component.text(name))
-		itemMeta.lore(lore.map { Component.text(it) } + Component.text(getRarityDisplayName(rarity)))
+		itemMeta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false))
+		itemMeta.lore(lore.map { Component.text(it).decoration(TextDecoration.ITALIC, false) } + Component.text(
+			getRarityDisplayName(rarity)
+		).decoration(TextDecoration.ITALIC, false))
 
 		// Add rarity to the item
 		val container = itemMeta.persistentDataContainer
@@ -40,13 +43,13 @@ class FactoryItem(private val plugin: JavaPlugin) {
 
 	private fun getRarityDisplayName(rarity: String): String {
 		return when (rarity.lowercase(Locale.getDefault())) {
-			"common" -> "§fコモン"
-			"uncommon" -> "§aアンコモン"
-			"rare" -> "§9レア"
-			"epic" -> "§5エピック"
-			"legendary" -> "§6レジェンド"
-			"mythic" -> "§dミシック"
-			else -> "§fコモン"
+			"common" -> "§f§lコモン"
+			"uncommon" -> "§a§lアンコモン"
+			"rare" -> "§9§lレア"
+			"epic" -> "§5§lエピック"
+			"legendary" -> "§6§lレジェンド"
+			"mythic" -> "§d§lミシック"
+			else -> "§f§lコモン"
 		}
 	}
 
