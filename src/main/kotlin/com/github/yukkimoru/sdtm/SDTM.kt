@@ -73,7 +73,7 @@ class SDTM : JavaPlugin() {
 		initItems()
 		initCommands()
 		playerList = TabList()
-		playerList.setTabListHeaderAndFooter("§aWelcome to the server!", "§bEnjoy your stay!")
+		playerList.initialize()
 	}
 
 	private fun initAbility() {
