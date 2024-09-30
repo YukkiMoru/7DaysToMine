@@ -26,7 +26,7 @@ class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryT
 
 		if (block.type in factoryTool.allBreakableMaterials) {
 			// message
-			Bukkit.getLogger().info("yes you digged")
+			Bukkit.getLogger().info("yes you dug")
 			event.isDropItems = false
 			val key = NamespacedKey(plugin, "destroyable_blocks")
 			val luck = MiningOres.getBlockFortune(itemInHand, key, block.type) ?: 0.0
