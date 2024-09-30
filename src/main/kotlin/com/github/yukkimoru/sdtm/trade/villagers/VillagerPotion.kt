@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
+import com.github.yukkimoru.sdtm.world.FactoryPotion
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -36,24 +37,37 @@ class VillagerPotion(private val plugin: JavaPlugin) {
 				villager.teleport(newLocation)
 
 				// Create trades
-				val recipes = mutableListOf<MerchantRecipe>()
-
-				// Trade 1: 10 iron blocks for 4 emerald blocks
-				val buyItem1 = ItemStack(Material.IRON_BLOCK, 10)
-				val sellItem1 = ItemStack(Material.EMERALD_BLOCK, 4)
-				val recipe1 = MerchantRecipe(sellItem1, 9999999)
-				recipe1.addIngredient(buyItem1)
-				recipes.add(recipe1)
-
-				// Trade 2: 2 diamond blocks for 20 emerald blocks
-				val buyItem2 = ItemStack(Material.DIAMOND_BLOCK, 2)
-				val sellItem2 = ItemStack(Material.EMERALD_BLOCK, 20)
-				val recipe2 = MerchantRecipe(sellItem2, 9999999)
-				recipe2.addIngredient(buyItem2)
-				recipes.add(recipe2)
-
+				val recipes = createPotionTrades()
 				villager.recipes = recipes
 			}
 		}.runTask(plugin)
+	}
+
+	private fun createPotionTrades(): List<MerchantRecipe> {
+		val factoryPotion = FactoryPotion(plugin)
+		val recipes = mutableListOf<MerchantRecipe>()
+
+		// Trade 1: Healing Potion for 5 emeralds
+		val buyItem1 = ItemStack(Material.EMERALD, 5)
+		val sellItem1 = factoryPotion.createHealingPotion()
+		val recipe1 = MerchantRecipe(sellItem1, 9999999)
+		recipe1.addIngredient(buyItem1)
+		recipes.add(recipe1)
+
+		// Trade 2: Strength Potion for 8 emeralds
+		val buyItem2 = ItemStack(Material.EMERALD, 8)
+		val sellItem2 = factoryPotion.createStrengthPotion()
+		val recipe2 = MerchantRecipe(sellItem2, 9999999)
+		recipe2.addIngredient(buyItem2)
+		recipes.add(recipe2)
+
+		// Trade 3: Speed Potion for 6 emeralds
+		val buyItem3 = ItemStack(Material.EMERALD, 6)
+		val sellItem3 = factoryPotion.createSpeedPotion()
+		val recipe3 = MerchantRecipe(sellItem3, 9999999)
+		recipe3.addIngredient(buyItem3)
+		recipes.add(recipe3)
+
+		return recipes
 	}
 }
