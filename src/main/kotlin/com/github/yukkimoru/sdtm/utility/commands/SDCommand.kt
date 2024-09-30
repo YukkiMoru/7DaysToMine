@@ -112,6 +112,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 		return true
 	}
 
+	@Suppress("SameParameterValue")
 	private fun executeCommand(command: String) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
 	}

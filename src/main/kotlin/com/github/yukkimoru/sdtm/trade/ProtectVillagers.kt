@@ -12,9 +12,9 @@ class ProtectVillagers : Listener {
 	@EventHandler
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
 		val entity = event.entity
-		val damager = event.damager
+		val damage = event.damager
 
-		if (entity.type == EntityType.VILLAGER && damager is Player) {
+		if (entity.type == EntityType.VILLAGER && damage is Player) {
 			event.isCancelled = true
 		}
 	}

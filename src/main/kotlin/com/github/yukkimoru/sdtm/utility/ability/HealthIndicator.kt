@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
+@Suppress("unused")
 class HealthIndicator(private val plugin: JavaPlugin) {
 
 	private val bossBars = mutableMapOf<Player, BossBar>()

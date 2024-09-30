@@ -34,13 +34,11 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				randomLocation["y"]!!.toDouble(),
 				randomLocation["z"]!!.toDouble()
 			)
-			val mobType = mobTypes[Random.nextInt(mobTypes.size)]
-
-			when (mobType) {
+			when (val mobType = mobTypes[Random.nextInt(mobTypes.size)]) {
 				EntityType.ZOMBIE -> spawnCustomMob(
 					location,
 					mobType,
-					"weakzombie",
+					"weak zombie",
 					20.0,
 					ItemStack(Material.IRON_SWORD),
 					ItemStack(Material.IRON_HELMET),
@@ -52,7 +50,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				EntityType.SKELETON -> spawnCustomMob(
 					location,
 					mobType,
-					"archerskeleton",
+					"archer skeleton",
 					20.0,
 					ItemStack(Material.BOW),
 					ItemStack(Material.CHAINMAIL_HELMET),
@@ -64,7 +62,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				EntityType.SPIDER -> spawnCustomMob(
 					location,
 					mobType,
-					"fastspider",
+					"fast spider",
 					16.0,
 					null,
 					null,
@@ -76,7 +74,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				EntityType.WITCH -> spawnCustomMob(
 					location,
 					mobType,
-					"dangerouswitch",
+					"dangerous witch",
 					26.0,
 					null,
 					null,
@@ -88,7 +86,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 				EntityType.BLAZE -> spawnCustomMob(
 					location,
 					mobType,
-					"fieryblaze",
+					"fiery blaze",
 					20.0,
 					null,
 					null,
