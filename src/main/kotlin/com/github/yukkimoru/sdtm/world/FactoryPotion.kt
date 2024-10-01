@@ -11,11 +11,12 @@ import org.bukkit.potion.PotionType
 class FactoryPotion(private val plugin: JavaPlugin) {
 
 	private fun createPotion(
-		potionType: PotionType,
+		PotionID: Int?,
 		name: String,
+		potionType: PotionType,
 		lore: List<String>,
 		rarity: String,
-		customModelData: Int? = null
+		customModelData: Int? = null,
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -33,31 +34,33 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	fun createHealingPotion(): ItemStack {
 		return createPotion(
-			PotionType.HEALING,
-			"§cHealing Potion",
-			listOf("§7A potion that heals instantly."),
-			"common",
-			300
+			PotionID = 1,
+			name = "§cHealing Potion",
+			potionType = PotionType.HEALING,
+			lore = listOf("§7A potion that heals instantly."),
+			rarity = "common"
 		)
 	}
 
 	fun createStrengthPotion(): ItemStack {
 		return createPotion(
-			PotionType.STRENGTH,
-			"§6Strength Potion",
-			listOf("§7A potion that increases strength."),
-			"rare",
-			301
+			PotionID = 2,
+			name = "§6Strength Potion",
+			potionType = PotionType.STRENGTH,
+			lore = listOf("§7A potion that increases strength."),
+			rarity = "rare",
+			customModelData = 301
 		)
 	}
 
 	fun createSpeedPotion(): ItemStack {
 		return createPotion(
-			PotionType.STRONG_LEAPING,
-			"§bSpeed Potion",
-			listOf("§7A potion that increases speed."),
-			"uncommon",
-			302
+			PotionID = 3,
+			name = "§bSpeed Potion",
+			potionType = PotionType.LEAPING,
+			lore = listOf("§7A potion that increases speed."),
+			rarity = "uncommon",
+			customModelData = 302
 		)
 	}
 }

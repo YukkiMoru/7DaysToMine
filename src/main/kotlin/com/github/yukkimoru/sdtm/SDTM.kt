@@ -7,6 +7,7 @@ import com.github.yukkimoru.sdtm.utility.Items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.Items.EnderPack
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
+import com.github.yukkimoru.sdtm.utility.ability.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.world.DropOres
@@ -83,6 +84,8 @@ class SDTM : JavaPlugin() {
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
 		// HealthIndicatorを登録 (プレイヤーのボスバーにモブの体力を表示)
 //		server.pluginManager.registerEvents(HealthIndicator(this), this)
+		// DrinkPotionを登録 (ポーションの効果)
+		server.pluginManager.registerEvents(DrinkPotion(this), this)
 	}
 
 	private fun initItems() {
@@ -109,6 +112,7 @@ class SDTM : JavaPlugin() {
 		// RegenerateBlocksを登録 (ブロックの再生)
 		server.pluginManager.registerEvents(RegenerateBlocks(this), this)
 
+		//
 	}
 
 	private fun initEnemy() {
