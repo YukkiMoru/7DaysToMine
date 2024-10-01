@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.world
 
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -17,6 +18,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		lore: List<String>,
 		rarity: String,
 		customModelData: Int? = null,
+		color: Color? = null // Add color parameter
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -32,6 +34,9 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		customModelData?.let {
 			meta.setCustomModelData(it)
 		}
+		color?.let {
+			meta.color = it // Set the color of the potion
+		}
 		itemStack.itemMeta = meta
 		return itemStack
 	}
@@ -42,7 +47,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			name = "§cHealing Potion",
 			potionType = PotionType.HEALING,
 			lore = listOf("§7A potion that heals instantly."),
-			rarity = "common"
+			rarity = "common",
+			color = Color.RED // Set color to red
 		)
 	}
 
@@ -53,7 +59,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			potionType = PotionType.STRENGTH,
 			lore = listOf("§7A potion that increases strength."),
 			rarity = "rare",
-			customModelData = 301
+			customModelData = 301,
+			color = Color.ORANGE // Set color to orange
 		)
 	}
 
@@ -64,7 +71,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			potionType = PotionType.LEAPING,
 			lore = listOf("§7A potion that increases speed."),
 			rarity = "uncommon",
-			customModelData = 302
+			customModelData = 302,
+			color = Color.BLUE // Set color to blue
 		)
 	}
 }
