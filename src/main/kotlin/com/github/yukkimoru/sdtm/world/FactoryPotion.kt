@@ -23,8 +23,12 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		meta.setDisplayName(name)
 		meta.lore = lore
 		val container = meta.persistentDataContainer
-		val key = NamespacedKey(plugin, "rarity")
-		container.set(key, PersistentDataType.STRING, rarity)
+		val rarityKey = NamespacedKey(plugin, "rarity")
+		container.set(rarityKey, PersistentDataType.STRING, rarity)
+		PotionID?.let {
+			val potionIDKey = NamespacedKey(plugin, "PotionID")
+			container.set(potionIDKey, PersistentDataType.INTEGER, it)
+		}
 		customModelData?.let {
 			meta.setCustomModelData(it)
 		}
