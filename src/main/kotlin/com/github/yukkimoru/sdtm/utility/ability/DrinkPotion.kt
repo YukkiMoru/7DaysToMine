@@ -40,6 +40,18 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
                         // 効果を追加
                         player.sendMessage("§aYou drank a Speed Potion!")
                     }
+                    4 -> {
+                        // giant Potion
+                        // 効果を追加
+                        player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 2.0
+                        player.sendMessage("§aYou drank an Giant Potion!")
+                    }
+                    5 -> {
+                        // Midget Potion
+                        // 効果を追加
+                        player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
+                        player.sendMessage("§aYou drank a Midget Potion!")
+                    }
                     else -> {
                         player.sendMessage("§cUnknown PotionID: $potionID")
                     }

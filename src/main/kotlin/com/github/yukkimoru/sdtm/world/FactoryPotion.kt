@@ -75,4 +75,28 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			color = Color.BLUE // Set color to blue
 		)
 	}
+
+	fun createGiantPotion(): ItemStack {
+		return createPotion(
+			PotionID = 4,
+			name = "§aGiant Potion",
+			potionType = PotionType.HEALING,
+			lore = listOf("§7A potion that makes you giant."),
+			rarity = "rare",
+			customModelData = 303,
+			color = Color.GREEN // Set color to green
+		)
+	}
+
+	fun createMidgetPotion(): ItemStack {
+		return createPotion(
+			PotionID = 5,
+			name = "§eMidget Potion",
+			potionType = PotionType.HEALING,
+			lore = listOf("§7A potion that makes you midget."),
+			rarity = "rare",
+			customModelData = 304,
+			color = Color.YELLOW // Set color to yellow
+		)
+	}
 }
