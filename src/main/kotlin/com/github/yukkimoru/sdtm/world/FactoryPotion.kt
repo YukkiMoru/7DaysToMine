@@ -7,18 +7,17 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.potion.PotionType
 
 class FactoryPotion(private val plugin: JavaPlugin) {
 
 	private fun createPotion(
-		PotionID: Int?,
+		potionID: Int?,
 		name: String,
-		potionType: PotionType,
+		duration: Int,
 		lore: List<String>,
 		rarity: String,
 		customModelData: Int? = null,
-		color: Color? = null // Add color parameter
+		color: Color? = null
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -27,15 +26,17 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		val container = meta.persistentDataContainer
 		val rarityKey = NamespacedKey(plugin, "rarity")
 		container.set(rarityKey, PersistentDataType.STRING, rarity)
-		PotionID?.let {
+		potionID?.let {
 			val potionIDKey = NamespacedKey(plugin, "PotionID")
 			container.set(potionIDKey, PersistentDataType.INTEGER, it)
 		}
+		val durationKey = NamespacedKey(plugin, "duration")
+		container.set(durationKey, PersistentDataType.INTEGER, duration)
 		customModelData?.let {
 			meta.setCustomModelData(it)
 		}
 		color?.let {
-			meta.color = it // Set the color of the potion
+			meta.color = it
 		}
 		itemStack.itemMeta = meta
 		return itemStack
@@ -43,60 +44,60 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	fun createHealingPotion(): ItemStack {
 		return createPotion(
-			PotionID = 1,
+			potionID = 1,
 			name = "§cHealing Potion",
-			potionType = PotionType.HEALING,
+			duration = 30,
 			lore = listOf("§7A potion that heals instantly."),
 			rarity = "common",
-			color = Color.RED // Set color to red
+			color = Color.RED
 		)
 	}
 
 	fun createStrengthPotion(): ItemStack {
 		return createPotion(
-			PotionID = 2,
+			potionID = 2,
 			name = "§6Strength Potion",
-			potionType = PotionType.STRENGTH,
+			duration = 60,
 			lore = listOf("§7A potion that increases strength."),
 			rarity = "rare",
 			customModelData = 301,
-			color = Color.ORANGE // Set color to orange
+			color = Color.ORANGE
 		)
 	}
 
 	fun createSpeedPotion(): ItemStack {
 		return createPotion(
-			PotionID = 3,
+			potionID = 3,
 			name = "§bSpeed Potion",
-			potionType = PotionType.LEAPING,
+			duration = 45,
 			lore = listOf("§7A potion that increases speed."),
 			rarity = "uncommon",
 			customModelData = 302,
-			color = Color.BLUE // Set color to blue
+			color = Color.BLUE
 		)
 	}
 
 	fun createGiantPotion(): ItemStack {
 		return createPotion(
-			PotionID = 4,
+			potionID = 4,
 			name = "§aGiant Potion",
-			potionType = PotionType.HEALING,
+			duration = 120,
 			lore = listOf("§7A potion that makes you giant."),
 			rarity = "rare",
 			customModelData = 303,
-			color = Color.GREEN // Set color to green
+			color = Color.GREEN
 		)
 	}
 
 	fun createMidgetPotion(): ItemStack {
 		return createPotion(
-			PotionID = 5,
+			potionID = 5,
 			name = "§eMidget Potion",
-			potionType = PotionType.HEALING,
+			duration = 120,
 			lore = listOf("§7A potion that makes you midget."),
 			rarity = "rare",
 			customModelData = 304,
-			color = Color.YELLOW // Set color to yellow
+			color = Color.YELLOW
 		)
 	}
 }
