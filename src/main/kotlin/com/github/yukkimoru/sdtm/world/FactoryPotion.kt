@@ -46,7 +46,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return createPotion(
 			potionID = 1,
 			name = "§cHealing Potion",
-			duration = 30,
+			duration = 10,
 			lore = listOf("§7A potion that heals instantly."),
 			rarity = "common",
 			color = Color.RED
@@ -57,7 +57,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return createPotion(
 			potionID = 2,
 			name = "§6Strength Potion",
-			duration = 60,
+			duration = 10,
 			lore = listOf("§7A potion that increases strength."),
 			rarity = "rare",
 			customModelData = 301,
@@ -69,7 +69,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return createPotion(
 			potionID = 3,
 			name = "§bSpeed Potion",
-			duration = 45,
+			duration = 10,
 			lore = listOf("§7A potion that increases speed."),
 			rarity = "uncommon",
 			customModelData = 302,
@@ -81,7 +81,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return createPotion(
 			potionID = 4,
 			name = "§aGiant Potion",
-			duration = 120,
+			duration = 10,
 			lore = listOf("§7A potion that makes you giant."),
 			rarity = "rare",
 			customModelData = 303,
@@ -93,7 +93,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return createPotion(
 			potionID = 5,
 			name = "§eMidget Potion",
-			duration = 120,
+			duration = 10,
 			lore = listOf("§7A potion that makes you midget."),
 			rarity = "rare",
 			customModelData = 304,
