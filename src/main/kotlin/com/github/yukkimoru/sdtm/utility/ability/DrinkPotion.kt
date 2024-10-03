@@ -17,6 +17,7 @@ import kotlin.math.min
 class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private var potionEffectTask: BukkitTask? = null
+	private val playerCooldowns = mutableMapOf<Player, MutableMap<Int, Int>>()
 
 	@EventHandler
 	fun onPlayerDrink(event: PlayerItemConsumeEvent) {
@@ -51,14 +52,12 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					4 -> {
 						// Giant Potion
 						smoothScale(player, 1.0, 2.0, 20, 10)
-
 						player.sendMessage("§aYou drank a Giant Potion!")
 					}
 
 					5 -> {
 						// Midget Potion
 						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-
 						player.sendMessage("§aYou drank a Midget Potion!")
 					}
 
@@ -67,6 +66,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					}
 				}
 				setTimer(player, potionID, duration)
+				startCooldown(player, potionID, duration)
 			} else {
 				player.sendMessage("§cPotionID not found.")
 			}
@@ -75,24 +75,12 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}
 	}
 
-
-	/**
-	 * Sets a timer for the potion effect.
-	 * @param player The player who drank the potion.
-	 * @param potionID The ID of the potion effect.
-	 * @param duration The duration of the potion effect in seconds.
-	 */
 	private fun setTimer(player: Player, potionID: Int, duration: Int) {
 		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
 			removeTimer(player, potionID)
 		}, duration * 20L)
 	}
 
-	/**
-	 * Removes the timer for the potion effect.
-	 * @param player The player whose potion effect timer is to be removed.
-	 * @param potionID The ID of the potion effect.
-	 */
 	private fun removeTimer(player: Player, potionID: Int) {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
@@ -145,4 +133,22 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			}
 		}, 0L, stepDuration)
 	}
+
+	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
+		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
+		cooldowns[potionID] = duration
+		Bukkit.getScheduler().runTaskTimer(plugin, Runnable {
+			val timeLeft = cooldowns[potionID] ?: return@Runnable
+			if (timeLeft > 0) {
+				cooldowns[potionID] = timeLeft - 1
+			} else {
+				cooldowns.remove(potionID)
+			}
+		}, 0L, 20L)
+	}
+
+	fun getCooldowns(player: Player): Map<Int, Int> {
+		return playerCooldowns[player] ?: emptyMap()
+	}
+
 }

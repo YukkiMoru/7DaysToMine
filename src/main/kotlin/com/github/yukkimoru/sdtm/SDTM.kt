@@ -24,9 +24,12 @@ import org.bukkit.plugin.java.JavaPlugin
 class SDTM : JavaPlugin() {
 	private lateinit var nexusScoreboard: NexusScoreboard
 	private lateinit var playerList: TabList
+	private lateinit var drinkPotion: DrinkPotion
 
 	override fun onEnable() {
 		logger.info("SDTM plugin enabled")
+
+
 		// プラグイン開始時に実行するマイクラコマンド
 		executeCommand()
 		// 各機能の初期化(諸事情によりinitWorld()を最初に実行)
@@ -35,6 +38,7 @@ class SDTM : JavaPlugin() {
 		initMulti()
 		initTRADE()
 		initUTILITY()
+		scheduleTabListUpdates()
 	}
 
 	private fun executeCommand() {
@@ -84,8 +88,13 @@ class SDTM : JavaPlugin() {
 		server.pluginManager.registerEvents(GrapplingHook(this), this)
 		// HealthIndicatorを登録 (プレイヤーのボスバーにモブの体力を表示)
 //		server.pluginManager.registerEvents(HealthIndicator(this), this)
-		// DrinkPotionを登録 (ポーションの効果)
-		server.pluginManager.registerEvents(DrinkPotion(this), this)
+//		// DrinkPotionを登録 (ポーションの効果)
+//		server.pluginManager.registerEvents(DrinkPotion(this), this)
+
+		// Initialize DrinkPotion
+		drinkPotion = DrinkPotion(this)
+		// Register DrinkPotion as an event listener
+		server.pluginManager.registerEvents(drinkPotion, this)
 	}
 
 	private fun initItems() {
@@ -131,6 +140,15 @@ class SDTM : JavaPlugin() {
 		server.scheduler.scheduleSyncRepeatingTask(this, {
 			nexusScoreboard.checkZombiesNearNexus()
 		}, 0L, 20L) // 20 ticks = 1 second
+	}
+
+	private fun scheduleTabListUpdates() {
+		Bukkit.getScheduler().runTaskTimer(this, Runnable {
+			for (player in server.onlinePlayers) {
+				val cooldowns = drinkPotion.getCooldowns(player)
+				playerList.updatePotionCooldowns(player, cooldowns)
+			}
+		}, 0L, 20L)
 	}
 
 	override fun onDisable() {
