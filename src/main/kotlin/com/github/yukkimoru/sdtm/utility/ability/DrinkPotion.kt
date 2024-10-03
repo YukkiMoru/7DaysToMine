@@ -122,12 +122,14 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		val scaleStep = kotlin.math.abs(startScale - endScale) / steps
 		val increasing = startScale < endScale
 
-		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		var task: BukkitTask? = null
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var currentStep = 0
 			override fun run() {
 				if (currentStep >= steps) {
 					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
-					Bukkit.getScheduler().cancelTask(this.hashCode())
+//					player.sendMessage("SmoothScaleを終了します")
+					task?.cancel()
 					return
 				}
 				val newScale = if (increasing) {
