@@ -107,7 +107,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 		health: Double,
 		weapon: ItemStack?,
 		helmet: ItemStack?,
-		chestplate: ItemStack?,
+		chestPlate: ItemStack?,
 		leggings: ItemStack?,
 		boots: ItemStack?
 	) {
@@ -120,7 +120,7 @@ class SpawnMobs(private val plugin: JavaPlugin) {
 
 		weapon?.let { mob.equipment.setItemInMainHand(it) }
 		helmet?.let { mob.equipment.helmet = it }
-		chestplate?.let { mob.equipment.chestplate = it }
+		chestPlate?.let { mob.equipment.chestplate = it }
 		leggings?.let { mob.equipment.leggings = it }
 		boots?.let { mob.equipment.boots = it }
 	}

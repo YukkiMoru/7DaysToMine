@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility.Items
+package com.github.yukkimoru.sdtm.utility.items
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
 import com.github.yukkimoru.sdtm.world.FactoryItem
