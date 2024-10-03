@@ -8,6 +8,7 @@ import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.ability.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
+import com.github.yukkimoru.sdtm.utility.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
 import com.github.yukkimoru.sdtm.world.DropOres
@@ -79,6 +80,9 @@ class SDTM : JavaPlugin() {
 		initCommands()
 		playerList = TabList()
 		playerList.initialize()
+
+		// GUIを登録
+		server.pluginManager.registerEvents(GUIReceiver(), this)
 	}
 
 	private fun initAbility() {

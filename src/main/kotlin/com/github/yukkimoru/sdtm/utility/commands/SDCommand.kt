@@ -1,6 +1,7 @@
 package com.github.yukkimoru.sdtm.utility.commands
 
 import com.github.yukkimoru.sdtm.master.GameMaster
+import com.github.yukkimoru.sdtm.utility.gui.GUI
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -107,6 +108,29 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 						}
 					}
 				}
+
+				"gui" -> {
+					if (args.size > 1 && args[1].lowercase() == "platform") {
+						if (sender is Player) {
+							val player = sender
+							val platformGUI = GUI.PlatformGUI()
+							player.openInventory(platformGUI)
+							sender.sendMessage(
+								Component.text(
+									"[SDTM] Platform GUI を開きました",
+									NamedTextColor.AQUA
+								)
+							)
+						} else {
+							sender.sendMessage(
+								Component.text(
+									"[SDTM] このコマンドはプレイヤーのみが使用できます",
+									NamedTextColor.RED
+								)
+							)
+						}
+					}
+				}
 			}
 		}
 		return true
@@ -135,12 +159,13 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 	): List<String>? {
 		return if (sender is Player) {
 			when (args.size) {
-				1 -> listOf("kill", "debug", "horde", "scan", "game")
+				1 -> listOf("kill", "debug", "horde", "scan", "game", "gui")
 				2 -> when (args[0].lowercase()) {
 					"debug" -> listOf("true", "false")
 					"horde" -> listOf("start")
 					"scan" -> listOf("100 60 100")
 					"game" -> listOf("start")
+					"gui" -> listOf("platform")
 					else -> emptyList()
 				}
 
