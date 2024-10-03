@@ -50,13 +50,15 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 					4 -> {
 						// Giant Potion
-						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 2.0
+						smoothScale(player, 1.0, 2.0, 20, 10)
+
 						player.sendMessage("§aYou drank a Giant Potion!")
 					}
 
 					5 -> {
 						// Midget Potion
 						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
+
 						player.sendMessage("§aYou drank a Midget Potion!")
 					}
 
@@ -108,7 +110,8 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 			4 -> {
 				// Giant Potion effect ends
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
+				smoothScale(player, 2.0, 1.0, 20, 10)
+
 				player.sendMessage("§cThe effect of the Giant Potion has worn off.")
 			}
 
@@ -122,5 +125,24 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				player.sendMessage("§cThe effect of potion $potionID has worn off.")
 			}
 		}
+	}
+
+	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
+		val stepDuration = duration / steps
+		val scaleStep = (startScale - endScale) / steps
+
+		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+			var currentStep = 0
+			override fun run() {
+				if (currentStep >= steps) {
+					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
+					Bukkit.getScheduler().cancelTask(this.hashCode())
+					return
+				}
+				val newScale = startScale - (scaleStep * currentStep)
+				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = newScale
+				currentStep++
+			}
+		}, 0L, stepDuration)
 	}
 }
