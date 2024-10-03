@@ -85,6 +85,8 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
 
+		playerCooldowns[player]?.remove(potionID)
+
 		when (potionID) {
 			2 -> {
 				// Strength Potion effect ends
@@ -99,7 +101,6 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			4 -> {
 				// Giant Potion effect ends
 				smoothScale(player, 2.0, 1.0, 20, 10)
-
 				player.sendMessage("§cThe effect of the Giant Potion has worn off.")
 			}
 
@@ -115,9 +116,11 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}
 	}
 
+
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
 		val stepDuration = duration / steps
-		val scaleStep = (startScale - endScale) / steps
+		val scaleStep = kotlin.math.abs(startScale - endScale) / steps
+		val increasing = startScale < endScale
 
 		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var currentStep = 0
@@ -127,7 +130,11 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					Bukkit.getScheduler().cancelTask(this.hashCode())
 					return
 				}
-				val newScale = startScale - (scaleStep * currentStep)
+				val newScale = if (increasing) {
+					startScale + (scaleStep * currentStep)
+				} else {
+					startScale - (scaleStep * currentStep)
+				}
 				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = newScale
 				currentStep++
 			}
@@ -137,12 +144,15 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionID] = duration
-		Bukkit.getScheduler().runTaskTimer(plugin, Runnable {
-			val timeLeft = cooldowns[potionID] ?: return@Runnable
-			if (timeLeft > 0) {
-				cooldowns[potionID] = timeLeft - 1
-			} else {
-				cooldowns.remove(potionID)
+		val task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+			override fun run() {
+				val timeLeft = cooldowns[potionID] ?: return
+				if (timeLeft > 0) {
+					cooldowns[potionID] = timeLeft - 1
+				} else {
+					cooldowns.remove(potionID)
+					Bukkit.getScheduler().cancelTask(this.hashCode())
+				}
 			}
 		}, 0L, 20L)
 	}
