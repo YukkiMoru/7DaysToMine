@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import kotlin.math.min
 
+@Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private var potionEffectTask: BukkitTask? = null
@@ -146,7 +147,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionID] = duration
-		val task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			override fun run() {
 				val timeLeft = cooldowns[potionID] ?: return
 				if (timeLeft > 0) {
