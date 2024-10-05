@@ -3,7 +3,6 @@ package com.github.yukkimoru.sdtm.utility.gui
 import com.github.yukkimoru.sdtm.SDTM
 import com.github.yukkimoru.sdtm.tower.Construction
 import com.github.yukkimoru.sdtm.tower.ListenerBlock
-import com.github.yukkimoru.sdtm.tower.ManagePlatform
 import com.github.yukkimoru.sdtm.tower.Tower
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
@@ -40,7 +39,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 				if (listenerBlock.edgeLocation != null) {
 					BuildingTower("archer_1", player, listenerBlock.edgeLocation!!)
 				} else {
-					player.sendMessage("Edge location is null!")
+					player.sendMessage("EdgeLocation is null")
 				}
 			}
 
@@ -80,8 +79,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 				player.playSound(player.location, "minecraft:block.anvil.destroy", 1.0f, 0.5f)
 
 				val towerData = towerManager.getTowerDatabase(clickedTowerID)
-				val managerPlatform = ManagePlatform.getInstance()
-				val edgeLocation = managerPlatform.edgelocation
+				val edgeLocation = listenerBlock.edgeLocation
 				if (edgeLocation != null) {
 					val structureName = "archer_${towerData?.level}"
 					player.sendMessage("StructureName: $structureName")
