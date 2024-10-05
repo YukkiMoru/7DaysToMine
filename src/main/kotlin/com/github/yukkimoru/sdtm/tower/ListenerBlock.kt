@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.tower
 
-import org.bukkit.Bukkit
+import com.github.yukkimoru.sdtm.utility.gui.InventoryGUI
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -34,7 +34,7 @@ class ListenerBlock : Listener {
 					managePlatform.Platform(event.clickedBlock!!.location, 3, 3, Material.CHERRY_PLANKS, event)
 				if (edgeLocation != null) {
 					val player = event.player
-					val gui: Inventory = InventoryGUI.PlatformGUI()
+					val gui: Inventory = InventoryGUI.platformGUI()
 					player.openInventory(gui)
 				}
 			}
@@ -47,7 +47,7 @@ class ListenerBlock : Listener {
 		currentTowerID = sqliteManagerTower.GetTowerID(clickedBlockLocation)
 		if (currentTowerID != 0) {
 			//            player.sendMessage("TowerClick: TowerID " + currentTowerID + " がクリックされました!");
-			val gui: Inventory = InventoryGUI.TowerGUI(currentTowerID)
+			val gui: Inventory = InventoryGUI.towerGUI(currentTowerID)
 			event.player.openInventory(gui)
 		}
 	}
@@ -74,18 +74,6 @@ class ManagerPlatform {
 	): Location? {
 		// Implementation
 		return location
-	}
-}
-
-object InventoryGUI {
-	fun PlatformGUI(): Inventory {
-		// Implementation
-		return Bukkit.createInventory(null, 27, "PlatformGUI")
-	}
-
-	fun TowerGUI(towerID: Int): Inventory {
-		// Implementation
-		return Bukkit.createInventory(null, 54, "TowerGUI")
 	}
 }
 

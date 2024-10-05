@@ -1,4 +1,4 @@
-package org.moru.tower_defense
+package com.github.yukkimoru.sdtm.utility.gui
 
 import com.destroystokyo.paper.profile.ProfileProperty
 import com.github.yukkimoru.sdtm.SDTM
