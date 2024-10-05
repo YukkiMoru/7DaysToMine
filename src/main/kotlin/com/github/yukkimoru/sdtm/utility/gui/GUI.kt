@@ -2,7 +2,7 @@ package org.moru.tower_defense
 
 import com.destroystokyo.paper.profile.ProfileProperty
 import com.github.yukkimoru.sdtm.SDTM
-import com.github.yukkimoru.sdtm.tower.SQLManagerTower
+import com.github.yukkimoru.sdtm.tower.ManagerTower
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -119,3 +119,23 @@ object InventoryGUI {
 		return playerHead
 	}
 }
+
+class SQLManagerTower {
+	companion object {
+		private var instance: ManagerTower? = null
+
+		fun getInstance(): ManagerTower {
+			if (instance == null) {
+				instance = ManagerTower()
+			}
+			return instance!!
+		}
+	}
+
+	fun getTowerDatabase(towerID: Int): TowerData? {
+		// Implementation to retrieve tower data from the database
+		return TowerData(towerID, "Archer", "Type", 1)
+	}
+}
+
+data class TowerData(val TowerID: Int, val TowerName: String, val TowerType: String, val level: Int)

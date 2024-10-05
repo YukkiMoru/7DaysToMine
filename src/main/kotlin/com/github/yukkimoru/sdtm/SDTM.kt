@@ -1,6 +1,7 @@
 package com.github.yukkimoru.sdtm
 
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
+import com.github.yukkimoru.sdtm.tower.ListenerBlock
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
 import com.github.yukkimoru.sdtm.utility.TabList
@@ -37,6 +38,7 @@ class SDTM : JavaPlugin() {
 		initWORLD()
 		initMaster()
 		initMulti()
+		initTower()
 		initTRADE()
 		initUTILITY()
 		scheduleTabListUpdates()
@@ -62,6 +64,11 @@ class SDTM : JavaPlugin() {
 	private fun initMulti() {
 		// PlayerJoinListenerを登録
 		server.pluginManager.registerEvents(PlayerJoinListener(nexusScoreboard), this)
+	}
+
+	private fun initTower() {
+		// Towerを登録
+		server.pluginManager.registerEvents(ListenerBlock(), this)
 	}
 
 	private fun initTRADE() {
