@@ -81,7 +81,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 
 				val towerData = towerManager.getTowerDatabase(clickedTowerID)
 				val managerPlatform = ManagePlatform.getInstance()
-				val edgeLocation = managerPlatform.fetchEdgelocation()
+				val edgeLocation = managerPlatform.edgelocation
 				if (edgeLocation != null) {
 					val structureName = "archer_${towerData?.level}"
 					player.sendMessage("StructureName: $structureName")
@@ -89,10 +89,11 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 					player.sendMessage("TowerID: $clickedTowerID was upgraded")
 
 					Tower.removeTowerStand(clickedTowerID)
+					val size = construction.getSizeStructure(structureName)
 					val spawnLocation = edgeLocation.clone().apply {
-						this.x += (construction.getSizeStructure(structureName).x / 2) - 0.5
-						this.y += construction.getSizeStructure(structureName).y + 1.0
-						this.z += (construction.getSizeStructure(structureName).z / 2) - 0.5
+						this.x += (size.x / 2) - 0.5
+						this.y += size.y + 1.0
+						this.z += (size.z / 2) - 0.5
 					}
 					val newArmorStand = edgeLocation.world!!.spawn(spawnLocation, ArmorStand::class.java)
 					Tower(newArmorStand, 1.0, 1L, 10.0, clickedTowerID, JavaPlugin.getPlugin(SDTM::class.java))
