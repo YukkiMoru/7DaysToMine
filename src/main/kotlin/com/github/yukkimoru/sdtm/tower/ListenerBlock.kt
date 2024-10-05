@@ -18,9 +18,7 @@ class ListenerBlock : Listener {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.hand == EquipmentSlot.HAND &&
-			!player.isSneaking
-		) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.hand == EquipmentSlot.HAND && !player.isSneaking) {
 			// プラットフォームかどうかを判定
 			PlatformClick(event.clickedBlock!!.type, event)
 			// タワーかどうかを判定
@@ -29,7 +27,7 @@ class ListenerBlock : Listener {
 	}
 
 	private fun PlatformClick(clickedBlock: Material, event: PlayerInteractEvent) {
-		val managePlatform: ManagePlatform = ManagePlatform()
+		val managePlatform: ManagePlatform = ManagePlatform.getInstance()
 		if (clickedBlock == Material.CHERRY_PLANKS) {
 			if (event.player.inventory.itemInMainHand.type == Material.AIR) {
 				edgeLocation =

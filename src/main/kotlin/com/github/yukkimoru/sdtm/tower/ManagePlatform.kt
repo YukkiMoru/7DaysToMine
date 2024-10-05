@@ -13,6 +13,17 @@ import org.bukkit.event.player.PlayerInteractEvent
 */
 
 class ManagePlatform {
+	companion object {
+		private var instance: ManagePlatform? = null
+
+		fun getInstance(): ManagePlatform {
+			if (instance == null) {
+				instance = ManagePlatform()
+			}
+			return instance!!
+		}
+	}
+
 	var edgelocation: Location? = null
 		private set
 
