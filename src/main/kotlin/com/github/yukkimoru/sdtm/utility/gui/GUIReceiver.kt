@@ -3,7 +3,7 @@ package com.github.yukkimoru.sdtm.utility.gui
 import com.github.yukkimoru.sdtm.SDTM
 import com.github.yukkimoru.sdtm.tower.Construction
 import com.github.yukkimoru.sdtm.tower.ListenerBlock
-import com.github.yukkimoru.sdtm.tower.ManagerPlatform
+import com.github.yukkimoru.sdtm.tower.ManagePlatform
 import com.github.yukkimoru.sdtm.tower.Tower
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
@@ -31,16 +31,14 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 	private fun handlePlatformGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
 		val player = event.whoClicked as Player
-		val managerPlatform = ManagerPlatform.getInstance()
-		val edgeLocation = managerPlatform.fetchEdgelocation()
 
 		player.sendMessage("You clicked at slot ${event.slot}")
-		player.sendMessage("EdgeLocation: $edgeLocation")
+		player.sendMessage("EdgeLocation: ${listenerBlock.edgeLocation}")
 
 		when (event.slot) {
 			2 -> {
-				if (edgeLocation != null) {
-					BuildingTower("archer_1", player, edgeLocation)
+				if (listenerBlock.edgeLocation != null) {
+					BuildingTower("archer_1", player, listenerBlock.edgeLocation!!)
 				} else {
 					player.sendMessage("Edge location is null!")
 				}
@@ -82,7 +80,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 				player.playSound(player.location, "minecraft:block.anvil.destroy", 1.0f, 0.5f)
 
 				val towerData = towerManager.getTowerDatabase(clickedTowerID)
-				val managerPlatform = ManagerPlatform.getInstance()
+				val managerPlatform = ManagePlatform.getInstance()
 				val edgeLocation = managerPlatform.fetchEdgelocation()
 				if (edgeLocation != null) {
 					val structureName = "archer_${towerData?.level}"
@@ -92,9 +90,9 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 
 					Tower.removeTowerStand(clickedTowerID)
 					val spawnLocation = edgeLocation.clone().apply {
-						x += (construction.getSizeStructure(structureName).x / 2) - 0.5
-						y += construction.getSizeStructure(structureName).y + 1.0
-						z += (construction.getSizeStructure(structureName).z / 2) - 0.5
+						this.x += (construction.getSizeStructure(structureName).x / 2) - 0.5
+						this.y += construction.getSizeStructure(structureName).y + 1.0
+						this.z += (construction.getSizeStructure(structureName).z / 2) - 0.5
 					}
 					val newArmorStand = edgeLocation.world!!.spawn(spawnLocation, ArmorStand::class.java)
 					Tower(newArmorStand, 1.0, 1L, 10.0, clickedTowerID, JavaPlugin.getPlugin(SDTM::class.java))
@@ -108,9 +106,9 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 		construction.summonStructure(edgeLocation, towerName)
 		val size = construction.getSizeStructure(towerName)
 		val spawnLocation = edgeLocation.clone().apply {
-			x += (size.x / 2) - 0.5
-			y += size.y + 1.0
-			z += (size.z / 2) - 0.5
+			this.x += (size.x / 2) - 0.5
+			this.y += size.y + 1.0
+			this.z += (size.z / 2) - 0.5
 		}
 		val armorStand = edgeLocation.world!!.spawn(spawnLocation, ArmorStand::class.java)
 		Tower(armorStand, 100.0, 1L, 100.0, towerID, JavaPlugin.getPlugin(SDTM::class.java))

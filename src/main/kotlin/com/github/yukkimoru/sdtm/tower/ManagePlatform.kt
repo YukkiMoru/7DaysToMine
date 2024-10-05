@@ -18,18 +18,6 @@ class ManagePlatform {
 
 	private var debugMode = true // デバッグモードのフラグ
 
-	companion object {
-		private val instance: ManagePlatform by lazy { ManagePlatform() }
-
-		fun fetchInstance(): ManagePlatform {
-			return instance
-		}
-	}
-
-	fun fetchEdgelocation(): Location? {
-		return instance.edgelocation
-	}
-
 	fun setDebugMode(debugMode: Boolean) {
 		this.debugMode = debugMode
 	}
@@ -41,28 +29,33 @@ class ManagePlatform {
 		material: Material,
 		event: PlayerInteractEvent
 	): Location? {
-		//クリックされた場所の座標
+		// デバッグメッセージを追加
+		if (debugMode) {
+			event.player.sendMessage("Platform method called with location: $location, sizeX: $sizeX, sizeZ: $sizeZ, material: $material")
+		}
+
+		// クリックされた場所の座標
 		val x = location.x.toInt()
 		val y = location.y.toInt()
 		val z = location.z.toInt()
 
-		//東西南北
+		// 東西南北
 		var west = 0
 		var east = 0
 		var south = 0
 		var north = 0
 
-		//東西南北のブロックの数を数える
+		// 東西南北のブロックの数を数える
 		while (location.world.getBlockAt(x - 1 + west, location.y.toInt(), z).type == material) west--
 		while (location.world.getBlockAt(x + 1 + east, location.y.toInt(), z).type == material) east++
 		while (location.world.getBlockAt(x, location.y.toInt(), z + 1 + south).type == material) south++
 		while (location.world.getBlockAt(x, location.y.toInt(), z - 1 + north).type == material) north--
 
-		//東西南北のブロックの数を数える
+		// 東西南北のブロックの数を数える
 		val PlatformX = east - west + 1
 		val PlatformZ = south - north + 1
 
-		//Edge座標
+		// Edge座標
 		val EdgeX = x + west
 		val EdgeZ = z + north
 
@@ -78,7 +71,7 @@ class ManagePlatform {
 			player.sendMessage("Clicked " + (location.x) + " " + (location.y) + " " + (location.z))
 		}
 
-		//プラットフォームの判定
+		// プラットフォームの判定
 		val player = event.player
 		if (PlatformX == sizeX && PlatformZ == sizeZ) {
 			for (i in EdgeX until (EdgeX + PlatformX)) {
@@ -111,6 +104,9 @@ class ManagePlatform {
 			player.sendMessage("You clicked part of $sizeX * $sizeZ $material!")
 		}
 		edgelocation = Location(location.world!!, (EdgeX + 1).toDouble(), location.y, (EdgeZ + 1).toDouble())
+		if (debugMode) {
+			player.sendMessage("EdgeLocation set to: $edgelocation")
+		}
 		return edgelocation
 	}
 }

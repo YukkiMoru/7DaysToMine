@@ -12,6 +12,8 @@ import org.bukkit.inventory.Inventory
 
 class ListenerBlock : Listener {
 	private var currentTowerID: Int = 0
+	var edgeLocation: Location? = null
+		private set
 
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
@@ -27,10 +29,10 @@ class ListenerBlock : Listener {
 	}
 
 	private fun PlatformClick(clickedBlock: Material, event: PlayerInteractEvent) {
-		val managePlatform: ManagePlatform = ManagerPlatform.getInstance()
+		val managePlatform: ManagePlatform = ManagePlatform()
 		if (clickedBlock == Material.CHERRY_PLANKS) {
 			if (event.player.inventory.itemInMainHand.type == Material.AIR) {
-				val edgeLocation: Location? =
+				edgeLocation =
 					managePlatform.Platform(event.clickedBlock!!.location, 3, 3, Material.CHERRY_PLANKS, event)
 				if (edgeLocation != null) {
 					val player = event.player
@@ -43,10 +45,9 @@ class ListenerBlock : Listener {
 
 	private fun TowerClick(event: PlayerInteractEvent) {
 		val clickedBlockLocation = event.clickedBlock!!.location
-		val sqliteManagerTower: ManagerTower = ManagerTower.getInstance()
+		val sqliteManagerTower: ManagerTower = ManagerTower()
 		currentTowerID = sqliteManagerTower.GetTowerID(clickedBlockLocation)
 		if (currentTowerID != 0) {
-			//            player.sendMessage("TowerClick: TowerID " + currentTowerID + " がクリックされました!");
 			val gui: Inventory = InventoryGUI.towerGUI(currentTowerID)
 			event.player.openInventory(gui)
 		}
@@ -54,29 +55,5 @@ class ListenerBlock : Listener {
 
 	fun getCurrentTowerID(): Int {
 		return currentTowerID
-	}
-}
-
-class ManagerPlatform {
-	companion object {
-		private var instance: ManagePlatform? = null
-
-		fun getInstance(): ManagePlatform {
-			if (instance == null) {
-				instance = ManagePlatform()
-			}
-			return instance!!
-		}
-	}
-
-	fun Platform(
-		location: Location,
-		width: Int,
-		height: Int,
-		material: Material,
-		event: PlayerInteractEvent
-	): Location? {
-		// Implementation
-		return location
 	}
 }
