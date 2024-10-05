@@ -19,18 +19,15 @@ class ManagePlatform {
 	private var debugMode = true // デバッグモードのフラグ
 
 	companion object {
-		private var instance: ManagePlatform? = null
+		private val instance: ManagePlatform by lazy { ManagePlatform() }
 
-		fun getInstance(): ManagePlatform {
-			if (instance == null) {
-				instance = ManagePlatform()
-			}
-			return instance!!
+		fun fetchInstance(): ManagePlatform {
+			return instance
 		}
 	}
 
 	fun fetchEdgelocation(): Location? {
-		return instance!!.edgelocation
+		return instance.edgelocation
 	}
 
 	fun setDebugMode(debugMode: Boolean) {
