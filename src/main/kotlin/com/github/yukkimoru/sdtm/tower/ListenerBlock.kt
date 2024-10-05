@@ -51,6 +51,10 @@ class ListenerBlock : Listener {
 			event.player.openInventory(gui)
 		}
 	}
+
+	fun getCurrentTowerID(): Int {
+		return currentTowerID
+	}
 }
 
 class ManagerPlatform {
@@ -74,23 +78,5 @@ class ManagerPlatform {
 	): Location? {
 		// Implementation
 		return location
-	}
-}
-
-class SQLManagerTower {
-	companion object {
-		private var instance: ManagerTower? = null
-
-		fun getInstance(): ManagerTower {
-			if (instance == null) {
-				instance = ManagerTower()
-			}
-			return instance!!
-		}
-	}
-
-	fun GetTowerID(location: Location): Int {
-		// Implementation
-		return 1
 	}
 }

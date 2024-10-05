@@ -89,7 +89,7 @@ class SDTM : JavaPlugin() {
 		playerList.initialize()
 
 		// GUIを登録
-		server.pluginManager.registerEvents(GUIReceiver(), this)
+		server.pluginManager.registerEvents(GUIReceiver(ListenerBlock()), this)
 	}
 
 	private fun initAbility() {

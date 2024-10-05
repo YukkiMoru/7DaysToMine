@@ -18,6 +18,20 @@ class ManagePlatform {
 
 	private var debugMode = true // デバッグモードのフラグ
 
+	companion object {
+		private var instance: ManagePlatform? = null
+
+		fun getInstance(): ManagePlatform {
+			if (instance == null) {
+				instance = ManagePlatform()
+			}
+			return instance!!
+		}
+	}
+
+	fun fetchEdgelocation(): Location? {
+		return instance!!.edgelocation
+	}
 
 	fun setDebugMode(debugMode: Boolean) {
 		this.debugMode = debugMode
@@ -75,7 +89,7 @@ class ManagePlatform {
 					if (debugMode) player.sendMessage("Block was checked at " + i + " " + location.y.toInt() + " " + j)
 					if (location.world.getBlockAt(
 							Location(
-								location.world,
+								location.world!!,
 								i.toDouble(),
 								location.y,
 								j.toDouble()
@@ -99,18 +113,7 @@ class ManagePlatform {
 		if (debugMode) {
 			player.sendMessage("You clicked part of $sizeX * $sizeZ $material!")
 		}
-		edgelocation = Location(location.world, (EdgeX + 1).toDouble(), location.y, (EdgeZ + 1).toDouble())
+		edgelocation = Location(location.world!!, (EdgeX + 1).toDouble(), location.y, (EdgeZ + 1).toDouble())
 		return edgelocation
-	}
-
-	companion object {
-		var instance: ManagePlatform = ManagePlatform()
-			get() {
-				if (field == null) {
-					field = ManagePlatform()
-				}
-				return field
-			}
-			private set
 	}
 }
