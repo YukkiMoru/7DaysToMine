@@ -1,7 +1,7 @@
 package com.github.yukkimoru.sdtm.utility.commands
 
 import com.github.yukkimoru.sdtm.master.GameMaster
-import com.github.yukkimoru.sdtm.utility.gui.GUI
+import com.github.yukkimoru.sdtm.utility.gui.InventoryGUI
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -113,7 +113,7 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 					if (args.size > 1 && args[1].lowercase() == "platform") {
 						if (sender is Player) {
 							val player = sender
-							val platformGUI = GUI.PlatformGUI()
+							val platformGUI = InventoryGUI.platformGUI()
 							player.openInventory(platformGUI)
 							sender.sendMessage(
 								Component.text(
