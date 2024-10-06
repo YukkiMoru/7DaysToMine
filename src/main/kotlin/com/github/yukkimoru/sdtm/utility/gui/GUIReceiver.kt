@@ -82,7 +82,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 				player.playSound(player.location, "minecraft:block.anvil.destroy", 1.0f, 0.5f)
 
 				val towerData = towerManager.getTowerDatabase(clickedTowerID)
-				val edgeLocation = listenerBlock.edgeLocation
+				val edgeLocation = ListenerBlockManager.getEdgeLocation(player)
 				if (edgeLocation != null) {
 					val structureName = "archer_${towerData?.level}"
 					player.sendMessage("StructureName: $structureName")
