@@ -2,6 +2,7 @@ package com.github.yukkimoru.sdtm
 
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.tower.ListenerBlock
+import com.github.yukkimoru.sdtm.tower.SQL
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
 import com.github.yukkimoru.sdtm.utility.TabList
@@ -69,6 +70,10 @@ class SDTM : JavaPlugin() {
 	private fun initTower() {
 		// Towerを登録
 		server.pluginManager.registerEvents(ListenerBlock(), this)
+
+		// SQLからデータの全削除
+		val sql = SQL()
+		sql.deleteAllData()
 	}
 
 	private fun initTRADE() {
