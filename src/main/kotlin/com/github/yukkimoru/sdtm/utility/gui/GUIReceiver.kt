@@ -3,6 +3,7 @@ package com.github.yukkimoru.sdtm.utility.gui
 import com.github.yukkimoru.sdtm.SDTM
 import com.github.yukkimoru.sdtm.tower.Construction
 import com.github.yukkimoru.sdtm.tower.ListenerBlock
+import com.github.yukkimoru.sdtm.tower.ListenerBlockManager
 import com.github.yukkimoru.sdtm.tower.Tower
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
@@ -32,12 +33,14 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 		val player = event.whoClicked as Player
 
 		player.sendMessage("You clicked at slot ${event.slot}")
-		player.sendMessage("EdgeLocation: ${listenerBlock.edgeLocation}")
+		// get edgelocation from ListenerBlockManager
+		val edgeLocation = ListenerBlockManager.getEdgeLocation(player)
 
 		when (event.slot) {
 			2 -> {
-				if (listenerBlock.edgeLocation != null) {
-					BuildingTower("archer_1", player, listenerBlock.edgeLocation!!)
+				if (edgeLocation != null) {
+					player.sendMessage("edgeLocation from ListenerBlockManager: $edgeLocation")
+					BuildingTower("archer_1", player, edgeLocation)
 				} else {
 					player.sendMessage("EdgeLocation is null")
 				}

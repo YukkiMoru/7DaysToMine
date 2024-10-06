@@ -3,12 +3,31 @@ package com.github.yukkimoru.sdtm.tower
 import com.github.yukkimoru.sdtm.utility.gui.InventoryGUI
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.Inventory
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+
+object ListenerBlockManager {
+	private val listenerBlocks = ConcurrentHashMap<UUID, ListenerBlock>()
+
+	fun getListenerBlock(player: Player): ListenerBlock {
+		return listenerBlocks.computeIfAbsent(player.uniqueId) { ListenerBlock() }
+	}
+
+	fun removeListenerBlock(player: Player) {
+		listenerBlocks.remove(player.uniqueId)
+	}
+
+	fun getEdgeLocation(player: Player): Location? {
+		return getListenerBlock(player).edgeLocation
+	}
+}
 
 class ListenerBlock : Listener {
 	private var currentTowerID: Int = 0
@@ -22,9 +41,10 @@ class ListenerBlock : Listener {
 		val player = event.player
 		if (event.action == Action.RIGHT_CLICK_BLOCK && event.hand == EquipmentSlot.HAND && !player.isSneaking) {
 			// プラットフォームかどうかを判定
-			PlatformClick(event.clickedBlock!!.type, event)
+			val listenerBlock = ListenerBlockManager.getListenerBlock(player)
+			listenerBlock.PlatformClick(event.clickedBlock!!.type, event)
 			// タワーかどうかを判定
-			TowerClick(event)
+			listenerBlock.TowerClick(event)
 		}
 	}
 
