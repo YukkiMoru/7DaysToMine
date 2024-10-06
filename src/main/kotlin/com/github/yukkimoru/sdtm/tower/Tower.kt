@@ -6,21 +6,22 @@ import org.bukkit.entity.Monster
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitTask
 
+@Suppress("CanBeParameter")
 class Tower(
 	private var armorStand: ArmorStand,
 	private val damage: Double,
 	private val fireRate: Long,
 	private val range: Double,
-	private val TowerID: Int,
+	private val towerID: Int,
 	private val plugin: JavaPlugin
 ) {
 	private val attackTask: BukkitTask =
 		plugin.server.scheduler.runTaskTimer(plugin, Runnable { attackMobs() }, 0L, fireRate)
 
 	init {
-		armorStand.customName = TowerID.toString()
+		armorStand.customName = towerID.toString()
 		armorStand.isCustomNameVisible = true
-		towers[TowerID] = this
+		towers[towerID] = this
 	}
 
 	fun getArmorStand(): ArmorStand {
@@ -58,18 +59,18 @@ class Tower(
 	companion object {
 		private val towers = mutableMapOf<Int, Tower>()
 
-		fun getTowerById(TowerID: Int): Tower? {
-			return towers[TowerID]
+		private fun getTowerById(towerID: Int): Tower? {
+			return towers[towerID]
 		}
 
-		fun removeTowerStand(TowerID: Int) {
-			val tower = getTowerById(TowerID)
+		fun removeTowerStand(towerID: Int) {
+			val tower = getTowerById(towerID)
 			tower?.let {
 				for (entity in it.armorStand.world.entities) {
-					if (entity is ArmorStand && entity.customName == TowerID.toString()) {
+					if (entity is ArmorStand && entity.customName == towerID.toString()) {
 						entity.remove()
 						it.cancelAttackTask()
-						towers.remove(TowerID)
+						towers.remove(towerID)
 						break
 					}
 				}
