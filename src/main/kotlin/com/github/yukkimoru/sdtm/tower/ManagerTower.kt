@@ -82,9 +82,9 @@ class ManagerTower {
 					for (y in EdgeLocation.y.toInt() until EdgeLocation.y.toInt() + size.y) {
 						for (z in EdgeLocation.z.toInt() until EdgeLocation.z.toInt() + size.z) {
 							pstmt.setInt(1, TowerID)
-							pstmt.setInt(2, x)
-							pstmt.setInt(3, y)
-							pstmt.setInt(4, z)
+							pstmt.setInt(2, x - 1)
+							pstmt.setInt(3, y + 1)
+							pstmt.setInt(4, z - 1)
 							pstmt.executeUpdate()
 						}
 					}

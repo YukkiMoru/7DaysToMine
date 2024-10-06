@@ -65,6 +65,7 @@ class ListenerBlock : Listener {
 		val clickedBlockLocation = event.clickedBlock!!.location
 		val sqliteManagerTower: ManagerTower = ManagerTower()
 		currentTowerID = sqliteManagerTower.GetTowerID(clickedBlockLocation)
+		event.player.sendMessage("Current Tower ID: $currentTowerID") // デバッグメッセージ追加
 		if (currentTowerID != 0) {
 			val gui: Inventory = InventoryGUI.towerGUI(currentTowerID)
 			event.player.openInventory(gui)
