@@ -91,7 +91,7 @@ class Construction {
 		val coordinatesList = towerManager.getCoordinates(towerID)
 
 		for (coordinates in coordinatesList) {
-			val world: World? = Bukkit.getWorld("TD_world") // Replace with your world name
+			val world: World? = Bukkit.getWorld("world") // Replace with your world name
 			val location = Location(world, coordinates.x.toDouble(), coordinates.y.toDouble(), coordinates.z.toDouble())
 			location.block.type = Material.AIR
 		}
