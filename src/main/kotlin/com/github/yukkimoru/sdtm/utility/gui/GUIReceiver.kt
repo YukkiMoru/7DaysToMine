@@ -64,32 +64,34 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 
 		player.sendMessage("You clicked at slot ${event.slot}")
 
+		val towerID = listenerBlock.getCurrentTowerID(player)
+
+
+
 		when (event.slot) {
 			8 -> {
-				val towerIdToRemove = listenerBlock.getCurrentTowerID()
-				construction.removeStructure(towerIdToRemove)
-				towerManager.removeTower(towerIdToRemove)
-				towerManager.removeTowerCoordinates(towerIdToRemove)
-				Tower.removeTowerStand(towerIdToRemove)
-				player.sendMessage("TowerID: $towerIdToRemove was removed")
+				construction.removeStructure(towerID)
+				towerManager.removeTower(towerID)
+				towerManager.removeTowerCoordinates(towerID)
+				Tower.removeTowerStand(towerID)
+				player.sendMessage("TowerID: $towerID was removed")
 			}
 
 			49 -> {
-				val clickedTowerID = listenerBlock.getCurrentTowerID()
-				towerManager.upgradeTower(clickedTowerID)
-				val newGui = InventoryGUI.towerGUI(clickedTowerID)
+				towerManager.upgradeTower(towerID)
+				val newGui = InventoryGUI.towerGUI(towerID)
 				player.openInventory(newGui)
 				player.playSound(player.location, "minecraft:block.anvil.destroy", 1.0f, 0.5f)
 
-				val towerData = towerManager.getTowerDatabase(clickedTowerID)
+				val towerData = towerManager.getTowerDatabase(towerID)
 				val edgeLocation = ListenerBlockManager.getEdgeLocation(player)
 				if (edgeLocation != null) {
 					val structureName = "archer_${towerData?.level}"
 					player.sendMessage("StructureName: $structureName")
 					construction.summonStructure(edgeLocation, structureName)
-					player.sendMessage("TowerID: $clickedTowerID was upgraded")
+					player.sendMessage("TowerID: $towerID was upgraded")
 
-					Tower.removeTowerStand(clickedTowerID)
+					Tower.removeTowerStand(towerID)
 					val size = construction.getSizeStructure(structureName)
 					val spawnLocation = edgeLocation.clone().apply {
 						this.x += (size.x / 2) - 0.5
@@ -97,7 +99,7 @@ class GUIReceiver(private val listenerBlock: ListenerBlock) : Listener {
 						this.z += (size.z / 2) - 0.5
 					}
 					val newArmorStand = edgeLocation.world!!.spawn(spawnLocation, ArmorStand::class.java)
-					Tower(newArmorStand, 1.0, 1L, 10.0, clickedTowerID, JavaPlugin.getPlugin(SDTM::class.java))
+					Tower(newArmorStand, 1.0, 1L, 10.0, towerID, JavaPlugin.getPlugin(SDTM::class.java))
 				}
 			}
 		}

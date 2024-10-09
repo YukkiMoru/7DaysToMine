@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 object ListenerBlockManager {
 	private val listenerBlocks = ConcurrentHashMap<UUID, ListenerBlock>()
+	private val playerTowerIDs = ConcurrentHashMap<UUID, Int>()
 
 	fun getListenerBlock(player: Player): ListenerBlock {
 		return listenerBlocks.computeIfAbsent(player.uniqueId) { ListenerBlock() }
@@ -22,15 +23,23 @@ object ListenerBlockManager {
 
 	fun removeListenerBlock(player: Player) {
 		listenerBlocks.remove(player.uniqueId)
+		playerTowerIDs.remove(player.uniqueId)
 	}
 
 	fun getEdgeLocation(player: Player): Location? {
 		return getListenerBlock(player).edgeLocation
 	}
+
+	fun getCurrentTowerID(player: Player): Int {
+		return playerTowerIDs.getOrDefault(player.uniqueId, 0)
+	}
+
+	fun setCurrentTowerID(player: Player, towerID: Int) {
+		playerTowerIDs[player.uniqueId] = towerID
+	}
 }
 
 class ListenerBlock : Listener {
-	private var currentTowerID: Int = 0
 	var edgeLocation: Location? = null
 		private set
 
@@ -63,8 +72,9 @@ class ListenerBlock : Listener {
 
 	private fun TowerClick(event: PlayerInteractEvent) {
 		val clickedBlockLocation = event.clickedBlock!!.location
-		val sqliteManagerTower: ManagerTower = ManagerTower()
-		currentTowerID = sqliteManagerTower.GetTowerID(clickedBlockLocation)
+		val sqliteManagerTower = ManagerTower()
+		val currentTowerID = sqliteManagerTower.GetTowerID(clickedBlockLocation)
+		ListenerBlockManager.setCurrentTowerID(event.player, currentTowerID)
 		event.player.sendMessage("Current Tower ID: $currentTowerID") // デバッグメッセージ追加
 		if (currentTowerID != 0) {
 			val gui: Inventory = InventoryGUI.towerGUI(currentTowerID)
@@ -72,12 +82,12 @@ class ListenerBlock : Listener {
 		}
 	}
 
-	fun getCurrentTowerID(): Int {
-		return currentTowerID
-	}
-
 	fun setDebugMode(debugMode: Boolean) {
 		this.debugMode = debugMode
+	}
+
+	fun getCurrentTowerID(player: Player): Int {
+		return ListenerBlockManager.getCurrentTowerID(player)
 	}
 
 	fun Platform(
