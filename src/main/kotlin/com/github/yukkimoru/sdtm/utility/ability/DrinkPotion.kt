@@ -32,36 +32,37 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			val duration = container.get(NamespacedKey(plugin, "duration"), PersistentDataType.INTEGER) ?: 0
 
 			if (potionID != null) {
+				val cooldowns = playerCooldowns[player]
+				if (cooldowns != null && cooldowns.containsKey(potionID)) {
+					player.sendMessage("§cクールダウン中です：残り${cooldowns[potionID]}秒")
+					event.isCancelled = true
+					return
+				}
+
 				when (potionID) {
 					1 -> {
 						// Healing Potion
-						player.health =
-							min(player.health + 4, player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)
+						player.health = min(player.health + 4, player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)
 						player.sendMessage("§aYou drank a Healing Potion!")
 					}
-
 					2 -> {
 						// Strength Potion
 						player.sendMessage("§aYou drank a Strength Potion!")
 					}
-
 					3 -> {
 						// Speed Potion
 						player.sendMessage("§aYou drank a Speed Potion!")
 					}
-
 					4 -> {
 						// Giant Potion
 						smoothScale(player, 1.0, 2.0, 20, 10)
 						player.sendMessage("§aYou drank a Giant Potion!")
 					}
-
 					5 -> {
 						// Midget Potion
 						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
 						player.sendMessage("§aYou drank a Midget Potion!")
 					}
-
 					else -> {
 						player.sendMessage("§cUnknown PotionID: $potionID")
 					}
@@ -75,7 +76,6 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			player.sendMessage("§cYou drank a non-potion item.")
 		}
 	}
-
 	private fun setTimer(player: Player, potionID: Int, duration: Int) {
 		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
 			removeTimer(player, potionID)
