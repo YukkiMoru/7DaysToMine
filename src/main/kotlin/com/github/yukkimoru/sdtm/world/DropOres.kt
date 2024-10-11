@@ -34,13 +34,22 @@ class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryT
 			val dropCount = calculateDropCount(luck)
 			if (dropCount > 0) {
 				val dropItem = when (block.type) {
-					Material.COAL_ORE -> factoryItem.createItemStack(
-						Material.CHARCOAL,
+					Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE -> factoryItem.createItemStack(
+						Material.COAL,
 						dropCount,
-						"§7§l褐炭",
-						listOf("§7燃料として使える", "§c§l☀780秒"),
+						"§7§l石炭",
+						listOf("§7燃料として使える"),
 						"common"
 					)
+
+					Material.COAL_BLOCK -> factoryItem.createItemStack(
+						Material.COAL,
+						dropCount,
+						"§7§l石炭",
+						listOf("§7燃料として使える"),
+						"common"
+					)
+
 
 					Material.IRON_ORE -> factoryItem.createItemStack(
 						Material.RAW_IRON,

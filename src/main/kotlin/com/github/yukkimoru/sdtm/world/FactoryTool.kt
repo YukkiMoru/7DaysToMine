@@ -15,29 +15,34 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val dropRate: Double,
 	)
 
-	private val earlyStagePickaxe: Map<Material, OreData> = mapOf(
+	private val tier1Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
 	)
 
-	private val midStagePickaxe: Map<Material, OreData> = mapOf(
+	private val tier2Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.5),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.5),
+		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 0.3),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.2),
 	)
 
-	private val endStagePickaxe: Map<Material, OreData> = mapOf(
+	private val tier3Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.0),
+		Material.COAL_BLOCK to OreData("石炭の塊", 0.6, 3.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 1.5),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 1.0),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.5),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.0),
+		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.6, 3.0),
+		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 0.6),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.4),
+		Material.ORANGE_STAINED_GLASS to OreData("琥珀鉱石", 0.5, 0.3),
 	)
 
 	val allBreakableMaterials: List<Material> =
-		(earlyStagePickaxe.keys + midStagePickaxe.keys + endStagePickaxe.keys).toSet().toList()
+		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys).toSet().toList()
 
 	private fun createUnbreakableTool(
 		material: Material,
@@ -58,11 +63,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun createEarlyStagePickaxe(): ItemStack {
-		val destroyableBlocks = earlyStagePickaxe.entries.joinToString(",") {
+	fun createTier1Pickaxe(): ItemStack {
+		val destroyableBlocks = tier1Pickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = earlyStagePickaxe.entries.map {
+		val lore = tier1Pickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
@@ -75,11 +80,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		)
 	}
 
-	fun createMidStagePickaxe(): ItemStack {
-		val destroyableBlocks = midStagePickaxe.entries.joinToString(",") {
+	fun createTier2Pickaxe(): ItemStack {
+		val destroyableBlocks = tier2Pickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = midStagePickaxe.entries.map {
+		val lore = tier2Pickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
@@ -92,11 +97,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		)
 	}
 
-	fun createLateStagePickaxe(): ItemStack {
-		val destroyableBlocks = endStagePickaxe.entries.joinToString(",") {
+	fun createTier3Pickaxe(): ItemStack {
+		val destroyableBlocks = tier3Pickaxe.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = endStagePickaxe.entries.map {
+		val lore = tier3Pickaxe.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
