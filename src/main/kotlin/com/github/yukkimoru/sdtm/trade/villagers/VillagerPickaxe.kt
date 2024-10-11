@@ -43,7 +43,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 
 				// Trade 1: 10 emeralds for 1 Early Stage Pickaxe
 				val buyItem1 = ItemStack(Material.EMERALD, 10)
-				val sellItem1 = factoryTool.createEarlyStagePickaxe()
+				val sellItem1 = factoryTool.createTier1Pickaxe()
 				val recipe1 = MerchantRecipe(sellItem1, 9999999)
 				recipe1.addIngredient(buyItem1)
 				recipes.add(recipe1)
@@ -57,7 +57,7 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 
 				// Trade 3: 30 emeralds for 1 Late Stage Pickaxe
 				val buyItem3 = ItemStack(Material.EMERALD, 30)
-				val sellItem3 = factoryTool.createLateStagePickaxe()
+				val sellItem3 = factoryTool.createTier3Pickaxe()
 				val recipe3 = MerchantRecipe(sellItem3, 9999999)
 				recipe3.addIngredient(buyItem3)
 				recipes.add(recipe3)
