@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
-import com.github.yukkimoru.sdtm.world.FactoryPotion
+import com.github.yukkimoru.sdtm.utility.potions.FactoryPotion
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material

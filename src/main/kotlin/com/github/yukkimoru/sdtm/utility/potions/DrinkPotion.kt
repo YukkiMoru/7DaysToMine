@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility.ability
+package com.github.yukkimoru.sdtm.utility.potions
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import kotlin.math.abs
 import kotlin.math.min
 
 @Suppress("SameParameterValue")
@@ -120,7 +121,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
 		val stepDuration = duration / steps
-		val scaleStep = kotlin.math.abs(startScale - endScale) / steps
+		val scaleStep = abs(startScale - endScale) / steps
 		val increasing = startScale < endScale
 
 		var task: BukkitTask? = null

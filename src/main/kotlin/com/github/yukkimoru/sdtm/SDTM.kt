@@ -5,7 +5,7 @@ import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
-import com.github.yukkimoru.sdtm.utility.ability.DrinkPotion
+import com.github.yukkimoru.sdtm.utility.potions.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.utility.gui.GUIReceiver
