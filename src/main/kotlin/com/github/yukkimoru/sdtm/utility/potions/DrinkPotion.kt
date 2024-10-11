@@ -15,10 +15,8 @@ import org.bukkit.scheduler.BukkitTask
 import kotlin.math.abs
 import kotlin.math.min
 
-@Suppress("SameParameterValue")
-class DrinkPotion(private val plugin: Plugin) : Listener {
+class DrinkPotion(private val plugin: Plugin, private val potionList: PotionList) : Listener {
 
-	private var potionEffectTask: BukkitTask? = null
 	private val playerCooldowns = mutableMapOf<Player, MutableMap<Int, Int>>()
 
 	@EventHandler
@@ -40,35 +38,8 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					return
 				}
 
-				when (potionID) {
-					1 -> {
-						// Healing Potion
-						player.health = min(player.health + 4, player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)
-						player.sendMessage("§aYou drank a Healing Potion!")
-					}
-					2 -> {
-						// Strength Potion
-						player.sendMessage("§aYou drank a Strength Potion!")
-					}
-					3 -> {
-						// Speed Potion
-						player.sendMessage("§aYou drank a Speed Potion!")
-					}
-					4 -> {
-						// Giant Potion
-						smoothScale(player, 1.0, 2.0, 20, 10)
-						player.sendMessage("§aYou drank a Giant Potion!")
-					}
-					5 -> {
-						// Midget Potion
-						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-						player.sendMessage("§aYou drank a Midget Potion!")
-					}
-					else -> {
-						player.sendMessage("§cUnknown PotionID: $potionID")
-					}
-				}
-				setTimer(player, potionID, duration)
+				applyPotionEffect(player, potionID, duration)
+				potionList.addPotion(player, potionID, duration)
 				startCooldown(player, potionID, duration)
 			} else {
 				player.sendMessage("§cPotionID not found.")
@@ -77,72 +48,36 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			player.sendMessage("§cYou drank a non-potion item.")
 		}
 	}
-	private fun setTimer(player: Player, potionID: Int, duration: Int) {
-		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-			removeTimer(player, potionID)
-		}, duration * 20L)
-	}
 
-	private fun removeTimer(player: Player, potionID: Int) {
-		potionEffectTask?.cancel()
-		potionEffectTask = null
-
-		playerCooldowns[player]?.remove(potionID)
-
+	private fun applyPotionEffect(player: Player, potionID: Int, duration: Int) {
 		when (potionID) {
+			1 -> {
+				// Healing Potion
+				player.health = min(player.health + 4, player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)
+				player.sendMessage("§aYou drank a Healing Potion!")
+			}
 			2 -> {
-				// Strength Potion effect ends
-				player.sendMessage("§cThe effect of the Strength Potion has worn off.")
+				// Strength Potion
+				player.sendMessage("§aYou drank a Strength Potion!")
 			}
-
 			3 -> {
-				// Speed Potion effect ends
-				player.sendMessage("§cThe effect of the Speed Potion has worn off.")
+				// Speed Potion
+				player.sendMessage("§aYou drank a Speed Potion!")
 			}
-
 			4 -> {
-				// Giant Potion effect ends
-				smoothScale(player, 2.0, 1.0, 20, 10)
-				player.sendMessage("§cThe effect of the Giant Potion has worn off.")
+				// Giant Potion
+				smoothScale(player, 1.0, 2.0, 20, 10)
+				player.sendMessage("§aYou drank a Giant Potion!")
 			}
-
 			5 -> {
-				// Midget Potion effect ends
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
-				player.sendMessage("§cThe effect of the Midget Potion has worn off.")
+				// Midget Potion
+				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
+				player.sendMessage("§aYou drank a Midget Potion!")
 			}
-
 			else -> {
-				player.sendMessage("§cThe effect of potion $potionID has worn off.")
+				player.sendMessage("§cUnknown PotionID: $potionID")
 			}
 		}
-	}
-
-
-	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
-		val stepDuration = duration / steps
-		val scaleStep = abs(startScale - endScale) / steps
-		val increasing = startScale < endScale
-
-		var task: BukkitTask? = null
-		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
-			var currentStep = 0
-			override fun run() {
-				if (currentStep >= steps) {
-					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
-//					player.sendMessage("SmoothScaleを終了します")
-					task?.cancel()
-					return
-				}
-				val newScale = if (increasing) {
-					startScale + (scaleStep * currentStep)
-				} else {
-					startScale - (scaleStep * currentStep)
-				}
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = newScale
-				currentStep++
-			}
-		}, 0L, stepDuration)
 	}
 
 	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
@@ -161,8 +96,32 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}, 0L, 20L)
 	}
 
+	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
+		val stepDuration = duration / steps
+		val scaleStep = abs(startScale - endScale) / steps
+		val increasing = startScale < endScale
+
+		var task: BukkitTask? = null
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+			var currentStep = 0
+			override fun run() {
+				if (currentStep >= steps) {
+					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
+					task?.cancel()
+					return
+				}
+				val newScale = if (increasing) {
+					startScale + (scaleStep * currentStep)
+				} else {
+					startScale - (scaleStep * currentStep)
+				}
+				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = newScale
+				currentStep++
+			}
+		}, 0L, stepDuration)
+	}
+
 	fun getCooldowns(player: Player): Map<Int, Int> {
 		return playerCooldowns[player] ?: emptyMap()
 	}
-
 }
