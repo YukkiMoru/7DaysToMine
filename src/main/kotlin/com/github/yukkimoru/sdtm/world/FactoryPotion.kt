@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 
 class FactoryPotion(private val plugin: JavaPlugin) {
 
@@ -17,7 +19,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		lore: List<String>,
 		rarity: String,
 		customModelData: Int? = null,
-		color: Color? = null
+		color: Color? = null,
+		effects: List<PotionEffect> = emptyList()
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -38,6 +41,9 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		color?.let {
 			meta.color = it
 		}
+		effects.forEach { effect ->
+			meta.addCustomEffect(effect, true)
+		}
 		itemStack.itemMeta = meta
 		return itemStack
 	}
@@ -47,9 +53,11 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			potionID = 1,
 			name = "§cHealing Potion",
 			duration = 10,
-			lore = listOf("§7A potion that heals instantly."),
+			lore = listOf(),
 			rarity = "common",
-			color = Color.RED
+			color = Color.RED,
+			effects = listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
+				PotionEffect(PotionEffectType.BLINDNESS, 200, 2))
 		)
 	}
 
@@ -61,7 +69,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			lore = listOf("§7A potion that increases strength."),
 			rarity = "rare",
 			customModelData = 301,
-			color = Color.ORANGE
+			color = Color.ORANGE,
+			effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
 		)
 	}
 
@@ -73,7 +82,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			lore = listOf("§7A potion that increases speed."),
 			rarity = "uncommon",
 			customModelData = 302,
-			color = Color.BLUE
+			color = Color.BLUE,
+			effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
 		)
 	}
 
@@ -85,7 +95,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			lore = listOf("§7A potion that makes you giant."),
 			rarity = "rare",
 			customModelData = 303,
-			color = Color.GREEN
+			color = Color.GREEN,
 		)
 	}
 
@@ -97,7 +107,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 			lore = listOf("§7A potion that makes you midget."),
 			rarity = "rare",
 			customModelData = 304,
-			color = Color.YELLOW
+			color = Color.YELLOW,
 		)
 	}
 }
