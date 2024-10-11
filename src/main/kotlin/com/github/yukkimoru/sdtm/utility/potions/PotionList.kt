@@ -17,13 +17,22 @@ class PotionList(private val plugin: Plugin) {
         playerPotions.remove(player)
     }
 
+    fun hasActiveCooldown(player: Player, potionID: Int): Boolean {
+        val potions = playerPotions[player] ?: return false
+        return potions.any { it.potionID == potionID && it.duration > 0 }
+    }
+
     private fun startPotionEffectTimer(player: Player, potionEffectInstance: PotionEffectInstance) {
         object : BukkitRunnable() {
             override fun run() {
-                playerPotions[player]?.remove(potionEffectInstance)
+                potionEffectInstance.duration -= 1
+                if (potionEffectInstance.duration <= 0) {
+                    playerPotions[player]?.remove(potionEffectInstance)
+                    cancel()
+                }
             }
-        }.runTaskLater(plugin, potionEffectInstance.duration * 20L)
+        }.runTaskTimer(plugin, 0L, 20L)
     }
 
-    data class PotionEffectInstance(val potionID: Int, val duration: Int)
+    data class PotionEffectInstance(val potionID: Int, var duration: Int)
 }

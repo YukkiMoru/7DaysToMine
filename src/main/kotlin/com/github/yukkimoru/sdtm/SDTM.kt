@@ -11,6 +11,7 @@ import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.utility.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
+import com.github.yukkimoru.sdtm.utility.potions.PlayerPotionListener
 import com.github.yukkimoru.sdtm.utility.potions.PotionList
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.FactoryTool
@@ -100,6 +101,9 @@ class SDTM : JavaPlugin() {
 		val potionList = PotionList(this)
 		drinkPotion = DrinkPotion(this, potionList)
 		server.pluginManager.registerEvents(drinkPotion, this)
+
+		// Initialize PlayerPotionListener
+		server.pluginManager.registerEvents(PlayerPotionListener(this, potionList), this)
 	}
 
 	private fun initItems() {

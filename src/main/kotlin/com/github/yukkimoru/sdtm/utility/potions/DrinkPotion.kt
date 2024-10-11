@@ -11,13 +11,10 @@ import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
-import org.bukkit.scheduler.BukkitTask
 import kotlin.math.abs
 import kotlin.math.min
 
 class DrinkPotion(private val plugin: Plugin, private val potionList: PotionList) : Listener {
-
-	private val playerCooldowns = mutableMapOf<Player, MutableMap<Int, Int>>()
 
 	@EventHandler
 	fun onPlayerDrink(event: PlayerItemConsumeEvent) {
@@ -31,16 +28,14 @@ class DrinkPotion(private val plugin: Plugin, private val potionList: PotionList
 			val duration = container.get(NamespacedKey(plugin, "duration"), PersistentDataType.INTEGER) ?: 0
 
 			if (potionID != null) {
-				val cooldowns = playerCooldowns[player]
-				if (cooldowns != null && cooldowns.containsKey(potionID)) {
-					player.sendMessage("§cクールダウン中です：残り${cooldowns[potionID]}秒")
+				if (potionList.hasActiveCooldown(player, potionID)) {
+					player.sendMessage("§cクールダウン中です")
 					event.isCancelled = true
 					return
 				}
 
 				applyPotionEffect(player, potionID, duration)
 				potionList.addPotion(player, potionID, duration)
-				startCooldown(player, potionID, duration)
 			} else {
 				player.sendMessage("§cPotionID not found.")
 			}
@@ -80,22 +75,6 @@ class DrinkPotion(private val plugin: Plugin, private val potionList: PotionList
 		}
 	}
 
-	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
-		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
-		cooldowns[potionID] = duration
-		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
-			override fun run() {
-				val timeLeft = cooldowns[potionID] ?: return
-				if (timeLeft > 0) {
-					cooldowns[potionID] = timeLeft - 1
-				} else {
-					cooldowns.remove(potionID)
-					Bukkit.getScheduler().cancelTask(this.hashCode())
-				}
-			}
-		}, 0L, 20L)
-	}
-
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
 		val stepDuration = duration / steps
 		val scaleStep = abs(startScale - endScale) / steps
@@ -122,6 +101,6 @@ class DrinkPotion(private val plugin: Plugin, private val potionList: PotionList
 	}
 
 	fun getCooldowns(player: Player): Map<Int, Int> {
-		return playerCooldowns[player] ?: emptyMap()
+		return potionList.playerPotions[player]?.associate { it.potionID to it.duration } ?: emptyMap()
 	}
 }
