@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.core
+package com.github.yukkimoru.sdtm.world.enemy
 
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
-class DropMobs(private val plugin: JavaPlugin) : Listener {
+class DropMobs(plugin: JavaPlugin) : Listener {
 
 	init {
 		plugin.server.pluginManager.registerEvents(this, plugin)
@@ -19,7 +19,7 @@ class DropMobs(private val plugin: JavaPlugin) : Listener {
 		val entity = event.entity
 		val drops = event.drops
 
-		if (entity.type == EntityType.ZOMBIE && entity.hasMetadata("weakzombie")) {
+		if (entity.type == EntityType.ZOMBIE && entity.hasMetadata("weak zombie")) {
 			drops.clear()
 			drops.add(ItemStack(Material.DIAMOND, 1))
 		} else {

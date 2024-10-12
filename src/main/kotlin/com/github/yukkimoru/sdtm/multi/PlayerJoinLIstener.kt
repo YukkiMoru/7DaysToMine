@@ -1,4 +1,6 @@
-import com.github.yukkimoru.sdtm.core.NexusScoreboard
+package com.github.yukkimoru.sdtm.multi
+
+import com.github.yukkimoru.sdtm.world.nexus.NexusScoreboard
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

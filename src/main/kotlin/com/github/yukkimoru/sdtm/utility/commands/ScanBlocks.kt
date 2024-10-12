@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.core
+package com.github.yukkimoru.sdtm.utility.commands
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -35,6 +35,7 @@ class ScanBlocks {
 		val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 		val json = gson.toJson(spawnerLocations)
 		val file = File("plugins/7DaysToMine/spawner_locations.json")
+		file.parentFile.mkdirs() // ディレクトリが存在しない場合は作成
 		file.writeText(json)
 	}
 

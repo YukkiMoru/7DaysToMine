@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.utility
+package com.github.yukkimoru.sdtm.trade
 
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -6,16 +6,15 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
-import org.bukkit.plugin.java.JavaPlugin
 
-class protectVillager(private val plugin: JavaPlugin) : Listener {
+class ProtectVillagers : Listener {
 	//村人を攻撃させない
 	@EventHandler
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
 		val entity = event.entity
-		val damager = event.damager
+		val damage = event.damager
 
-		if (entity.type == EntityType.VILLAGER && damager is Player) {
+		if (entity.type == EntityType.VILLAGER && damage is Player) {
 			event.isCancelled = true
 		}
 	}

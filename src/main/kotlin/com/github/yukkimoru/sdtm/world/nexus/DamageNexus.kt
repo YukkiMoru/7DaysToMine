@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.core
+package com.github.yukkimoru.sdtm.world.nexus
 
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit

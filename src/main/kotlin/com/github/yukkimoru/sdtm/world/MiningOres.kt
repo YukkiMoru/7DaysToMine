@@ -98,7 +98,7 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 
 	// minecraft:coal_ore:0.7:3.0,minecraft:iron_ore:0.8:1.0,minecraft:deepslate_iron_ore:0.3:1.0
 	private fun getBlockBreakSpeed(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Double? {
-		if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
+		if (item.type == Material.NETHERITE_PICKAXE) {
 			val container = item.itemMeta?.persistentDataContainer
 			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
 			for (blockData in destroyableBlocks) {
@@ -112,7 +112,7 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 	}
 
 	private fun getBlockFortune(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Double? {
-		if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
+		if (item.type == Material.NETHERITE_PICKAXE) {
 			val container = item.itemMeta?.persistentDataContainer
 			val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
 			for (blockData in destroyableBlocks) {
@@ -141,7 +141,7 @@ class MiningOres(private val plugin: JavaPlugin) : Listener {
 
 	companion object {
 		fun getBlockFortune(item: ItemStack, key: NamespacedKey, targetBlockType: Material?): Double? {
-			if (item.type == Material.IRON_PICKAXE && item.itemMeta?.isUnbreakable == true) {
+			if (item.type == Material.NETHERITE_PICKAXE) {
 				val container = item.itemMeta?.persistentDataContainer
 				val destroyableBlocks = container?.get(key, PersistentDataType.STRING)?.split(",") ?: return null
 				for (blockData in destroyableBlocks) {

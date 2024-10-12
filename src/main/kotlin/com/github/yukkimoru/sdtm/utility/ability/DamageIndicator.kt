@@ -1,6 +1,6 @@
-package com.github.yukkimoru.sdtm.utility
+package com.github.yukkimoru.sdtm.utility.ability
 
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
@@ -17,8 +17,8 @@ class DamageIndicator(private val plugin: JavaPlugin) : Listener {
 	fun onEntityDamage(event: EntityDamageByEntityEvent) {
 		val entity = event.entity
 		if (entity is LivingEntity) {
-			val damage = event.damage
-			showDamageIndicator(entity.location, damage)
+			val finalDamage = event.finalDamage
+			showDamageIndicator(entity.location.add(0.0, 1.0, 0.0), finalDamage)
 		}
 	}
 
@@ -28,7 +28,7 @@ class DamageIndicator(private val plugin: JavaPlugin) : Listener {
 
 		armorStand.isVisible = false
 		armorStand.isCustomNameVisible = true
-		armorStand.customName = "${ChatColor.RED}-${damage.toInt()}"
+		armorStand.customName(Component.text("§c-${damage.toInt()}"))
 		armorStand.isMarker = true
 		armorStand.setGravity(false)
 
