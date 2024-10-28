@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
+import com.github.yukkimoru.sdtm.world.FactoryItem
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -11,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
 class VillagerWeapon(private val plugin: JavaPlugin) {
+
+	private val factoryItem = FactoryItem(plugin)
 
 	fun summonVillagerWeapon(location: Location, yaw: Float) {
 		object : BukkitRunnable() {
@@ -37,9 +40,9 @@ class VillagerWeapon(private val plugin: JavaPlugin) {
 				// Create trades
 				val recipes = mutableListOf<MerchantRecipe>()
 
-				// Example trade: 10 emeralds for 1 diamond sword
+				// Example trade: 10 emeralds for 1 Explosive Sword
 				val buyItem = ItemStack(Material.EMERALD, 10)
-				val sellItem = ItemStack(Material.DIAMOND_SWORD, 1)
+				val sellItem = createExplosiveSword()
 				val recipe = MerchantRecipe(sellItem, 9999999)
 				recipe.addIngredient(buyItem)
 				recipes.add(recipe)
@@ -47,5 +50,16 @@ class VillagerWeapon(private val plugin: JavaPlugin) {
 				villager.recipes = recipes
 			}
 		}.runTask(plugin)
+	}
+
+	private fun createExplosiveSword(): ItemStack {
+		return factoryItem.createItemStack(
+			Material.NETHERITE_SWORD,
+			1,
+			"§aExplosive Sword",
+			listOf("§7A sword with explosive power"),
+			"legendary",
+			302
+		)
 	}
 }

@@ -11,6 +11,7 @@ import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.utility.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
+import com.github.yukkimoru.sdtm.utility.items.ExplosiveSword
 import com.github.yukkimoru.sdtm.world.DropOres
 import com.github.yukkimoru.sdtm.world.FactoryTool
 import com.github.yukkimoru.sdtm.world.MiningOres
@@ -106,6 +107,9 @@ class SDTM : JavaPlugin() {
 		server.pluginManager.registerEvents(EnderPack.OpenEnderChest(), this)
 		// DoubleJumperを登録 (プレイヤーが2段ジャンプできる靴)
 		server.pluginManager.registerEvents(DoubleJumper(this), this)
+
+		// ExplosiveSwordを登録 (爆発する剣)
+		server.pluginManager.registerEvents(ExplosiveSword(this), this)
 	}
 
 	private fun initCommands() {
