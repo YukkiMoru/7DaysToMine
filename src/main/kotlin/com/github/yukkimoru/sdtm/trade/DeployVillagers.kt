@@ -14,23 +14,23 @@ class DeployVillagers(private val plugin: JavaPlugin) : Listener {
 
 	fun summonVillagers() {
 		VillagerWeapon(plugin).summonVillagerWeapon(
-			Location(plugin.server.getWorld("world"), -992.5, 3.0, 1014.5),
-			180f
+			Location(plugin.server.getWorld("world"), 1002.5, 100.0, -11.5),
+			0f
 		)
 
 		VillagerPotion(plugin).summonVillagerPotion(
-			Location(plugin.server.getWorld("world"), -990.5, 3.0, 1014.5),
-			180f
+			Location(plugin.server.getWorld("world"), 1000.5, 100.0, -11.5),
+			0f
 		)
 
 		VillagerPickaxe(plugin).summonVillagerPickaxe(
-			Location(plugin.server.getWorld("world"), -988.5, 3.0, 1014.5),
-			180f
+			Location(plugin.server.getWorld("world"), 998.5, 100.0, -11.5),
+			0f
 		)
 
 		VillagerUtility(plugin).summonVillagerUtility(
-			Location(plugin.server.getWorld("world"), -986.5, 3.0, 1014.5),
-			180f
+			Location(plugin.server.getWorld("world"), 996.5, 100.0, -11.5),
+			0f
 		)
 	}
 }
