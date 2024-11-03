@@ -29,7 +29,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 	private val tier3Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.4, 1.0),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.2, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.1, 1.0),
 		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.5),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.5),
 		Material.COAL_BLOCK to OreData("石炭の塊", 0.7, 3.0),
@@ -38,11 +38,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 	private val tier4Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.6, 1.0),
-		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 1.4, 2.0),
-		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.9, 2.5),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.2, 1.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.9, 2.0),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.9, 2.5),
-		Material.COAL_BLOCK to OreData("石炭の塊", 0.8, 3.0),
-		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.8, 3.0),
+		Material.COAL_BLOCK to OreData("石炭の塊", 0.9, 3.0),
+		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.9, 3.0),
 	)
 
 	val allBreakableMaterials: List<Material> =
@@ -67,71 +67,30 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun createTier1Pickaxe(): ItemStack {
-		val destroyableBlocks = tier1Pickaxe.entries.joinToString(",") {
+	private fun createPickaxe(
+		tier: Int,
+		rarity: String,
+		customModelData: Int,
+		pickaxeData: Map<Material, OreData>
+	): ItemStack {
+		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = tier1Pickaxe.entries.map {
+		val lore = pickaxeData.entries.map {
 			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"tier1のピッケル",
+			"§f§l普通のピッケル",
 			listOf("破壊可能なブロック:") + lore,
-			"common",
+			rarity,
 			destroyableBlocks,
-			200
+			customModelData
 		)
 	}
 
-	fun createTier2Pickaxe(): ItemStack {
-		val destroyableBlocks = tier2Pickaxe.entries.joinToString(",") {
-			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
-		}
-		val lore = tier2Pickaxe.entries.map {
-			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-		}
-		return createUnbreakableTool(
-			Material.NETHERITE_PICKAXE,
-			"tier2のピッケル",
-			listOf("破壊可能なブロック:") + lore,
-			"rare",
-			destroyableBlocks,
-			201
-		)
-	}
-
-	fun createTier3Pickaxe(): ItemStack {
-		val destroyableBlocks = tier3Pickaxe.entries.joinToString(",") {
-			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
-		}
-		val lore = tier3Pickaxe.entries.map {
-			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-		}
-		return createUnbreakableTool(
-			Material.NETHERITE_PICKAXE,
-			"Tier3のピッケル",
-			listOf("破壊可能なブロック:") + lore,
-			"epic",
-			destroyableBlocks,
-			202
-		)
-	}
-
-	fun createTier4Pickaxe(): ItemStack {
-		val destroyableBlocks = tier3Pickaxe.entries.joinToString(",") {
-			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
-		}
-		val lore = tier4Pickaxe.entries.map {
-			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-		}
-		return createUnbreakableTool(
-			Material.NETHERITE_PICKAXE,
-			"Tier4のピッケル",
-			listOf("破壊可能なブロック:") + lore,
-			"legendary",
-			destroyableBlocks,
-			202
-		)
-	}
+	fun createTier1Pickaxe() = createPickaxe(1, "common", 200, tier1Pickaxe)
+	fun createTier2Pickaxe() = createPickaxe(2, "rare", 201, tier2Pickaxe)
+	fun createTier3Pickaxe() = createPickaxe(3, "epic", 202, tier3Pickaxe)
+	fun createTier4Pickaxe() = createPickaxe(4, "legendary", 202, tier4Pickaxe)
 }
