@@ -53,6 +53,10 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 						2 -> factoryTool.createTier2Pickaxe()
 						3 -> factoryTool.createTier3Pickaxe()
 						4 -> factoryTool.createTier4Pickaxe()
+						5 -> factoryTool.createTier1GemPickaxe()
+						6 -> factoryTool.createTier2GemPickaxe()
+						7 -> factoryTool.createTier3GemPickaxe()
+						8 -> factoryTool.createTier4GemPickaxe()
 						else -> throw IllegalArgumentException("Invalid tier")
 					}
 					val recipe = MerchantRecipe(sellItem, 9999999).apply {
@@ -65,6 +69,10 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				addRecipe(factoryTool, recipes, 20, 2)
 				addRecipe(factoryTool, recipes, 30, 3)
 				addRecipe(factoryTool, recipes, 40, 4)
+				addRecipe(factoryTool, recipes, 40, 5)
+				addRecipe(factoryTool, recipes, 40, 6)
+				addRecipe(factoryTool, recipes, 40, 7)
+				addRecipe(factoryTool, recipes, 40, 8)
 
 				villager.recipes = recipes
 			}

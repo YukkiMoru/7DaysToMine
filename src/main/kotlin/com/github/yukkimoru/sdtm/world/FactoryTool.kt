@@ -45,8 +45,34 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.9, 3.0),
 	)
 
+	private val tier1GemPickaxe: Map<Material, OreData> = mapOf(
+		Material.RED_STAINED_GLASS to OreData("ルビー", 0.4, 1.0),
+		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.4, 1.0),
+	)
+
+	private val tier2GemPickaxe: Map<Material, OreData> = mapOf(
+		Material.RED_STAINED_GLASS to OreData("ルビー", 0.6, 1.0),
+		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.6, 1.0),
+		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.4, 1.0),
+	)
+
+	private val tier3GemPickaxe: Map<Material, OreData> = mapOf(
+		Material.RED_STAINED_GLASS to OreData("ルビー", 0.8, 1.0),
+		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.8, 1.0),
+		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.6, 1.0),
+		Material.YELLOW_STAINED_GLASS to OreData("トパーズ", 0.4, 1.0),
+	)
+
+	private val tier4GemPickaxe: Map<Material, OreData> = mapOf(
+		Material.WHITE_STAINED_GLASS to OreData("オパール", 0.4, 1.0),
+		Material.BLACK_STAINED_GLASS to OreData("オニキス", 0.4, 1.0),
+	)
+
+
 	val allBreakableMaterials: List<Material> =
-		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys).toSet().toList()
+		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys + tier4Pickaxe.keys
+				+ tier1GemPickaxe.keys + tier2GemPickaxe.keys + tier3GemPickaxe.keys + tier4GemPickaxe.keys).toSet()
+			.toList()
 
 	private fun createUnbreakableTool(
 		material: Material,
@@ -89,8 +115,38 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		)
 	}
 
+	private fun createGemPickaxe(
+		tier: Int,
+		rarity: String,
+		customModelData: Int,
+		pickaxeData: Map<Material, OreData>
+	): ItemStack {
+		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
+			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		}
+		val lore = pickaxeData.entries.map {
+			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+		}
+		return createUnbreakableTool(
+			Material.NETHERITE_PICKAXE,
+			"§f§lジェムストーン用のピッケル",
+			listOf("破壊可能なブロック:") + lore,
+			rarity,
+			destroyableBlocks,
+			customModelData
+		)
+	}
+
+	// 普通のピッケル
 	fun createTier1Pickaxe() = createPickaxe(1, "common", 200, tier1Pickaxe)
 	fun createTier2Pickaxe() = createPickaxe(2, "rare", 201, tier2Pickaxe)
 	fun createTier3Pickaxe() = createPickaxe(3, "epic", 202, tier3Pickaxe)
-	fun createTier4Pickaxe() = createPickaxe(4, "legendary", 202, tier4Pickaxe)
+	fun createTier4Pickaxe() = createPickaxe(4, "legendary", 203, tier4Pickaxe)
+
+	// ジェムストーン用のピッケル
+	fun createTier1GemPickaxe() = createGemPickaxe(1, "common", 210, tier1GemPickaxe)
+	fun createTier2GemPickaxe() = createGemPickaxe(2, "rare", 211, tier2GemPickaxe)
+	fun createTier3GemPickaxe() = createGemPickaxe(3, "epic", 212, tier3GemPickaxe)
+	fun createTier4GemPickaxe() = createGemPickaxe(4, "legendary", 213, tier4GemPickaxe)
+
 }
