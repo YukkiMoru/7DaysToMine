@@ -17,28 +17,32 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 	private val tier1Pickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 0.9, 1.0),
 	)
 
 	private val tier2Pickaxe: Map<Material, OreData> = mapOf(
-		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.5),
+		Material.COAL_ORE to OreData("石炭鉱石", 1.2, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.5),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 0.3),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.2),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.7, 2.5),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.7, 2.5),
 	)
 
 	private val tier3Pickaxe: Map<Material, OreData> = mapOf(
-		Material.COAL_ORE to OreData("石炭鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.0),
-		Material.COAL_BLOCK to OreData("石炭の塊", 0.6, 3.0),
-		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
-		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.0),
-		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.6, 3.0),
-		Material.RED_STAINED_GLASS to OreData("ルビー鉱石", 0.5, 0.6),
-		Material.RED_STAINED_GLASS_PANE to OreData("ルビー鉱石", 0.7, 0.4),
-		Material.ORANGE_STAINED_GLASS to OreData("琥珀鉱石", 0.5, 0.3),
+		Material.COAL_ORE to OreData("石炭鉱石", 1.4, 1.0),
+		Material.IRON_ORE to OreData("鉄鉱石", 1.2, 1.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.5),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.8, 2.5),
+		Material.COAL_BLOCK to OreData("石炭の塊", 0.7, 3.0),
+		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.7, 3.0),
+	)
+
+	private val tier4Pickaxe: Map<Material, OreData> = mapOf(
+		Material.COAL_ORE to OreData("石炭鉱石", 1.6, 1.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 1.4, 2.0),
+		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.9, 2.5),
+		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.9, 2.5),
+		Material.COAL_BLOCK to OreData("石炭の塊", 0.8, 3.0),
+		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.8, 3.0),
 	)
 
 	val allBreakableMaterials: List<Material> =
@@ -72,7 +76,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"序盤のピッケル",
+			"tier1のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"common",
 			destroyableBlocks,
@@ -89,7 +93,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"中盤のピッケル",
+			"tier2のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"rare",
 			destroyableBlocks,
@@ -106,7 +110,24 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"終盤のピッケル",
+			"Tier3のピッケル",
+			listOf("破壊可能なブロック:") + lore,
+			"epic",
+			destroyableBlocks,
+			202
+		)
+	}
+
+	fun createTier4Pickaxe(): ItemStack {
+		val destroyableBlocks = tier3Pickaxe.entries.joinToString(",") {
+			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		}
+		val lore = tier4Pickaxe.entries.map {
+			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+		}
+		return createUnbreakableTool(
+			Material.NETHERITE_PICKAXE,
+			"Tier4のピッケル",
 			listOf("破壊可能なブロック:") + lore,
 			"legendary",
 			destroyableBlocks,
