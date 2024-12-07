@@ -1,6 +1,5 @@
 package com.github.yukkimoru.sdtm.world
 
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
@@ -21,12 +20,12 @@ class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryT
 		val itemInHand: ItemStack = player.inventory.itemInMainHand
 
 		// Debugging: Log the block type and all breakable materials
-		Bukkit.getLogger().info("Block type: ${block.type}")
-		Bukkit.getLogger().info("All breakable materials: ${factoryTool.allBreakableMaterials}")
+//		Bukkit.getLogger().info("Block type: ${block.type}")
+//		Bukkit.getLogger().info("All breakable materials: ${factoryTool.allBreakableMaterials}")
 
 		if (block.type in factoryTool.allBreakableMaterials) {
 			// message
-			Bukkit.getLogger().info("yes you dug")
+//			Bukkit.getLogger().info("yes you dug")
 			event.isDropItems = false
 			val key = NamespacedKey(plugin, "destroyable_blocks")
 			val luck = MiningOres.getBlockFortune(itemInHand, key, block.type) ?: 0.0
@@ -34,46 +33,47 @@ class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryT
 			val dropCount = calculateDropCount(luck)
 			if (dropCount > 0) {
 				val dropItem = when (block.type) {
-					Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE -> factoryItem.createItemStack(
+					Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE, Material.COAL_BLOCK -> factoryItem.createItemStack(
 						Material.COAL,
 						dropCount,
 						"§7§l石炭",
-						listOf("§7燃料として使える"),
+						listOf("§7何かを燃やせる"),
 						"common"
 					)
 
-					Material.COAL_BLOCK -> factoryItem.createItemStack(
-						Material.COAL,
-						dropCount,
-						"§7§l石炭",
-						listOf("§7燃料として使える"),
-						"common"
-					)
-
-
-					Material.IRON_ORE -> factoryItem.createItemStack(
+					Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE, Material.RAW_IRON -> factoryItem.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
-						"§f§l低品質な鉄鉱石",
-						listOf("§7粗悪な鉄インゴットをつくれる"),
+						"§f§l鉄鉱石",
+						listOf("§7鉄インゴットをつくれる"),
 						"common"
-					)
-
-					Material.DEEPSLATE_IRON_ORE -> factoryItem.createItemStack(
-						Material.RAW_IRON,
-						dropCount,
-						"§f§l普通の鉄鉱石",
-						listOf("§7そこそこの品質の鉄インゴットをつくれる"),
-						"uncommon"
 					)
 
 					Material.RED_STAINED_GLASS, Material.RED_STAINED_GLASS_PANE -> factoryItem.createItemStack(
 						Material.RED_DYE,
 						dropCount,
 						"§c§lルビー",
-						listOf("§c古代から愛され続けている宝石"),
+						listOf("§7古代から愛され続けている宝石"),
 						"common",
 						1
+					)
+
+					Material.ORANGE_STAINED_GLASS -> factoryItem.createItemStack(
+						Material.ORANGE_DYE,
+						dropCount,
+						"§6§lアンバー",
+						listOf("§7樹液が化石化したもの"),
+						"common",
+						2
+					)
+
+					Material.BLUE_STAINED_GLASS, Material.BLUE_STAINED_GLASS_PANE -> factoryItem.createItemStack(
+						Material.BLUE_DYE,
+						dropCount,
+						"§9§lサファイア",
+						listOf("§7神秘的な青色の宝石"),
+						"common",
+						3
 					)
 
 					else -> return
