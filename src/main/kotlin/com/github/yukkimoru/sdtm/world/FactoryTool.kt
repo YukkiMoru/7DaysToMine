@@ -13,6 +13,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val displayName: String,
 		val miningSpeed: Double,
 		val dropRate: Double,
+		val disableLore: Boolean = false
 	)
 
 	private val tier1Pickaxe: Map<Material, OreData> = mapOf(
@@ -47,25 +48,31 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 	private val tier1GemPickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.4, 1.0),
-		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.4, 1.0),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.4, 0.5, true),
+		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.6, 1.0),
 	)
 
 	private val tier2GemPickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.6, 1.0),
-		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.6, 1.0),
-		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.4, 1.0),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.6, 0.5, true),
+		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.7, 1.0),
+		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.4, 1.0),
+		Material.BLUE_STAINED_GLASS_PANE to OreData("サファイア", 0.4, 0.5, true),
 	)
 
 	private val tier3GemPickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.8, 1.0),
-		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.8, 1.0),
-		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.6, 1.0),
+		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.8, 0.5, true),
+		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.8, 1.0),
+		Material.BLUE_STAINED_GLASS to OreData("サファイア", 0.6, 1.0),
 		Material.YELLOW_STAINED_GLASS to OreData("トパーズ", 0.4, 1.0),
+		Material.YELLOW_STAINED_GLASS_PANE to OreData("トパーズ", 0.4, 0.5, true),
 	)
 
 	private val tier4GemPickaxe: Map<Material, OreData> = mapOf(
 		Material.WHITE_STAINED_GLASS to OreData("オパール", 0.4, 1.0),
 		Material.BLACK_STAINED_GLASS to OreData("オニキス", 0.4, 1.0),
+		Material.BLACK_STAINED_GLASS_PANE to OreData("オニキス", 0.4, 0.5, true),
 	)
 
 
