@@ -127,9 +127,7 @@ class SDTM : JavaPlugin() {
 		// MiningOresを登録 (プレイヤーによるブロックの破壊速度の変更)
 		server.pluginManager.registerEvents(MiningOres(this), this)
 		// RegenerateBlocksを登録 (ブロックの再生)
-		server.pluginManager.registerEvents(RegenerateBlocks(this), this)
-
-		//
+		server.pluginManager.registerEvents(RegenerateBlocks(FactoryTool(this), this), this)
 	}
 
 	private fun initEnemy() {

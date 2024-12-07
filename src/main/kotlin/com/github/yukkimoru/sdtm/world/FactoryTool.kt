@@ -51,9 +51,17 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.BLUE_STAINED_GLASS_PANE to OreData("サファイア", 0.4, 0.5, true),
 	)
 
+	val allBreakableOreMaterials: List<Material> =
+		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys).toSet().toList()
+
+	val allBreakableGemMaterials: List<Material> =
+		(tier1GemPickaxe.keys + tier2GemPickaxe.keys).filter { !it.name.endsWith("_PANE") }.toSet().toList()
+
+	val allBreakableGemShardMaterials: List<Material> =
+		(tier1GemPickaxe.keys + tier2GemPickaxe.keys).filter { it.name.endsWith("_PANE") }.toSet().toList()
+
 	val allBreakableMaterials: List<Material> =
-		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys + tier1GemPickaxe.keys + tier2GemPickaxe.keys).toSet()
-			.toList()
+		allBreakableOreMaterials + allBreakableGemMaterials + allBreakableGemShardMaterials
 
 	private fun createUnbreakableTool(
 		material: Material,
