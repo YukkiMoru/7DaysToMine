@@ -96,8 +96,9 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"§f§l普通のピッケル",
-			listOf("破壊可能なブロック:") + lore,
+			"§b§l普通のピッケル",
+			listOf("§f鉱石が掘れそうだ"),
+//			listOf("破壊可能なブロック:") + lore,
 			rarity,
 			destroyableBlocks,
 			customModelData
@@ -118,8 +119,9 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"§f§lジェムストーン用のピッケル",
-			listOf("破壊可能なブロック:") + lore,
+			"§d§lジェムストーン用のピッケル",
+			listOf("§f鉱石が掘れそうだ"),
+//			listOf("破壊可能なブロック:") + lore,
 			rarity,
 			destroyableBlocks,
 			customModelData
