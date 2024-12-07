@@ -86,7 +86,8 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		tier: Int,
 		rarity: String,
 		customModelData: Int,
-		pickaxeData: Map<Material, OreData>
+		pickaxeData: Map<Material, OreData>,
+		name: String
 	): ItemStack {
 		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
@@ -96,9 +97,8 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"§b§l普通のピッケル",
+			name,
 			listOf("§f鉱石が掘れそうだ"),
-//			listOf("破壊可能なブロック:") + lore,
 			rarity,
 			destroyableBlocks,
 			customModelData
@@ -109,7 +109,8 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		tier: Int,
 		rarity: String,
 		customModelData: Int,
-		pickaxeData: Map<Material, OreData>
+		pickaxeData: Map<Material, OreData>,
+		name: String
 	): ItemStack {
 		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
@@ -119,9 +120,8 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
-			"§d§lジェムストーン用のピッケル",
+			name,
 			listOf("§f鉱石が掘れそうだ"),
-//			listOf("破壊可能なブロック:") + lore,
 			rarity,
 			destroyableBlocks,
 			customModelData
@@ -129,11 +129,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	// 普通のピッケル
-	fun createTier1Pickaxe() = createPickaxe(1, "common", 200, tier1Pickaxe)
-	fun createTier2Pickaxe() = createPickaxe(2, "rare", 201, tier2Pickaxe)
-	fun createTier3Pickaxe() = createPickaxe(3, "epic", 202, tier3Pickaxe)
+	fun createTier1Pickaxe() = createPickaxe(1, "common", 200, tier1Pickaxe, "§f§l木のツルハシ")
+	fun createTier2Pickaxe() = createPickaxe(2, "rare", 201, tier2Pickaxe, "§f§l石のツルハシ")
+	fun createTier3Pickaxe() = createPickaxe(3, "epic", 202, tier3Pickaxe, "§f§l鉄のツルハシ")
 
 	// ジェムストーン用のピッケル
-	fun createTier1GemPickaxe() = createGemPickaxe(1, "epic", 210, tier1GemPickaxe)
-	fun createTier2GemPickaxe() = createGemPickaxe(2, "legendary", 211, tier2GemPickaxe)
+	fun createTier1GemPickaxe() = createGemPickaxe(1, "epic", 210, tier1GemPickaxe, "§d§lルビーのツルハシ")
+	fun createTier2GemPickaxe() = createGemPickaxe(2, "legendary", 211, tier2GemPickaxe, "§d§lサファイアのツルハシ")
 }
