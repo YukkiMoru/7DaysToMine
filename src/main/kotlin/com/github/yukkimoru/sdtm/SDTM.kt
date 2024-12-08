@@ -51,7 +51,7 @@ class SDTM : JavaPlugin() {
 		// ネクサスのエンドストーンを召喚
 		Bukkit.dispatchCommand(
 			Bukkit.getConsoleSender(),
-			"summon block_display 100.1 11.1 100.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}"
+			"summon block_display 1000.1 101.1 0.1 {transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],scale:[0.8f,0.8f,0.8f],translation:[0f,0f,0f]},block_state:{Name:end_stone}}"
 		)
 	}
 
@@ -127,9 +127,7 @@ class SDTM : JavaPlugin() {
 		// MiningOresを登録 (プレイヤーによるブロックの破壊速度の変更)
 		server.pluginManager.registerEvents(MiningOres(this), this)
 		// RegenerateBlocksを登録 (ブロックの再生)
-		server.pluginManager.registerEvents(RegenerateBlocks(this), this)
-
-		//
+		server.pluginManager.registerEvents(RegenerateBlocks(FactoryTool(this), this), this)
 	}
 
 	private fun initEnemy() {

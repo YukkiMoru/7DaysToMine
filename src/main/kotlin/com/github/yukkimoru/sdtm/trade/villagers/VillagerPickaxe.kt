@@ -41,26 +41,32 @@ class VillagerPickaxe(private val plugin: JavaPlugin) {
 				// Create an instance of ToolFactory
 				val factoryTool = FactoryTool(plugin)
 
-				// Trade 1: 10 emeralds for 1 Early Stage Pickaxe
-				val buyItem1 = ItemStack(Material.EMERALD, 10)
-				val sellItem1 = factoryTool.createEarlyStagePickaxe()
-				val recipe1 = MerchantRecipe(sellItem1, 9999999)
-				recipe1.addIngredient(buyItem1)
-				recipes.add(recipe1)
+				fun addRecipe(
+					factoryTool: FactoryTool,
+					recipes: MutableList<MerchantRecipe>,
+					emeralds: Int,
+					tier: Int
+				) {
+					val buyItem = ItemStack(Material.EMERALD, emeralds)
+					val sellItem = when (tier) {
+						1 -> factoryTool.createTier1Pickaxe()
+						2 -> factoryTool.createTier2Pickaxe()
+						3 -> factoryTool.createTier3Pickaxe()
+						4 -> factoryTool.createTier1GemPickaxe()
+						5 -> factoryTool.createTier2GemPickaxe()
+						else -> throw IllegalArgumentException("Invalid tier")
+					}
+					val recipe = MerchantRecipe(sellItem, 9999999).apply {
+						addIngredient(buyItem)
+					}
+					recipes.add(recipe)
+				}
 
-				// Trade 2: 20 emeralds for 1 Mid Stage Pickaxe
-				val buyItem2 = ItemStack(Material.EMERALD, 20)
-				val sellItem2 = factoryTool.createMidStagePickaxe()
-				val recipe2 = MerchantRecipe(sellItem2, 9999999)
-				recipe2.addIngredient(buyItem2)
-				recipes.add(recipe2)
-
-				// Trade 3: 30 emeralds for 1 Late Stage Pickaxe
-				val buyItem3 = ItemStack(Material.EMERALD, 30)
-				val sellItem3 = factoryTool.createLateStagePickaxe()
-				val recipe3 = MerchantRecipe(sellItem3, 9999999)
-				recipe3.addIngredient(buyItem3)
-				recipes.add(recipe3)
+				addRecipe(factoryTool, recipes, 10, 1)
+				addRecipe(factoryTool, recipes, 20, 2)
+				addRecipe(factoryTool, recipes, 30, 3)
+				addRecipe(factoryTool, recipes, 40, 4)
+				addRecipe(factoryTool, recipes, 40, 5)
 
 				villager.recipes = recipes
 			}

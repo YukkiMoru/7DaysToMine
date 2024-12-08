@@ -7,7 +7,11 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
-class RegenerateBlocks(private val plugin: JavaPlugin) : Listener {
+class RegenerateBlocks(private val factoryTool: FactoryTool, private val plugin: JavaPlugin) : Listener {
+
+	private val ores: Set<Material> = factoryTool.allBreakableOreMaterials.toSet()
+	private val gems: Set<Material> = factoryTool.allBreakableGemMaterials.toSet()
+	private val gemShards: Set<Material> = factoryTool.allBreakableGemShardMaterials.toSet()
 
 	@EventHandler
 	fun onBlockBreak(event: BlockBreakEvent) {
@@ -15,27 +19,14 @@ class RegenerateBlocks(private val plugin: JavaPlugin) : Listener {
 		val originalState = block.state
 		val temporaryState = block.state
 
-		val ores = listOf(
-			Material.COAL_ORE,
-			Material.IRON_ORE,
-			Material.DEEPSLATE_IRON_ORE,
-		)
-		val gemstones = listOf(
-			Material.RED_STAINED_GLASS
-		)
-		val shardGemstones = listOf(
-			Material.RED_STAINED_GLASS_PANE
-		)
-		val breakableBlocks = ores + gemstones + shardGemstones
-
-		if (breakableBlocks.contains(originalState.type)) {
+		if (factoryTool.allBreakableMaterials.contains(originalState.type)) {
 			temporaryState.type = when {
 				ores.contains(originalState.type) -> Material.BEDROCK
-				gemstones.contains(originalState.type) -> Material.GRAY_STAINED_GLASS
-				shardGemstones.contains(originalState.type) -> Material.GRAY_STAINED_GLASS_PANE
+				gems.contains(originalState.type) -> Material.GRAY_STAINED_GLASS
+				gemShards.contains(originalState.type) -> Material.GRAY_STAINED_GLASS_PANE
 				else -> Material.BEDROCK
 			}
-			if (ores.contains(originalState.type) || gemstones.contains(originalState.type)) {
+			if (ores.contains(originalState.type) || gems.contains(originalState.type)) {
 				object : BukkitRunnable() {
 					override fun run() {
 						block.type = temporaryState.type
@@ -48,10 +39,9 @@ class RegenerateBlocks(private val plugin: JavaPlugin) : Listener {
 					}
 				}.runTaskLater(plugin, 60L)
 
-			} else if (shardGemstones.contains(originalState.type)) {
+			} else if (gemShards.contains(originalState.type)) {
 				object : BukkitRunnable() {
 					override fun run() {
-//						block.type = temporaryState.type
 						temporaryState.update(true, true)
 					}
 				}.runTaskLater(plugin, 1L)
