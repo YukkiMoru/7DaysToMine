@@ -29,14 +29,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.COAL_ORE to OreData("石炭鉱石", 0.5, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.4, 1.0),
 	)
-
 	private val stonePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 0.8, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.7, 1.0),
 		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.5, 2.0),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.4, 2.0),
 	)
-
 	private val ironPickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.1, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
@@ -45,13 +43,11 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.COAL_BLOCK to OreData("石炭の塊", 0.5, 4.0),
 		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.4, 4.0),
 	)
-
 	private val rubyPickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.4, 1.0),
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.4, 0.5, true),
 		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.6, 1.0),
 	)
-
 	private val sapphirePickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.6, 1.0),
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.6, 0.5, true),

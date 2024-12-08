@@ -33,49 +33,34 @@ class GUIReceiver() : Listener {
 //		player.sendMessage("You clicked at slot ${event.slot}")
 
 		when (event.slot) {
-			10 -> {
-				val playerInventory = player.inventory
-				val emeralds = playerInventory.all(Material.EMERALD).values.sumOf { it.amount }
-				val world = Bukkit.getWorld("world")
-				if (emeralds >= 10) {
-					playerInventory.removeItem(ItemStack(Material.EMERALD, 10))
+			10 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 10, Material.GOLD_INGOT to 10), "wooden")
+			11 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 10, Material.GOLD_INGOT to 1), "stone")
+		}
+	}
 
-					// Create the FactoryTool instance
-					val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
-
-					// Create the Tier 1 Pickaxe
-					val tier1Pickaxe = factoryTool.createWoodenPickaxe()
-
-					// Add the created pickaxe to the player's inventory
-					playerInventory.addItem(tier1Pickaxe)
-					world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
-				} else {
-					world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
-					player.sendMessage("10このエメラルドが必要です!")
-				}
+	private fun handlePickaxePurchase(event: InventoryClickEvent, Cost: Map<Material, Int>, pickaxeType: String) {
+		event.isCancelled = true
+		val player = event.whoClicked as Player
+		val playerInventory = player.inventory
+		val hasAllMaterials = Cost.all { (material, amount) ->
+			playerInventory.all(material).values.sumOf { it.amount } >= amount
+		}
+		val world = Bukkit.getWorld("world")
+		if (hasAllMaterials) {
+			Cost.forEach { (material, amount) ->
+				playerInventory.removeItem(ItemStack(material, amount))
 			}
-
-			11 -> {
-				val playerInventory = player.inventory
-				val emeralds = playerInventory.all(Material.EMERALD).values.sumOf { it.amount }
-				val world = Bukkit.getWorld("world")
-				if (emeralds >= 20) {
-					playerInventory.removeItem(ItemStack(Material.EMERALD, 20))
-
-					// Create the FactoryTool instance
-					val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
-
-					// Create the Tier 2 Pickaxe
-					val tier2Pickaxe = factoryTool.createStonePickaxe()
-
-					// Add the created pickaxe to the player's inventory
-					playerInventory.addItem(tier2Pickaxe)
-					world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
-				} else {
-					world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
-					player.sendMessage("20このエメラルドが必要です!")
-				}
+			val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
+			val pickaxe = when (pickaxeType) {
+				"wooden" -> factoryTool.createWoodenPickaxe()
+				"stone" -> factoryTool.createStonePickaxe()
+				else -> return
 			}
+			playerInventory.addItem(pickaxe)
+			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
+		} else {
+			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
+			player.sendMessage("必要な材料が不足しています!")
 		}
 	}
 }
