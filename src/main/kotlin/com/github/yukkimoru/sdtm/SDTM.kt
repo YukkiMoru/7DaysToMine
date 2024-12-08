@@ -3,12 +3,13 @@ package com.github.yukkimoru.sdtm
 import com.github.yukkimoru.sdtm.multi.PlayerJoinListener
 import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
+import com.github.yukkimoru.sdtm.trade.gui.GUIReceiver
+import com.github.yukkimoru.sdtm.trade.gui.Interface
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.ability.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
-import com.github.yukkimoru.sdtm.utility.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
 import com.github.yukkimoru.sdtm.utility.items.ExplosiveSword
@@ -66,6 +67,11 @@ class SDTM : JavaPlugin() {
 	}
 
 	private fun initTRADE() {
+		// GUIを登録
+		server.pluginManager.registerEvents(GUIReceiver(), this)
+		// Initialize the Interface object
+		Interface.initialize(this)
+
 		// DeployVillagersを登録 (Villagersを召喚,トレードを設定)
 		val summonVillagers = DeployVillagers(this)
 		server.pluginManager.registerEvents(summonVillagers, this)
@@ -81,9 +87,6 @@ class SDTM : JavaPlugin() {
 		initCommands()
 		playerList = TabList()
 		playerList.initialize()
-
-		// GUIを登録
-		server.pluginManager.registerEvents(GUIReceiver(), this)
 	}
 
 	private fun initAbility() {

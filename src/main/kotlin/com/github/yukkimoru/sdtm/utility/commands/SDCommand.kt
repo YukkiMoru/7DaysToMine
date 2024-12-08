@@ -1,7 +1,7 @@
 package com.github.yukkimoru.sdtm.utility.commands
 
 import com.github.yukkimoru.sdtm.master.GameMaster
-import com.github.yukkimoru.sdtm.utility.gui.GUI
+import com.github.yukkimoru.sdtm.trade.gui.Interface
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -110,25 +110,57 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				}
 
 				"gui" -> {
-					if (args.size > 1 && args[1].lowercase() == "platform") {
-						if (sender is Player) {
-							val player = sender
-							val platformGUI = GUI.PlatformGUI()
-							player.openInventory(platformGUI)
-							sender.sendMessage(
-								Component.text(
-									"[SDTM] Platform GUI を開きました",
-									NamedTextColor.AQUA
+					if (sender is Player) {
+						when (args.getOrNull(1)?.lowercase()) {
+							"utility" -> {
+								sender.openInventory(Interface.shopUtility())
+								sender.sendMessage(
+									Component.text(
+										"[SDTM] Utility GUI を開きました",
+										NamedTextColor.AQUA
+									)
 								)
-							)
-						} else {
-							sender.sendMessage(
-								Component.text(
-									"[SDTM] このコマンドはプレイヤーのみが使用できます",
-									NamedTextColor.RED
+							}
+
+							"pickaxe" -> {
+								sender.openInventory(Interface.shopPickaxe())
+								sender.sendMessage(
+									Component.text(
+										"[SDTM] Platform GUI を開きました",
+										NamedTextColor.AQUA
+									)
 								)
-							)
+							}
+
+							"potion" -> {
+								sender.openInventory(Interface.shopPotion())
+								sender.sendMessage(
+									Component.text(
+										"[SDTM] Potion GUI を開きました",
+										NamedTextColor.AQUA
+									)
+								)
+							}
+
+							"weapon" -> {
+								sender.openInventory(Interface.shopWeapon())
+								sender.sendMessage(
+									Component.text(
+										"[SDTM] Weapon GUI を開きました",
+										NamedTextColor.AQUA
+									)
+								)
+							}
+
+							else -> sender.sendMessage(Component.text("[SDTM] 無効なGUIタイプです", NamedTextColor.RED))
 						}
+					} else {
+						sender.sendMessage(
+							Component.text(
+								"[SDTM] このコマンドはプレイヤーのみが使用できます",
+								NamedTextColor.RED
+							)
+						)
 					}
 				}
 			}
@@ -163,9 +195,9 @@ class SDCommand(private val plugin: JavaPlugin) : CommandExecutor, TabCompleter 
 				2 -> when (args[0].lowercase()) {
 					"debug" -> listOf("true", "false")
 					"horde" -> listOf("start")
-					"scan" -> listOf("100 60 100")
+					"scan" -> listOf("1000 100 0")
 					"game" -> listOf("start")
-					"gui" -> listOf("platform")
+					"gui" -> listOf("utility", "pickaxe", "potion", "weapon")
 					else -> emptyList()
 				}
 
