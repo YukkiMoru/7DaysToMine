@@ -43,19 +43,12 @@ object Interface {
 
 		val factoryTool = FactoryTool(plugin)
 
-		val tier1Pickaxe = factoryTool.createWoodenPickaxe()
-		val tier2Pickaxe = factoryTool.createIronPickaxe()
-		val tier3Pickaxe = factoryTool.createStonePickaxe()
+		gui.setItem(10, factoryTool.createWoodenPickaxe())
+		gui.setItem(11, factoryTool.createIronPickaxe())
+		gui.setItem(12, factoryTool.createStonePickaxe())
 
-		val tier1GemPickaxe = factoryTool.createRubyPickaxe()
-		val tier2GemPickaxe = factoryTool.createSapphirePickaxe()
-
-		gui.setItem(10, tier1Pickaxe)
-		gui.setItem(11, tier2Pickaxe)
-		gui.setItem(12, tier3Pickaxe)
-
-		gui.setItem(19, tier1GemPickaxe)
-		gui.setItem(20, tier2GemPickaxe)
+		gui.setItem(19, factoryTool.createRubyPickaxe())
+		gui.setItem(20, factoryTool.createSapphirePickaxe())
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 

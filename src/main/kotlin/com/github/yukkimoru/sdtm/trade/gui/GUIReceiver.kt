@@ -33,27 +33,39 @@ class GUIReceiver() : Listener {
 //		player.sendMessage("You clicked at slot ${event.slot}")
 
 		when (event.slot) {
-			10 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 10, Material.GOLD_INGOT to 10), "wooden")
-			11 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 10, Material.GOLD_INGOT to 1), "stone")
+			10 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "wooden")
+			11 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "stone")
+			12 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "iron")
+
+			19 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "ruby")
+			20 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "sapphire")
 		}
 	}
 
-	private fun handlePickaxePurchase(event: InventoryClickEvent, Cost: Map<Material, Int>, pickaxeType: String) {
+	private fun handlePickaxePurchase(
+		event: InventoryClickEvent,
+		costMaterial: Map<Material, Int>,
+		pickaxeType: String
+	) {
 		event.isCancelled = true
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
-		val hasAllMaterials = Cost.all { (material, amount) ->
+		val hasAllMaterials = costMaterial.all { (material, amount) ->
 			playerInventory.all(material).values.sumOf { it.amount } >= amount
 		}
 		val world = Bukkit.getWorld("world")
 		if (hasAllMaterials) {
-			Cost.forEach { (material, amount) ->
+			costMaterial.forEach { (material, amount) ->
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
 			val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 			val pickaxe = when (pickaxeType) {
 				"wooden" -> factoryTool.createWoodenPickaxe()
 				"stone" -> factoryTool.createStonePickaxe()
+				"iron" -> factoryTool.createIronPickaxe()
+
+				"ruby" -> factoryTool.createRubyPickaxe()
+				"sapphire" -> factoryTool.createSapphirePickaxe()
 				else -> return
 			}
 			playerInventory.addItem(pickaxe)
