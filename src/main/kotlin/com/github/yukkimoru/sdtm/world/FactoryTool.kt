@@ -16,6 +16,12 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val disableLore: Boolean = false
 	)
 
+	data class PickaxeData(
+//		mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1)
+		val costMate: Map<Material, Int>,
+		val pickSpec: Map<Material, OreData>
+	)
+
 	// 普通のピッケル
 	fun createWoodenPickaxe() = createPickaxe("common", 200, woodenPickaxe, "§f§l木のツルハシ")
 	fun createStonePickaxe() = createPickaxe("uncommon", 201, stonePickaxe, "§f§l石のツルハシ")
@@ -29,6 +35,8 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.COAL_ORE to OreData("石炭鉱石", 0.5, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.4, 1.0),
 	)
+
+
 	private val stonePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 0.8, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.7, 1.0),
