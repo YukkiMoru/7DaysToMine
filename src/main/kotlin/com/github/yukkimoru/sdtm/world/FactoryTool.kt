@@ -134,6 +134,6 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	fun createTier3Pickaxe() = createPickaxe(3, "epic", 202, tier3Pickaxe, "§f§l鉄のツルハシ")
 
 	// ジェムストーン用のピッケル
-	fun createTier1GemPickaxe() = createGemPickaxe(1, "epic", 210, tier1GemPickaxe, "§d§lルビーのツルハシ")
-	fun createTier2GemPickaxe() = createGemPickaxe(2, "legendary", 211, tier2GemPickaxe, "§d§lサファイアのツルハシ")
+	fun createTier1GemPickaxe() = createGemPickaxe(1, "epic", 300, tier1GemPickaxe, "§d§lルビーのツルハシ")
+	fun createTier2GemPickaxe() = createGemPickaxe(2, "legendary", 301, tier2GemPickaxe, "§d§lサファイアのツルハシ")
 }
