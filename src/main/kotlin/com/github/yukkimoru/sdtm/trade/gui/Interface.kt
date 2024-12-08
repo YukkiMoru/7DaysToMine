@@ -43,11 +43,12 @@ object Interface {
 
 		val factoryTool = FactoryTool(plugin)
 
-		val tier1Pickaxe = factoryTool.createTier1Pickaxe()
-		val tier2Pickaxe = factoryTool.createTier2Pickaxe()
-		val tier3Pickaxe = factoryTool.createTier3Pickaxe()
-		val tier1GemPickaxe = factoryTool.createTier1GemPickaxe()
-		val tier2GemPickaxe = factoryTool.createTier2GemPickaxe()
+		val tier1Pickaxe = factoryTool.createWoodenPickaxe()
+		val tier2Pickaxe = factoryTool.createIronPickaxe()
+		val tier3Pickaxe = factoryTool.createStonePickaxe()
+
+		val tier1GemPickaxe = factoryTool.createRubyPickaxe()
+		val tier2GemPickaxe = factoryTool.createSapphirePickaxe()
 
 		gui.setItem(10, tier1Pickaxe)
 		gui.setItem(11, tier2Pickaxe)

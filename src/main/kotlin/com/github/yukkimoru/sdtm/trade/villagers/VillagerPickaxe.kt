@@ -1,7 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
 import com.github.yukkimoru.sdtm.trade.gui.Interface
-import com.github.yukkimoru.sdtm.world.FactoryTool
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -28,7 +27,6 @@ class VillagerPickaxe(private val plugin: JavaPlugin) : Listener {
 			override fun run() {
 				val world = location.world ?: return
 				val villager = world.spawnEntity(location, EntityType.VILLAGER) as Villager
-
 				// Set villager properties
 				villager.profession = Villager.Profession.TOOLSMITH
 				villager.villagerLevel = 2
@@ -36,48 +34,18 @@ class VillagerPickaxe(private val plugin: JavaPlugin) : Listener {
 				villager.isCustomNameVisible = true
 				villager.customName(Component.text("ツルハシの商人"))
 				villager.isPersistent = true
-
 				// Disable AI
 				villager.setAI(false)
-
 				// Set villager to face
 				val newLocation = villager.location
 				newLocation.yaw = yaw
 				villager.teleport(newLocation)
-
 				// Create trades
 				val recipes = mutableListOf<MerchantRecipe>()
-
-				// Create an instance of ToolFactory
-				val factoryTool = FactoryTool(plugin)
-
-				fun addRecipe(
-					factoryTool: FactoryTool,
-					recipes: MutableList<MerchantRecipe>,
-					emeralds: Int,
-					tier: Int
-				) {
-					val buyItem = ItemStack(Material.EMERALD, emeralds)
-					val sellItem = when (tier) {
-						1 -> factoryTool.createTier1Pickaxe()
-						2 -> factoryTool.createTier2Pickaxe()
-						3 -> factoryTool.createTier3Pickaxe()
-						4 -> factoryTool.createTier1GemPickaxe()
-						5 -> factoryTool.createTier2GemPickaxe()
-						else -> throw IllegalArgumentException("Invalid tier")
-					}
-					val recipe = MerchantRecipe(sellItem, 9999999).apply {
-						addIngredient(buyItem)
-					}
-					recipes.add(recipe)
-				}
-
-				addRecipe(factoryTool, recipes, 10, 1)
-				addRecipe(factoryTool, recipes, 20, 2)
-				addRecipe(factoryTool, recipes, 30, 3)
-				addRecipe(factoryTool, recipes, 40, 4)
-				addRecipe(factoryTool, recipes, 40, 5)
-
+				//岩盤を取引する
+				val bedrockTrade = MerchantRecipe(ItemStack(Material.BARRIER), 1, 1, false)
+				bedrockTrade.addIngredient(ItemStack(Material.BARRIER, 1))
+				recipes.add(bedrockTrade)
 				villager.recipes = recipes
 			}
 		}.runTask(plugin)
@@ -87,19 +55,16 @@ class VillagerPickaxe(private val plugin: JavaPlugin) : Listener {
 	fun onVillagerClick(event: PlayerInteractEntityEvent) {
 		val entity = event.rightClicked
 		if (entity is Villager) {
-			Bukkit.getLogger().info("Villager clicked: ${entity.customName()}")
+//			Bukkit.getLogger().info("Villager clicked: ${entity.customName()}")
 			if (entity.customName()?.equals(Component.text("ツルハシの商人")) == true) {
-				Bukkit.getLogger().info("Opening GUI for player: ${event.player.name}")
-				// Open the GUI menu
-				// wait 1 tick
-				Bukkit.getScheduler().runTask(plugin, Runnable {
-					guiMenuPickaxe(event.player)
-				})
+//				Bukkit.getLogger().info("Opening GUI for player: ${event.player.name}")
+				event.isCancelled = true
+				openPickaxeShop(event.player)
 			}
 		}
 	}
 
-	private fun guiMenuPickaxe(player: Player) {
+	private fun openPickaxeShop(player: Player) {
 		val gui = Interface.shopPickaxe()
 		player.openInventory(gui)
 	}

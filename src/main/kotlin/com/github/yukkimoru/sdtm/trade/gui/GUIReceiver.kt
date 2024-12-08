@@ -44,7 +44,7 @@ class GUIReceiver() : Listener {
 					val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 
 					// Create the Tier 1 Pickaxe
-					val tier1Pickaxe = factoryTool.createTier1Pickaxe()
+					val tier1Pickaxe = factoryTool.createWoodenPickaxe()
 
 					// Add the created pickaxe to the player's inventory
 					playerInventory.addItem(tier1Pickaxe)
@@ -66,7 +66,7 @@ class GUIReceiver() : Listener {
 					val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 
 					// Create the Tier 2 Pickaxe
-					val tier2Pickaxe = factoryTool.createTier2Pickaxe()
+					val tier2Pickaxe = factoryTool.createStonePickaxe()
 
 					// Add the created pickaxe to the player's inventory
 					playerInventory.addItem(tier2Pickaxe)

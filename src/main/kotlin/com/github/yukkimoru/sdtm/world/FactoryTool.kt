@@ -16,19 +16,28 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val disableLore: Boolean = false
 	)
 
-	private val tier1Pickaxe: Map<Material, OreData> = mapOf(
+	// 普通のピッケル
+	fun createWoodenPickaxe() = createPickaxe("common", 200, woodenPickaxe, "§f§l木のツルハシ")
+	fun createStonePickaxe() = createPickaxe("uncommon", 201, stonePickaxe, "§f§l石のツルハシ")
+	fun createIronPickaxe() = createPickaxe("rare", 202, ironPickaxe, "§f§l鉄のツルハシ")
+
+	// ジェムストーン用のピッケル
+	fun createRubyPickaxe() = createPickaxe("epic", 300, rubyPickaxe, "§d§lルビーのツルハシ")
+	fun createSapphirePickaxe() = createPickaxe("legendary", 301, sapphirePickaxe, "§d§lサファイアのツルハシ")
+
+	private val woodenPickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 0.5, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.4, 1.0),
 	)
 
-	private val tier2Pickaxe: Map<Material, OreData> = mapOf(
+	private val stonePickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 0.8, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 0.7, 1.0),
 		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.5, 2.0),
 		Material.DEEPSLATE_IRON_ORE to OreData("深層鉄鉱石", 0.4, 2.0),
 	)
 
-	private val tier3Pickaxe: Map<Material, OreData> = mapOf(
+	private val ironPickaxe: Map<Material, OreData> = mapOf(
 		Material.COAL_ORE to OreData("石炭鉱石", 1.1, 1.0),
 		Material.IRON_ORE to OreData("鉄鉱石", 1.0, 1.0),
 		Material.DEEPSLATE_COAL_ORE to OreData("深層石炭鉱石", 0.8, 2.0),
@@ -37,13 +46,13 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.RAW_IRON to OreData("鉄鉱石の塊", 0.4, 4.0),
 	)
 
-	private val tier1GemPickaxe: Map<Material, OreData> = mapOf(
+	private val rubyPickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.4, 1.0),
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.4, 0.5, true),
 		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.6, 1.0),
 	)
 
-	private val tier2GemPickaxe: Map<Material, OreData> = mapOf(
+	private val sapphirePickaxe: Map<Material, OreData> = mapOf(
 		Material.RED_STAINED_GLASS to OreData("ルビー", 0.6, 1.0),
 		Material.RED_STAINED_GLASS_PANE to OreData("ルビー", 0.6, 0.5, true),
 		Material.ORANGE_STAINED_GLASS to OreData("アンバー", 0.7, 1.0),
@@ -51,15 +60,20 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		Material.BLUE_STAINED_GLASS_PANE to OreData("サファイア", 0.4, 0.5, true),
 	)
 
+	// ここから下は、FactoryToolクラスのプロパティとして定義されている
+	// 破壊可能な鉱石(鉱石ブロック)
 	val allBreakableOreMaterials: List<Material> =
-		(tier1Pickaxe.keys + tier2Pickaxe.keys + tier3Pickaxe.keys).toSet().toList()
+		(woodenPickaxe.keys + stonePickaxe.keys + ironPickaxe.keys).toSet().toList()
 
+	//破壊可能な宝石リスト(ガラスブロック)
 	val allBreakableGemMaterials: List<Material> =
-		(tier1GemPickaxe.keys + tier2GemPickaxe.keys).filter { !it.name.endsWith("_PANE") }.toSet().toList()
+		(rubyPickaxe.keys + sapphirePickaxe.keys).filter { !it.name.endsWith("_PANE") }.toSet().toList()
 
+	//破壊可能な宝石リスト(ガラス板)
 	val allBreakableGemShardMaterials: List<Material> =
-		(tier1GemPickaxe.keys + tier2GemPickaxe.keys).filter { it.name.endsWith("_PANE") }.toSet().toList()
+		(rubyPickaxe.keys + sapphirePickaxe.keys).filter { it.name.endsWith("_PANE") }.toSet().toList()
 
+	//破壊可能な全てのブロックリスト
 	val allBreakableMaterials: List<Material> =
 		allBreakableOreMaterials + allBreakableGemMaterials + allBreakableGemShardMaterials
 
@@ -83,7 +97,6 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	private fun createPickaxe(
-		tier: Int,
 		rarity: String,
 		customModelData: Int,
 		pickaxeData: Map<Material, OreData>,
@@ -92,9 +105,10 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
 			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
 		}
-		val lore = pickaxeData.entries.map {
-			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-		}
+		// ピッケルの採掘速度などを表示する。表示量が大きすぎるため、loreはコメントアウトする。
+//		val lore = pickaxeData.entries.map {
+//			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
+//		}
 		return createUnbreakableTool(
 			Material.NETHERITE_PICKAXE,
 			name,
@@ -104,36 +118,4 @@ class FactoryTool(private val plugin: JavaPlugin) {
 			customModelData
 		)
 	}
-
-	private fun createGemPickaxe(
-		tier: Int,
-		rarity: String,
-		customModelData: Int,
-		pickaxeData: Map<Material, OreData>,
-		name: String
-	): ItemStack {
-		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
-			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
-		}
-		val lore = pickaxeData.entries.map {
-			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-		}
-		return createUnbreakableTool(
-			Material.NETHERITE_PICKAXE,
-			name,
-			listOf("§f鉱石が掘れそうだ"),
-			rarity,
-			destroyableBlocks,
-			customModelData
-		)
-	}
-
-	// 普通のピッケル
-	fun createTier1Pickaxe() = createPickaxe(1, "common", 200, tier1Pickaxe, "§f§l木のツルハシ")
-	fun createTier2Pickaxe() = createPickaxe(2, "uncommon", 201, tier2Pickaxe, "§f§l石のツルハシ")
-	fun createTier3Pickaxe() = createPickaxe(3, "rare", 202, tier3Pickaxe, "§f§l鉄のツルハシ")
-
-	// ジェムストーン用のピッケル
-	fun createTier1GemPickaxe() = createGemPickaxe(1, "epic", 300, tier1GemPickaxe, "§d§lルビーのツルハシ")
-	fun createTier2GemPickaxe() = createGemPickaxe(2, "legendary", 301, tier2GemPickaxe, "§d§lサファイアのツルハシ")
 }
