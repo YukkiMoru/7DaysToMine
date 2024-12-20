@@ -25,6 +25,7 @@ class GUIReceiver() : Listener {
 			}
 		}
 	}
+	val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 
 	private fun handlePickaxeShopGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
@@ -33,16 +34,12 @@ class GUIReceiver() : Listener {
 //		player.sendMessage("You clicked at slot ${event.slot}")
 
 		when (event.slot) {
-			10 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "wooden")
-			11 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "stone")
-			12 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "iron")
-
-			19 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "ruby")
-			20 -> handlePickaxePurchase(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "sapphire")
+			10 -> purchasePickaxe(event, factoryTool.Pickaxes[200]?.pickaxeCosts ?: emptyMap(), "wooden")
+//			10 -> purchasePickaxe(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "wooden")
 		}
 	}
 
-	private fun handlePickaxePurchase(
+	private fun purchasePickaxe(
 		event: InventoryClickEvent,
 		costMaterial: Map<Material, Int>,
 		pickaxeType: String
@@ -60,12 +57,7 @@ class GUIReceiver() : Listener {
 			}
 			val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 			val pickaxe = when (pickaxeType) {
-				"wooden" -> factoryTool.createWoodenPickaxe()
-				"stone" -> factoryTool.createStonePickaxe()
-				"iron" -> factoryTool.createIronPickaxe()
-
-				"ruby" -> factoryTool.createRubyPickaxe()
-				"sapphire" -> factoryTool.createSapphirePickaxe()
+				"wooden" -> factoryTool.createPickaxe(200, false)
 				else -> return
 			}
 			playerInventory.addItem(pickaxe)

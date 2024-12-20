@@ -43,12 +43,12 @@ object Interface {
 
 		val factoryTool = FactoryTool(plugin)
 
-		gui.setItem(10, factoryTool.createWoodenPickaxe())
-		gui.setItem(11, factoryTool.createIronPickaxe())
-		gui.setItem(12, factoryTool.createStonePickaxe())
-
-		gui.setItem(19, factoryTool.createRubyPickaxe())
-		gui.setItem(20, factoryTool.createSapphirePickaxe())
+		gui.setItem(10, factoryTool.createPickaxe(200,true))
+//		gui.setItem(11, factoryTool.createPickaxe("uncommon", 201, factoryTool.stonePickaxe, "§f§l石のツルハシ",true))
+//		gui.setItem(12, factoryTool.createPickaxe("rare", 202, factoryTool.ironPickaxe, "§f§l鉄のツルハシ",true))
+//
+//		gui.setItem(19, factoryTool.createPickaxe("epic", 300, factoryTool.rubyPickaxe, "§d§lルビーのツルハシ",true))
+//		gui.setItem(20, factoryTool.createPickaxe("legendary", 301, factoryTool.sapphirePickaxe, "§d§lサファイアのツルハシ",true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 

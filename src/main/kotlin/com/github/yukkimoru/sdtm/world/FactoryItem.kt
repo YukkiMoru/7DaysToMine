@@ -49,7 +49,7 @@ class FactoryItem(private val plugin: JavaPlugin) {
 			"epic" -> "§5§lエピック"
 			"legendary" -> "§6§lレジェンド"
 			"mythic" -> "§d§lミシック"
-			else -> "§f§lコモン"
+			else -> "§4§lNULL"
 		}
 	}
 

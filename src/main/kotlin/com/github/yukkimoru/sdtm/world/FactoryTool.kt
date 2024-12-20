@@ -11,14 +11,17 @@ import kotlin.collections.get
 class FactoryTool(private val plugin: JavaPlugin) {
 
 	// データ構造の定義
-	data class OreData(
-		val material: Material,
-		val miningSpeed: Double,
-		val dropRate: Double,
-		val isShard: Boolean = false // シャード(ガラス板)かどうか
-	)
+		// ピッケルの情報を格納するデータクラス
+		data class OreData(
+			val material: Material,
+			val miningSpeed: Double,
+			val dropRate: Double,
+			val isShard: Boolean = false // シャード(ガラス板)かどうか
+		)
+	// ピッケルの価格を格納するデータクラス
 	data class PickaxeData(
 		val pickaxeName: String,
+		val rarity: String = "NULL",
 		val miningOres: List<OreData>,
 		val pickaxeCosts: Map<Material, Int> = mapOf(Material.EMERALD to 1)
 	)
@@ -27,6 +30,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	val Pickaxes = mapOf(
 		200 to PickaxeData(
 			"木のツルハシ",
+			"common",
 			listOf(
 				OreData(Material.COAL_ORE, 0.5, 1.0),
 				OreData(Material.IRON_ORE, 0.4, 1.0)
@@ -38,6 +42,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		),
 		201 to PickaxeData(
 			"石のツルハシ",
+			"uncommon",
 			listOf(
 				OreData(Material.COAL_ORE, 0.8, 1.0),
 				OreData(Material.IRON_ORE, 0.7, 1.0),
@@ -47,6 +52,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		),
 		202 to PickaxeData(
 			"鉄のつるはし",
+			"rare",
 			listOf(
 				OreData(Material.COAL_ORE, 1.1, 1.0),
 				OreData(Material.IRON_ORE, 1.0, 1.0),
@@ -60,6 +66,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 		300 to PickaxeData(
 			"ルビーのツルハシ",
+			"epic",
 			listOf(
 				OreData(Material.RED_STAINED_GLASS, 0.4, 1.0),
 				OreData(Material.RED_STAINED_GLASS_PANE, 0.4, 0.5, true),
@@ -68,6 +75,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		),
 		301 to PickaxeData(
 			"サファイアのツルハシ",
+			"legendary",
 			listOf(
 				OreData(Material.RED_STAINED_GLASS, 0.6, 1.0),
 				OreData(Material.RED_STAINED_GLASS_PANE, 0.6, 0.5, true),
@@ -125,38 +133,34 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	}
 
 	fun createPickaxe(
-		rarity: String,
-		customModelData: Int,
-		pickaxeData: Map<Material, OreData>,
-		name: String,
+		customModelID: Int,
 		displayMode: Boolean
 	): ItemStack {
-		val destroyableBlocks = pickaxeData.entries.joinToString(",") {
-			"minecraft:${it.key.name.lowercase()}:${it.value.miningSpeed}:${it.value.dropRate}"
+		val pickaxeData = Pickaxes[customModelID] ?: throw IllegalArgumentException("Invalid customModelID")
+		val destroyableBlocks = pickaxeData.miningOres.joinToString(",") {
+			"minecraft:${it.material.name.lowercase()}:${it.miningSpeed}:${it.dropRate}"
 		}
-		// ピッケルの採掘速度などを表示する。表示量が大きすぎるため、loreはコメントアウトする。
-//		val lore = pickaxeData.entries.map {
-//			"§a⛏${it.value.miningSpeed} ☘${it.value.dropRate} ${it.value.displayName}"
-//		}
-		if(displayMode){
+		if (displayMode) {
 			val lore = listOf("§f鉱石が掘れそうだ",
-				"price: 1000",
-			return createUnbreakableTool(
-				Material.NETHERITE_PICKAXE,
-				name,
-				lore,
-				rarity,
-				destroyableBlocks,
-				customModelData
+				"§a必要素材:",
+				*(pickaxeData.pickaxeCosts.entries.map { "§a${it.key.name} x${it.value}" }.toTypedArray())
 			)
-		}else{
 			return createUnbreakableTool(
 				Material.NETHERITE_PICKAXE,
-				name,
-				listOf("§f鉱石が掘れそうだ"),
-				rarity,
+				pickaxeData.pickaxeName,
+				lore,
+				pickaxeData.rarity,
 				destroyableBlocks,
-				customModelData
+				customModelID
+			)
+		} else {
+			return createUnbreakableTool(
+				Material.NETHERITE_PICKAXE,
+				pickaxeData.pickaxeName,
+				listOf("§f鉱石が掘れそうだ"),
+				pickaxeData.rarity,
+				destroyableBlocks,
+				customModelID
 			)
 		}
 	}
