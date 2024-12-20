@@ -96,7 +96,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 
 	val allBreakableGemMaterials: List<Material> =
 		(300..399).mapNotNull {
-			pickaxes[it]?.miningOres?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.filter { ore -> !ore.isShard }?.map { ore -> ore.material } }
 			.flatten()
 			.toSet()
 			.toList()

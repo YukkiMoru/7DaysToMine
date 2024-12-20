@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -35,7 +36,11 @@ class GUIReceiver() : Listener {
 
 		when (event.slot) {
 			10 -> purchasePickaxe(event, 200)
-//			factoryTool.Pickaxes[200]?.pickaxeCosts ?: emptyMap()
+			11 -> purchasePickaxe(event, 201)
+			12 -> purchasePickaxe(event, 202)
+
+			19 -> purchasePickaxe(event, 300)
+			20 -> purchasePickaxe(event, 301)
 		}
 	}
 
@@ -44,13 +49,19 @@ class GUIReceiver() : Listener {
 		customModelID: Int,
 	) {
 		event.isCancelled = true
+		val world = Bukkit.getWorld("world")
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
 		val costMaterial = factoryTool.pickaxes[customModelID]?.pickaxeCosts ?: emptyMap()
+		// プレイヤーのインベントリがいっぱいならば購入できない
+		if (isInventoryFull(playerInventory)) {
+			player.sendMessage("インベントリがいっぱいです!")
+			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
+			return
+		}
 		val hasAllMaterials = costMaterial.all { (material, amount) ->
 			playerInventory.all(material).values.sumOf { it.amount } >= amount
 		}
-		val world = Bukkit.getWorld("world")
 		if (hasAllMaterials) {
 			costMaterial.forEach { (material, amount) ->
 				playerInventory.removeItem(ItemStack(material, amount))
@@ -62,5 +73,9 @@ class GUIReceiver() : Listener {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
 			player.sendMessage("必要な材料が不足しています!")
 		}
+	}
+
+	fun isInventoryFull(playerInventory: Inventory): Boolean {
+		return playerInventory.firstEmpty() == -1
 	}
 }
