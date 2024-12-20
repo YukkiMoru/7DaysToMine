@@ -41,7 +41,7 @@ class DropOres(private val plugin: JavaPlugin, private val factoryTool: FactoryT
 						"common"
 					)
 
-					Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE, Material.RAW_IRON -> factoryItem.createItemStack(
+					Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE, Material.RAW_IRON_BLOCK -> factoryItem.createItemStack(
 						Material.RAW_IRON,
 						dropCount,
 						"§f§l鉄鉱石",

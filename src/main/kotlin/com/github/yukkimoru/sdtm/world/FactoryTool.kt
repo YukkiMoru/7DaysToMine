@@ -58,7 +58,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 				OreData(Material.DEEPSLATE_COAL_ORE, 0.8, 2.0),
 				OreData(Material.DEEPSLATE_IRON_ORE, 0.7, 2.0),
 				OreData(Material.COAL_BLOCK, 0.5, 4.0),
-				OreData(Material.RAW_IRON, 0.4, 4.0)
+				OreData(Material.RAW_IRON_BLOCK, 0.4, 4.0)
 			)
 		),
 
