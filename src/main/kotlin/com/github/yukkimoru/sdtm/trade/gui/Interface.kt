@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
-
+@Suppress("SpellCheckingInspection")
 object Interface {
 	private lateinit var plugin: JavaPlugin
 
@@ -22,18 +22,18 @@ object Interface {
 	fun shopUtility(): Inventory {
 		val gui = createInventory("雑貨商人", 36)
 
-		val Diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
-		val Oak_Planks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
-		val Warden = createPlayerHead(
+		val diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
+		val oakPlanks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
+		val warden = createPlayerHead(
 			"Warden",
 			"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNmMzY3NGIyZGRjMGVmN2MzOWUzYjljNmI1ODY3N2RlNWNmMzc3ZDJlYjA3M2YyZjNmZTUwOTE5YjFjYTRjOSJ9fX0=",
 			TextColor.color(0xFF0000)
 		)
 
 		// Add the items to the inventory
-		gui.setItem(2, Oak_Planks)
-		gui.setItem(25, Diamond)
-		gui.setItem(26, Warden) // Add the player head to the inventory
+		gui.setItem(2, oakPlanks)
+		gui.setItem(25, diamond)
+		gui.setItem(26, warden) // Add the player head to the inventory
 
 		return gui
 	}
@@ -58,18 +58,18 @@ object Interface {
 	fun shopPotion(): Inventory {
 		val gui = createInventory("ポーション商人", 27)
 
-		val Diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
-		val Oak_Planks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
-		val Warden = createPlayerHead(
+		val diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
+		val oakPlanks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
+		val warden = createPlayerHead(
 			"Warden",
 			"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNmMzY3NGIyZGRjMGVmN2MzOWUzYjljNmI1ODY3N2RlNWNmMzc3ZDJlYjA3M2YyZjNmZTUwOTE5YjFjYTRjOSJ9fX0=",
 			TextColor.color(0xFF0000)
 		)
 
 		// Add the items to the inventory
-		gui.setItem(2, Oak_Planks)
-		gui.setItem(25, Diamond)
-		gui.setItem(26, Warden) // Add the player head to the inventory
+		gui.setItem(2, oakPlanks)
+		gui.setItem(25, diamond)
+		gui.setItem(26, warden) // Add the player head to the inventory
 
 		return gui
 	}
@@ -77,18 +77,18 @@ object Interface {
 	fun shopWeapon(): Inventory {
 		val gui = createInventory("武器商人", 27)
 
-		val Diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
-		val Oak_Planks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
-		val Warden = createPlayerHead(
+		val diamond = createItem(Material.DIAMOND, 1, "Click me!", TextColor.color(0x00FFFF))
+		val oakPlanks = createItem(Material.OAK_PLANKS, 1, "Archer Tower", TextColor.color(0x00FF00))
+		val warden = createPlayerHead(
 			"Warden",
 			"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNmMzY3NGIyZGRjMGVmN2MzOWUzYjljNmI1ODY3N2RlNWNmMzc3ZDJlYjA3M2YyZjNmZTUwOTE5YjFjYTRjOSJ9fX0=",
 			TextColor.color(0xFF0000)
 		)
 
 		// Add the items to the inventory
-		gui.setItem(2, Oak_Planks)
-		gui.setItem(25, Diamond)
-		gui.setItem(26, Warden) // Add the player head to the inventory
+		gui.setItem(2, oakPlanks)
+		gui.setItem(25, diamond)
+		gui.setItem(26, warden) // Add the player head to the inventory
 
 		return gui
 	}

@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
-import kotlin.collections.get
 
 class FactoryTool(private val plugin: JavaPlugin) {
 
@@ -27,7 +26,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	)
 
 	// ピッケルの情報を書き込む
-	val Pickaxes = mapOf(
+	val pickaxes = mapOf(
 		200 to PickaxeData(
 			"木のツルハシ",
 			"common",
@@ -90,21 +89,21 @@ class FactoryTool(private val plugin: JavaPlugin) {
 	// 破壊可能な鉱石(鉱石ブロック)
 	val allBreakableOreMaterials: List<Material> =
 		(200..299).mapNotNull {
-			Pickaxes[it]?.miningOres?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.map { ore -> ore.material } }
 			.flatten()
 			.toSet()
 			.toList()
 
 	val allBreakableGemMaterials: List<Material> =
 		(300..399).mapNotNull {
-			Pickaxes[it]?.miningOres?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.map { ore -> ore.material } }
 			.flatten()
 			.toSet()
 			.toList()
 
 	val allBreakableGemShardMaterials: List<Material> =
 		(300..399).mapNotNull {
-			Pickaxes[it]?.miningOres?.filter { ore -> ore.isShard }?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.filter { ore -> ore.isShard }?.map { ore -> ore.material } }
 			.flatten()
 			.toSet()
 			.toList()
@@ -136,7 +135,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		customModelID: Int,
 		displayMode: Boolean
 	): ItemStack {
-		val pickaxeData = Pickaxes[customModelID] ?: throw IllegalArgumentException("Invalid customModelID")
+		val pickaxeData = pickaxes[customModelID] ?: throw IllegalArgumentException("Invalid customModelID")
 		val destroyableBlocks = pickaxeData.miningOres.joinToString(",") {
 			"minecraft:${it.material.name.lowercase()}:${it.miningSpeed}:${it.dropRate}"
 		}

@@ -3,7 +3,6 @@ package com.github.yukkimoru.sdtm.trade.gui
 import com.github.yukkimoru.sdtm.SDTM
 import com.github.yukkimoru.sdtm.world.FactoryTool
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -29,8 +28,10 @@ class GUIReceiver() : Listener {
 	private fun handlePickaxeShopGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
 
-//		val player = event.whoClicked as Player
-//		player.sendMessage("You clicked at slot ${event.slot}")
+		/*
+        val player = event.whoClicked as Player
+        player.sendMessage("You clicked at slot ${event.slot}")
+        */
 
 		when (event.slot) {
 			10 -> purchasePickaxe(event, 200)
@@ -40,12 +41,12 @@ class GUIReceiver() : Listener {
 
 	private fun purchasePickaxe(
 		event: InventoryClickEvent,
-		CustomModelID: Int,
+		customModelID: Int,
 	) {
 		event.isCancelled = true
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
-		val costMaterial = factoryTool.Pickaxes[CustomModelID]?.pickaxeCosts ?: emptyMap()
+		val costMaterial = factoryTool.pickaxes[customModelID]?.pickaxeCosts ?: emptyMap()
 		val hasAllMaterials = costMaterial.all { (material, amount) ->
 			playerInventory.all(material).values.sumOf { it.amount } >= amount
 		}
@@ -55,7 +56,7 @@ class GUIReceiver() : Listener {
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
 
-			playerInventory.addItem(factoryTool.createPickaxe(CustomModelID, false))
+			playerInventory.addItem(factoryTool.createPickaxe(customModelID, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
