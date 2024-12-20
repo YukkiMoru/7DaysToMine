@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
 class GUIReceiver() : Listener {
-
+	val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 	@Suppress("DEPRECATION")
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
@@ -25,28 +25,27 @@ class GUIReceiver() : Listener {
 			}
 		}
 	}
-	val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
 
 	private fun handlePickaxeShopGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
-		val player = event.whoClicked as Player
 
+//		val player = event.whoClicked as Player
 //		player.sendMessage("You clicked at slot ${event.slot}")
 
 		when (event.slot) {
-			10 -> purchasePickaxe(event, factoryTool.Pickaxes[200]?.pickaxeCosts ?: emptyMap(), "wooden")
-//			10 -> purchasePickaxe(event, mapOf(Material.EMERALD to 1, Material.GOLD_INGOT to 1), "wooden")
+			10 -> purchasePickaxe(event, 200)
+//			factoryTool.Pickaxes[200]?.pickaxeCosts ?: emptyMap()
 		}
 	}
 
 	private fun purchasePickaxe(
 		event: InventoryClickEvent,
-		costMaterial: Map<Material, Int>,
-		pickaxeType: String
+		CustomModelID: Int,
 	) {
 		event.isCancelled = true
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
+		val costMaterial = factoryTool.Pickaxes[CustomModelID]?.pickaxeCosts ?: emptyMap()
 		val hasAllMaterials = costMaterial.all { (material, amount) ->
 			playerInventory.all(material).values.sumOf { it.amount } >= amount
 		}
@@ -55,12 +54,8 @@ class GUIReceiver() : Listener {
 			costMaterial.forEach { (material, amount) ->
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
-			val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
-			val pickaxe = when (pickaxeType) {
-				"wooden" -> factoryTool.createPickaxe(200, false)
-				else -> return
-			}
-			playerInventory.addItem(pickaxe)
+
+			playerInventory.addItem(factoryTool.createPickaxe(CustomModelID, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
