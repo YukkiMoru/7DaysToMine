@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
-import java.util.*
 
 class FactoryItem(private val plugin: JavaPlugin) {
 
@@ -24,7 +23,7 @@ class FactoryItem(private val plugin: JavaPlugin) {
 		val itemMeta = itemStack.itemMeta
 		itemMeta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false))
 		itemMeta.lore(lore.map { Component.text(it).decoration(TextDecoration.ITALIC, false) } + Component.text(
-			getRarityDisplayName(rarity)
+			RarityUtil.getRarityInfo(rarity).raritySection
 		).decoration(TextDecoration.ITALIC, false))
 
 		// Add rarity to the item
@@ -39,18 +38,6 @@ class FactoryItem(private val plugin: JavaPlugin) {
 
 		itemStack.itemMeta = itemMeta
 		return itemStack
-	}
-
-	private fun getRarityDisplayName(rarity: String): String {
-		return when (rarity.lowercase(Locale.getDefault())) {
-			"common" -> "§f§lコモン"
-			"uncommon" -> "§a§lアンコモン"
-			"rare" -> "§9§lレア"
-			"epic" -> "§5§lエピック"
-			"legendary" -> "§6§lレジェンド"
-			"mythic" -> "§d§lミシック"
-			else -> "§4§k**§r§4§lNULL§r§4§k**"
-		}
 	}
 
 	// カスタムモデルデータ(ID)を取得、ない場合はnullを返す

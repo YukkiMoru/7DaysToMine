@@ -16,21 +16,34 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		potionID: Int?,
 		name: String,
 		duration: Int,
+		enableLore: Boolean? = false,
 		lore: List<String>,
 		rarity: String,
 		customModelData: Int? = null,
 		color: Color? = null,
-		effects: List<PotionEffect> = emptyList()
+		effects: List<PotionEffect> = listOf()
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
 		meta.setDisplayName(name)
-		meta.lore = lore
+		if (enableLore == true) {
+			meta.lore = listOf(
+				"§r${RarityUtil.getRarityInfo(rarity).raritySection}=============",
+				lore.joinToString(),
+				RarityUtil.getRarityInfo(rarity).rarityName,
+				"§r${RarityUtil.getRarityInfo(rarity).raritySection}============="
+			)
+		} else {
+			meta.lore = listOf(
+				"§r${RarityUtil.getRarityInfo(rarity).raritySection}=============",
+				RarityUtil.getRarityInfo(rarity).rarityName,
+				"§r${RarityUtil.getRarityInfo(rarity).raritySection}============="
+			)
+		}
+
 		val container = meta.persistentDataContainer
-		val rarityKey = NamespacedKey(plugin, "rarity")
-		container.set(rarityKey, PersistentDataType.STRING, rarity)
 		potionID?.let {
-			val potionIDKey = NamespacedKey(plugin, "PotionID")
+			val potionIDKey = NamespacedKey(plugin, "Potion_id")
 			container.set(potionIDKey, PersistentDataType.INTEGER, it)
 		}
 		val durationKey = NamespacedKey(plugin, "duration")
@@ -50,25 +63,29 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	fun createHealingPotion(): ItemStack {
 		return createPotion(
-			potionID = 1,
-			name = "§cHealing Potion",
-			duration = 10,
+			1,
+			"§c治癒のポーション",
+			10,
+			false,
 			lore = listOf(),
-			rarity = "common",
+			"common",
 			color = Color.RED,
-			effects = listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
-				PotionEffect(PotionEffectType.BLINDNESS, 200, 2))
+			effects = listOf(
+				PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
+				PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
+			)
 		)
 	}
 
 	fun createStrengthPotion(): ItemStack {
 		return createPotion(
-			potionID = 2,
-			name = "§6Strength Potion",
-			duration = 10,
-			lore = listOf("§7A potion that increases strength."),
-			rarity = "rare",
-			customModelData = 301,
+			2,
+			"§6力のポーション",
+			10,
+			false,
+			lore = listOf(),
+			"rare",
+			301,
 			color = Color.ORANGE,
 			effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
 		)
@@ -76,12 +93,13 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	fun createSpeedPotion(): ItemStack {
 		return createPotion(
-			potionID = 3,
-			name = "§bSpeed Potion",
-			duration = 10,
-			lore = listOf("§7A potion that increases speed."),
-			rarity = "uncommon",
-			customModelData = 302,
+			3,
+			"§b俊敏のポーション",
+			10,
+			false,
+			lore = listOf(),
+			"uncommon",
+			302,
 			color = Color.BLUE,
 			effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
 		)
@@ -89,25 +107,29 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	fun createGiantPotion(): ItemStack {
 		return createPotion(
-			potionID = 4,
-			name = "§aGiant Potion",
-			duration = 10,
-			lore = listOf("§7A potion that makes you giant."),
-			rarity = "rare",
-			customModelData = 303,
-			color = Color.GREEN,
+			4,
+			"§a巨人のポーション",
+			10,
+			true,
+			listOf("§a巨人 I (00:10)"),
+			"rare",
+			303,
+			Color.GREEN,
+			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
 		)
 	}
 
 	fun createMidgetPotion(): ItemStack {
 		return createPotion(
-			potionID = 5,
-			name = "§eMidget Potion",
-			duration = 10,
-			lore = listOf("§7A potion that makes you midget."),
-			rarity = "rare",
-			customModelData = 304,
+			5,
+			"§e小人のポーション",
+			10,
+			true,
+			listOf("§e小人 I (00:10)"),
+			"rare",
+			304,
 			color = Color.YELLOW,
+			effects = listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
 		)
 	}
 }
