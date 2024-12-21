@@ -28,16 +28,16 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		meta.setDisplayName(name)
 		if (enableLore == true) {
 			meta.lore = listOf(
-				"§r${RarityUtil.getRarityInfo(rarity).raritySection}=============",
+				"§r${RarityUtil.getInfo(rarity).section}=============",
 				lore.joinToString(),
-				RarityUtil.getRarityInfo(rarity).rarityName,
-				"§r${RarityUtil.getRarityInfo(rarity).raritySection}============="
+				RarityUtil.getInfo(rarity).name,
+				"§r${RarityUtil.getInfo(rarity).section}============="
 			)
 		} else {
 			meta.lore = listOf(
-				"§r${RarityUtil.getRarityInfo(rarity).raritySection}=============",
-				RarityUtil.getRarityInfo(rarity).rarityName,
-				"§r${RarityUtil.getRarityInfo(rarity).raritySection}============="
+				"§r${RarityUtil.getInfo(rarity).section}=============",
+				RarityUtil.getInfo(rarity).name,
+				"§r${RarityUtil.getInfo(rarity).section}============="
 			)
 		}
 

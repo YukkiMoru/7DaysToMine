@@ -23,7 +23,7 @@ class FactoryItem(private val plugin: JavaPlugin) {
 		val itemMeta = itemStack.itemMeta
 		itemMeta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false))
 		itemMeta.lore(lore.map { Component.text(it).decoration(TextDecoration.ITALIC, false) } + Component.text(
-			RarityUtil.getRarityInfo(rarity).raritySection
+			RarityUtil.getInfo(rarity).section
 		).decoration(TextDecoration.ITALIC, false))
 
 		// Add rarity to the item

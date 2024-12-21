@@ -3,9 +3,9 @@ package com.github.yukkimoru.sdtm.world
 import java.util.*
 
 object RarityUtil {
-	data class RarityInfo(val rarityName: String, val raritySection: String)
+	data class RarityInfo(val name: String, val section: String)
 
-	fun getRarityInfo(rarity: String): RarityInfo {
+	fun getInfo(rarity: String): RarityInfo {
 		return when (rarity.lowercase(Locale.getDefault())) {
 			"common" -> RarityInfo("§f§lコモン", "§f")
 			"uncommon" -> RarityInfo("§a§lアンコモン", "§a")
