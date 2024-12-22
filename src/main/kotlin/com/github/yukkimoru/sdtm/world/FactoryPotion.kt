@@ -61,75 +61,83 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun createHealingPotion(): ItemStack {
-		return createPotion(
-			1,
-			"§c治癒のポーション",
-			10,
-			false,
-			lore = listOf(),
-			"common",
-			color = Color.RED,
-			effects = listOf(
-				PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
-				PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
+	fun distroPotion(PotionName:String,PotionLevel:Int): ItemStack {
+		return when
+			(PotionName== "Healing")&& (PotionLevel==1) -> createPotion(
+				potionID,
+				"§c治癒のポーション",
+				10,
+				false,
+				lore = listOf(),
+				"common",
+				color = Color.RED,
+				effects = listOf(
+					PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
+					PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
+				)
+			){
+			1 -> createPotion(
+				potionID,
+				"§c治癒のポーション",
+				10,
+				false,
+				lore = listOf(),
+				"common",
+				color = Color.RED,
+				effects = listOf(
+					PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
+					PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
+				)
 			)
-		)
-	}
 
-	fun createStrengthPotion(): ItemStack {
-		return createPotion(
-			2,
-			"§6力のポーション",
-			10,
-			false,
-			lore = listOf(),
-			"rare",
-			301,
-			color = Color.ORANGE,
-			effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
-		)
-	}
+			2 -> createPotion(
+				potionID,
+				"§6力のポーション",
+				10,
+				false,
+				lore = listOf(),
+				"rare",
+				301,
+				color = Color.ORANGE,
+				effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
+			)
 
-	fun createSpeedPotion(): ItemStack {
-		return createPotion(
-			3,
-			"§b俊敏のポーション",
-			10,
-			false,
-			lore = listOf(),
-			"uncommon",
-			302,
-			color = Color.BLUE,
-			effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
-		)
-	}
+			3 -> createPotion(
+				potionID,
+				"§b俊敏のポーション",
+				10,
+				false,
+				lore = listOf(),
+				"uncommon",
+				302,
+				color = Color.BLUE,
+				effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
+			)
 
-	fun createGiantPotion(): ItemStack {
-		return createPotion(
-			4,
-			"§a巨人のポーション",
-			10,
-			true,
-			listOf("§a巨人 I (00:10)"),
-			"rare",
-			303,
-			Color.GREEN,
-			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
-		)
-	}
+			4 -> createPotion(
+				potionID,
+				"§a巨人のポーション",
+				10,
+				true,
+				listOf("§a巨人 I (00:10)"),
+				"rare",
+				303,
+				Color.GREEN,
+				listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
+			)
 
-	fun createMidgetPotion(): ItemStack {
-		return createPotion(
-			5,
-			"§e小人のポーション",
-			10,
-			true,
-			listOf("§e小人 I (00:10)"),
-			"rare",
-			304,
-			color = Color.YELLOW,
-			effects = listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
-		)
+			5 -> createPotion(
+				potionID,
+				"§e小人のポーション",
+				10,
+				true,
+				listOf("§e小人 I (00:10)"),
+				"rare",
+				304,
+				color = Color.YELLOW,
+				effects = listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
+			)
+			else -> throw IllegalArgumentException("Invalid potion ID")
+		}
 	}
 }

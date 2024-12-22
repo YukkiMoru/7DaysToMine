@@ -49,28 +49,28 @@ class VillagerPotion(private val plugin: JavaPlugin) {
 
 		// Trade 1: Healing Potion for 5 emeralds
 		val buyItem1 = ItemStack(Material.EMERALD, 5)
-		val sellItem1 = factoryPotion.createHealingPotion()
+		val sellItem1 = factoryPotion.distroPotion(1)
 		val recipe1 = MerchantRecipe(sellItem1, 9999999)
 		recipe1.addIngredient(buyItem1)
 		recipes.add(recipe1)
 
 		// Trade 2: Strength Potion for 8 emeralds
 		val buyItem2 = ItemStack(Material.EMERALD, 8)
-		val sellItem2 = factoryPotion.createStrengthPotion()
+		val sellItem2 = factoryPotion.distroPotion(2)
 		val recipe2 = MerchantRecipe(sellItem2, 9999999)
 		recipe2.addIngredient(buyItem2)
 		recipes.add(recipe2)
 
 		// Trade 3: Speed Potion for 6 emeralds
 		val buyItem3 = ItemStack(Material.EMERALD, 6)
-		val sellItem3 = factoryPotion.createSpeedPotion()
+		val sellItem3 = factoryPotion.distroPotion(3)
 		val recipe3 = MerchantRecipe(sellItem3, 9999999)
 		recipe3.addIngredient(buyItem3)
 		recipes.add(recipe3)
 
 		// Trade 4: Giant Potion for 10 emeralds
 		val buyItem4 = ItemStack(Material.EMERALD, 10)
-		val sellItem4 = factoryPotion.createGiantPotion()
+		val sellItem4 = factoryPotion.distroPotion(4)
 		val recipe4 = MerchantRecipe(sellItem4, 9999999)
 		recipe4.addIngredient(buyItem4)
 		recipes.add(recipe4)
