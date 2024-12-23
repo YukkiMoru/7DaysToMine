@@ -12,12 +12,13 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import kotlin.text.get
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private var potionEffectTask: BukkitTask? = null
-	private val playerCooldowns = mutableMapOf<Player, MutableMap<Int, Int>>()
+	private val playerCooldowns = mutableMapOf<Player, MutableMap<String, Int>>()
 
 	@EventHandler
 	fun onPlayerDrink(event: PlayerItemConsumeEvent) {
@@ -27,98 +28,92 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		if (item.type == Material.POTION) {
 			val meta = item.itemMeta as PotionMeta
 			val container = meta.persistentDataContainer
-			val potionID = container.get(NamespacedKey(plugin, "potion_id"), PersistentDataType.INTEGER)
+			val potionName = container.get(NamespacedKey(plugin, "potion_name"), PersistentDataType.STRING)
+			val potionLevel = container.get(NamespacedKey(plugin, "potion_level"), PersistentDataType.INTEGER) ?: 0
 			val duration = container.get(NamespacedKey(plugin, "duration"), PersistentDataType.INTEGER) ?: 0
 
-			if (potionID != null) {
+			if (potionName != null) {
 				val cooldowns = playerCooldowns[player]
-				if (cooldowns != null && cooldowns.containsKey(potionID)) {
-					player.sendMessage("§cクールダウン中です：残り${cooldowns[potionID]}秒")
+				if (cooldowns != null && cooldowns.containsKey(potionName)) {
+					player.sendMessage("§cクールダウン中です：残り${cooldowns[potionName]}秒")
 					event.isCancelled = true
 					return
 				}
 
-				when (potionID) {
-					1 -> {
-						// Healing Potion
-//						player.health =
-//							min(player.health + 4, player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.value)
-//						player.sendMessage("§aYou drank a Healing Potion!")
+				when (potionName to potionLevel) {
+					"healing" to 1 -> {
+						// Healing Potion Level 1
+						player.sendMessage("§aYou drank a Healing Potion Level 1!")
 					}
-
-					2 -> {
-						// Strength Potion
-						player.sendMessage("§aYou drank a Strength Potion!")
+					"strength" to 1 -> {
+						// Strength Potion Level 1
+						player.sendMessage("§aYou drank a Strength Potion Level 1!")
 					}
-
-					3 -> {
-						// Speed Potion
-						player.sendMessage("§aYou drank a Speed Potion!")
+					"speed" to 1 -> {
+						// Speed Potion Level 1
+						player.sendMessage("§aYou drank a Speed Potion Level 1!")
 					}
-
-					4 -> {
-						// Giant Potion
+					"giant" to 1 -> {
+						// Giant Potion Level 1
 						smoothScale(player, 1.0, 2.0, 20, 10)
-						player.sendMessage("§aYou drank a Giant Potion!")
+						player.sendMessage("§aYou drank a Giant Potion Level 1!")
 					}
-
-					5 -> {
-						// Midget Potion
+					"midget" to 1 -> {
+						// Midget Potion Level 1
 						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-						player.sendMessage("§aYou drank a Midget Potion!")
+						player.sendMessage("§aYou drank a Midget Potion Level 1!")
 					}
-
 					else -> {
-						player.sendMessage("§cUnknown PotionID: $potionID")
+						player.sendMessage("§cUnknown PotionName: $potionName or Level: $potionLevel")
 					}
 				}
-				setTimer(player, potionID, duration)
-				startCooldown(player, potionID, duration)
+				setTimer(player, potionName, duration)
+				startCooldown(player, potionName, duration)
 			} else {
-				player.sendMessage("§cPotionID not found.")
+				player.sendMessage("§cPotionName not found.")
 			}
 		} else {
 			player.sendMessage("§cYou drank a non-potion item.")
 		}
 	}
 
-	private fun setTimer(player: Player, potionID: Int, duration: Int) {
+	private fun setTimer(player: Player, potionName: String, duration: Int) {
 		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-			removeTimer(player, potionID)
+			removeTimer(player, potionName)
 		}, duration * 20L)
 	}
 
-	private fun removeTimer(player: Player, potionID: Int) {
+	private fun removeTimer(player: Player, potionName: String) {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
 
-		playerCooldowns[player]?.remove(potionID)
+		playerCooldowns[player]?.remove(potionName)
 
-		when (potionID) {
-			2 -> {
+		when (potionName) {
+			"strength" -> {
 				// Strength Potion effect ends
 				player.sendMessage("§cThe effect of the Strength Potion has worn off.")
 			}
 
-			3 -> {
+			"speed" -> {
 				// Speed Potion effect ends
 				player.sendMessage("§cThe effect of the Speed Potion has worn off.")
 			}
 
-			4 -> {
+			"giant" -> {
 				// Giant Potion effect ends
 				smoothScale(player, 2.0, 1.0, 20, 10)
 				player.sendMessage("§cThe effect of the Giant Potion has worn off.")
 			}
 
-			5 -> {
+			"midget" -> {
 				// Midget Potion effect ends
 				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
 				player.sendMessage("§cThe effect of the Midget Potion has worn off.")
 			}
 
 			else -> {
-				player.sendMessage("§cThe effect of potion $potionID has worn off.")
+				player.sendMessage("§cThe effect of potion $potionName has worn off.")
 			}
 		}
 	}
@@ -150,23 +145,23 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}, 0L, stepDuration)
 	}
 
-	private fun startCooldown(player: Player, potionID: Int, duration: Int) {
+	private fun startCooldown(player: Player, potionName: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
-		cooldowns[potionID] = duration
+		cooldowns[potionName] = duration
 		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			override fun run() {
-				val timeLeft = cooldowns[potionID] ?: return
+				val timeLeft = cooldowns[potionName] ?: return
 				if (timeLeft > 0) {
-					cooldowns[potionID] = timeLeft - 1
+					cooldowns[potionName] = timeLeft - 1
 				} else {
-					cooldowns.remove(potionID)
+					cooldowns.remove(potionName)
 					Bukkit.getScheduler().cancelTask(this.hashCode())
 				}
 			}
 		}, 0L, 20L)
 	}
 
-	fun getCooldowns(player: Player): Map<Int, Int> {
+	fun getCooldowns(player: Player): Map<String, Int> {
 		return playerCooldowns[player] ?: emptyMap()
 	}
 

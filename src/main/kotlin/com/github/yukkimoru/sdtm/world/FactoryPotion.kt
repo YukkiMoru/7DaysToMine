@@ -13,8 +13,9 @@ import org.bukkit.potion.PotionEffectType
 class FactoryPotion(private val plugin: JavaPlugin) {
 
 	private fun createPotion(
-		potionID: Int?,
-		name: String,
+		potionDisplayName: String,
+		potionName: String,
+		potionLevel: Int,
 		duration: Int,
 		enableLore: Boolean? = false,
 		lore: List<String>,
@@ -25,7 +26,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
-		meta.setDisplayName(name)
+		meta.setDisplayName(potionDisplayName)
 		if (enableLore == true) {
 			meta.lore = listOf(
 				"§r${RarityUtil.getInfo(rarity).section}=============",
@@ -42,10 +43,10 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		}
 
 		val container = meta.persistentDataContainer
-		potionID?.let {
-			val potionIDKey = NamespacedKey(plugin, "Potion_id")
-			container.set(potionIDKey, PersistentDataType.INTEGER, it)
-		}
+		val potionNameKey = NamespacedKey(plugin, "potion_name")
+		container.set(potionNameKey, PersistentDataType.STRING, potionName)
+		val potionLevelKey = NamespacedKey(plugin, "potion_level")
+		container.set(potionLevelKey, PersistentDataType.INTEGER, potionLevel)
 		val durationKey = NamespacedKey(plugin, "duration")
 		container.set(durationKey, PersistentDataType.INTEGER, duration)
 		customModelData?.let {
@@ -61,24 +62,12 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun distroPotion(PotionName:String,PotionLevel:Int): ItemStack {
-		return when
-			(PotionName== "Healing")&& (PotionLevel==1) -> createPotion(
-				potionID,
+	fun distroPotion(potionName: String, potionLevel: Int): ItemStack {
+		return when {
+			potionName == "healing" && potionLevel == 1 -> createPotion(
 				"§c治癒のポーション",
-				10,
-				false,
-				lore = listOf(),
-				"common",
-				color = Color.RED,
-				effects = listOf(
-					PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
-					PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
-				)
-			){
-			1 -> createPotion(
-				potionID,
-				"§c治癒のポーション",
+				"healing",
+				1,
 				10,
 				false,
 				lore = listOf(),
@@ -89,10 +78,10 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 					PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
 				)
 			)
-
-			2 -> createPotion(
-				potionID,
+			potionName == "strength" && potionLevel == 1 -> createPotion(
 				"§6力のポーション",
+				"strength",
+				1,
 				10,
 				false,
 				lore = listOf(),
@@ -101,10 +90,10 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				color = Color.ORANGE,
 				effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
 			)
-
-			3 -> createPotion(
-				potionID,
+			potionName == "speed" && potionLevel == 1 -> createPotion(
 				"§b俊敏のポーション",
+				"speed",
+				1,
 				10,
 				false,
 				lore = listOf(),
@@ -113,10 +102,10 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				color = Color.BLUE,
 				effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
 			)
-
-			4 -> createPotion(
-				potionID,
+			potionName == "giant" && potionLevel == 1 -> createPotion(
 				"§a巨人のポーション",
+				"giant",
+				1,
 				10,
 				true,
 				listOf("§a巨人 I (00:10)"),
@@ -125,10 +114,10 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				Color.GREEN,
 				listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
 			)
-
-			5 -> createPotion(
-				potionID,
+			potionName == "midget" && potionLevel == 1 -> createPotion(
 				"§e小人のポーション",
+				"midget",
+				1,
 				10,
 				true,
 				listOf("§e小人 I (00:10)"),
@@ -137,7 +126,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				color = Color.YELLOW,
 				effects = listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
 			)
-			else -> throw IllegalArgumentException("Invalid potion ID")
+			else -> throw IllegalArgumentException("Invalid potion name or level")
 		}
 	}
 }

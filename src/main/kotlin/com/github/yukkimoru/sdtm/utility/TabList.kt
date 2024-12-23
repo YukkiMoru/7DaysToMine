@@ -15,7 +15,7 @@ class TabList {
 		}
 	}
 
-	fun updatePotionCooldowns(player: Player, cooldowns: Map<Int, Int>) {
+	fun updatePotionCooldowns(player: Player, cooldowns: Map<String, Int>) {
 		val header = Component.text("Potion Cooldowns", NamedTextColor.GOLD, TextDecoration.BOLD)
 		val footer = Component.text(buildString {
 			append("Cooldowns:\n")

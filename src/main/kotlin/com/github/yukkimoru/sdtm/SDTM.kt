@@ -159,7 +159,6 @@ class SDTM : JavaPlugin() {
 			}
 		}, 0L, 20L)
 	}
-
 	override fun onDisable() {
 		// Plugin shutdown logic
 	}
