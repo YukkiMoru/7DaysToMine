@@ -6,14 +6,14 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.plugin.Plugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-class PotionFactory(private val plugin: JavaPlugin) {
+class PotionFactory(private val plugin: Plugin) {
 	data class PotionData(
 		val potionName: String,
-		val potionLevel: Int,
+		val customModelID: Int,
 		val effects: List<PotionEffect> = listOf(),
 		val rarity: String = "NULL",
 		val duration: Int,
@@ -24,7 +24,7 @@ class PotionFactory(private val plugin: JavaPlugin) {
 	val potions = mapOf(
 		"healing" to PotionData(
 			"§c治癒",
-			1,
+			1000,
 			listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 200, 1)),
 			"common",
 			10,
@@ -33,7 +33,7 @@ class PotionFactory(private val plugin: JavaPlugin) {
 		),
 		"strength" to PotionData(
 			"§6力",
-			1,
+			1010,
 			listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1)),
 			"rare",
 			10,
@@ -42,7 +42,7 @@ class PotionFactory(private val plugin: JavaPlugin) {
 		),
 		"speed" to PotionData(
 			"§b俊敏",
-			1,
+			1020,
 			listOf(PotionEffect(PotionEffectType.SPEED, 200, 1)),
 			"uncommon",
 			10,
@@ -51,7 +51,7 @@ class PotionFactory(private val plugin: JavaPlugin) {
 		),
 		"giant" to PotionData(
 			"§a巨人",
-			1,
+			1030,
 			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
 			"rare",
 			10,
@@ -60,7 +60,7 @@ class PotionFactory(private val plugin: JavaPlugin) {
 		),
 		"midget" to PotionData(
 			"§e小人",
-			1,
+			1040,
 			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
 			"rare",
 			10,
@@ -70,26 +70,35 @@ class PotionFactory(private val plugin: JavaPlugin) {
 	)
 
 	fun createPotion(
-		potionName: String,
-		potionLevel: Int,
+		customModelID: Int,
 		displayMode: Boolean,
 	): ItemStack {
+		// get potion name from the map using the potion
+
+		val potionData = potions.values.find { it.customModelID == customModelID }
+		if (potionData == null) {
+			plugin.logger.warning("PotionData not found for customModelID: $customModelID")
+			return ItemStack(Material.AIR)
+		}
+
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
-		meta.setDisplayName("${potionName}のポーション")
+		meta.setDisplayName("${potionData.potionName}のポーション")
 
 		val container = meta.persistentDataContainer
-		val potionNameKey = NamespacedKey(plugin, "potion_name")
-		container.set(potionNameKey, PersistentDataType.STRING, potionName)
-		val potionLevelKey = NamespacedKey(plugin, "potion_level")
-		container.set(potionLevelKey, PersistentDataType.INTEGER, potionLevel)
+		val potionLevelKey = NamespacedKey(plugin, "custom_model_id")
+		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.customModelID)
 
 		// Add effects to the potion
-		val potionData = potions[potionName]
-		potionData?.effects?.forEach { effect ->
+		potionData.color?.let { meta.color = it }
+		potionData.effects.forEach { effect ->
 			meta.addCustomEffect(effect, true)
 		}
 		itemStack.itemMeta = meta
 		return itemStack
+	}
+
+	fun getPotionInfo(customModelID: Int): PotionData? {
+		return potions.values.find { it.customModelID == customModelID }
 	}
 }

@@ -43,11 +43,11 @@ object Interface {
 
 		val potionFactory = PotionFactory(plugin)
 
-		gui.setItem(10, potionFactory.createPotion("§c治癒", 1, true))
-		gui.setItem(11, potionFactory.createPotion("§6力", 1, true))
-		gui.setItem(12, potionFactory.createPotion("§b俊敏", 1, true))
-		gui.setItem(13, potionFactory.createPotion("§a巨人", 1, true))
-		gui.setItem(14, potionFactory.createPotion("§e小人", 1, true))
+		gui.setItem(10, potionFactory.createPotion(1000, true))
+		gui.setItem(11, potionFactory.createPotion(1010, true))
+		gui.setItem(12, potionFactory.createPotion(1020, true))
+		gui.setItem(13, potionFactory.createPotion(1030, true))
+		gui.setItem(14, potionFactory.createPotion(1040, true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 

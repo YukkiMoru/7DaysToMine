@@ -42,11 +42,11 @@ class GUIReceiver() : Listener {
 	private fun handlePotionShopGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
 		when (event.slot) {
-			10 -> purchasePotion(event, "healing")
-			11 -> purchasePotion(event, "strength")
-			12 -> purchasePotion(event, "speed")
-			13 -> purchasePotion(event, "giant")
-			14 -> purchasePotion(event, "tiny")
+			10 -> purchasePotion(event, 1000)
+			11 -> purchasePotion(event, 1010)
+			12 -> purchasePotion(event, 1020)
+			13 -> purchasePotion(event, 1030)
+			14 -> purchasePotion(event, 1040)
 		}
 	}
 
@@ -75,11 +75,12 @@ class GUIReceiver() : Listener {
 		}
 	}
 
-	private fun purchasePotion(event: InventoryClickEvent, potionName: String) {
+	private fun purchasePotion(event: InventoryClickEvent, customModelID: Int) {
 		val world = Bukkit.getWorld("world")
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
-		val costMaterial = potionFactory.potions[potionName]?.potionCosts ?: emptyMap()
+		val potionData = potionFactory.getPotionInfo(customModelID)
+		val costMaterial = potionData?.potionCosts ?: emptyMap()
 		if (isInventoryFull(playerInventory)) {
 			player.sendMessage("インベントリがいっぱいです!")
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
@@ -92,8 +93,8 @@ class GUIReceiver() : Listener {
 			costMaterial.forEach { (material: Material, amount: Int) ->
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
-			val effects = potionFactory.potions[potionName]?.effects ?: listOf()
-			playerInventory.addItem(potionFactory.createPotion(potionName, 1, false))
+			val effects = potionData?.effects ?: listOf()
+			playerInventory.addItem(potionFactory.createPotion(1000, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
