@@ -1,6 +1,7 @@
 package com.github.yukkimoru.sdtm.trade.pickaxe
 
 import com.github.yukkimoru.sdtm.utility.ItemFactory
+import com.github.yukkimoru.sdtm.utility.Translate
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -143,7 +144,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 		if (displayMode) {
 			val lore = listOf("§f鉱石が掘れそうだ",
 				"§a必要素材:",
-				*(pickaxeData.pickaxeCosts.entries.map { "§a${it.key.name} x${it.value}" }.toTypedArray())
+				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" }.toTypedArray())
 			)
 			return createUnbreakableTool(
 				Material.NETHERITE_PICKAXE,
