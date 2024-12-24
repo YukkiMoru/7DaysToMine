@@ -8,17 +8,16 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
-import kotlin.collections.plus
 
 class ItemFactory(private val plugin: JavaPlugin) {
 
 	fun createItemStack(
-        material: Material,
-        amount: Int,
-        name: String,
-        lore: List<String>,
-        rarity: String,
-        customModelData: Int? = null
+		material: Material,
+		amount: Int,
+		name: String,
+		lore: List<String>,
+		rarity: String,
+		customModelID: Int? = null
 	): ItemStack {
 		val itemStack = ItemStack(material, amount)
 		val itemMeta = itemStack.itemMeta
@@ -33,7 +32,7 @@ class ItemFactory(private val plugin: JavaPlugin) {
 		container.set(key, PersistentDataType.STRING, rarity)
 
 		// Add custom model data if provided
-		customModelData?.let {
+		customModelID?.let {
 			itemMeta.setCustomModelData(it)
 		}
 

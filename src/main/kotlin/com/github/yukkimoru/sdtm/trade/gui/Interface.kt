@@ -1,8 +1,8 @@
 package com.github.yukkimoru.sdtm.trade.gui
 
+import com.destroystokyo.paper.profile.ProfileProperty
 import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import com.github.yukkimoru.sdtm.trade.potion.PotionFactory
-import com.destroystokyo.paper.profile.ProfileProperty
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
+
 @Suppress("SpellCheckingInspection")
 object Interface {
 	private lateinit var plugin: JavaPlugin
@@ -25,12 +26,12 @@ object Interface {
 
 		val toolFactory = ToolFactory(plugin)
 
-		gui.setItem(10, toolFactory.createPickaxe(200,true))
-		gui.setItem(11, toolFactory.createPickaxe(201,true))
-		gui.setItem(12, toolFactory.createPickaxe(202,true))
+		gui.setItem(10, toolFactory.createPickaxe(200, true))
+		gui.setItem(11, toolFactory.createPickaxe(201, true))
+		gui.setItem(12, toolFactory.createPickaxe(202, true))
 
-		gui.setItem(19, toolFactory.createPickaxe(300,true))
-		gui.setItem(20, toolFactory.createPickaxe(301,true))
+		gui.setItem(19, toolFactory.createPickaxe(300, true))
+		gui.setItem(20, toolFactory.createPickaxe(301, true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 
@@ -42,11 +43,11 @@ object Interface {
 
 		val potionFactory = PotionFactory(plugin)
 
-		gui.setItem(10, potionFactory.getPotion("healing",1,true))
-		gui.setItem(11, potionFactory.getPotion("strength",1,true))
-		gui.setItem(12, potionFactory.getPotion("speed",1,true))
-		gui.setItem(13, potionFactory.getPotion("giant",1,true))
-		gui.setItem(14, potionFactory.getPotion("midget",1,true))
+		gui.setItem(10, potionFactory.createPotion("§c治癒", 1, true))
+		gui.setItem(11, potionFactory.createPotion("§6力", 1, true))
+		gui.setItem(12, potionFactory.createPotion("§b俊敏", 1, true))
+		gui.setItem(13, potionFactory.createPotion("§a巨人", 1, true))
+		gui.setItem(14, potionFactory.createPotion("§e小人", 1, true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 
