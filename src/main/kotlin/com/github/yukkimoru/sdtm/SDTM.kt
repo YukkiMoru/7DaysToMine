@@ -124,9 +124,8 @@ class SDTM : JavaPlugin() {
 		initEnemy()
 		initNexus()
 
-		// MiningOresを登録 (鉱石の採掘)
+		// DropOresを登録 (鉱石のドロップ関係)
 		server.pluginManager.registerEvents(DropOres(this, ToolFactory(this)), this)
-		// ItemCreateは登録していない (アイテムの生成)、各インスタンスで使う(e.g.村人)
 		// MiningOresを登録 (プレイヤーによるブロックの破壊速度の変更)
 		server.pluginManager.registerEvents(MiningOres(this), this)
 		// RegenerateBlocksを登録 (ブロックの再生)
