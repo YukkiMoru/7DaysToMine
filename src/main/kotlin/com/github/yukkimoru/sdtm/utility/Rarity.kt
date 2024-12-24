@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.world
+package com.github.yukkimoru.sdtm.utility
 
 import java.util.*
 

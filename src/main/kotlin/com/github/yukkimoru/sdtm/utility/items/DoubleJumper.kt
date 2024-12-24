@@ -1,7 +1,7 @@
 package com.github.yukkimoru.sdtm.utility.items
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent
-import com.github.yukkimoru.sdtm.world.FactoryItem
+import com.github.yukkimoru.sdtm.utility.ItemFactory
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -22,7 +22,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	// なにも装備していない(null), または301のカスタムモデルデータを持つアイテムを装備しているか
 	private fun isWearingDoubleJumperBoots(player: Player): Boolean {
 		val boots: ItemStack? = player.inventory.boots
-		return boots?.let { FactoryItem(plugin).isItemWithCustomModelData(it, 301) } ?: false
+		return boots?.let { ItemFactory(plugin).isItemWithCustomModelData(it, 301) } ?: false
 	}
 
 	@EventHandler

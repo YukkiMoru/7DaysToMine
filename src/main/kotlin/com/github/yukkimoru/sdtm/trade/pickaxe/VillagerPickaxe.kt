@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.trade.villagers
+package com.github.yukkimoru.sdtm.trade.pickaxe
 
 import com.github.yukkimoru.sdtm.trade.gui.Interface
 import net.kyori.adventure.text.Component

@@ -1,7 +1,7 @@
 package com.github.yukkimoru.sdtm.trade.gui
 
 import com.github.yukkimoru.sdtm.SDTM
-import com.github.yukkimoru.sdtm.world.FactoryTool
+import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
 class GUIReceiver() : Listener {
-	val factoryTool = FactoryTool(JavaPlugin.getPlugin(SDTM::class.java))
+	val toolFactory = ToolFactory(JavaPlugin.getPlugin(SDTM::class.java))
 	@Suppress("DEPRECATION")
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
@@ -52,7 +52,7 @@ class GUIReceiver() : Listener {
 		val world = Bukkit.getWorld("world")
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
-		val costMaterial = factoryTool.pickaxes[customModelID]?.pickaxeCosts ?: emptyMap()
+		val costMaterial = toolFactory.pickaxes[customModelID]?.pickaxeCosts ?: emptyMap()
 		// プレイヤーのインベントリがいっぱいならば購入できない
 		if (isInventoryFull(playerInventory)) {
 			player.sendMessage("インベントリがいっぱいです!")
@@ -67,7 +67,7 @@ class GUIReceiver() : Listener {
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
 
-			playerInventory.addItem(factoryTool.createPickaxe(customModelID, false))
+			playerInventory.addItem(toolFactory.createPickaxe(customModelID, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)

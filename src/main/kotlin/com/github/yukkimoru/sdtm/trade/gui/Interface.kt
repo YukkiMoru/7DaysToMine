@@ -1,7 +1,7 @@
 package com.github.yukkimoru.sdtm.trade.gui
 
 import com.destroystokyo.paper.profile.ProfileProperty
-import com.github.yukkimoru.sdtm.world.FactoryTool
+import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
@@ -41,14 +41,14 @@ object Interface {
 	fun shopPickaxe(): Inventory {
 		val gui = createInventory("ツルハシの商人", 36)
 
-		val factoryTool = FactoryTool(plugin)
+		val toolFactory = ToolFactory(plugin)
 
-		gui.setItem(10, factoryTool.createPickaxe(200,true))
-		gui.setItem(11, factoryTool.createPickaxe(201,true))
-		gui.setItem(12, factoryTool.createPickaxe(202,true))
+		gui.setItem(10, toolFactory.createPickaxe(200,true))
+		gui.setItem(11, toolFactory.createPickaxe(201,true))
+		gui.setItem(12, toolFactory.createPickaxe(202,true))
 
-		gui.setItem(19, factoryTool.createPickaxe(300,true))
-		gui.setItem(20, factoryTool.createPickaxe(301,true))
+		gui.setItem(19, toolFactory.createPickaxe(300,true))
+		gui.setItem(20, toolFactory.createPickaxe(301,true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
 

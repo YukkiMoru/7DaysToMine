@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.villagers
 
-import com.github.yukkimoru.sdtm.world.FactoryItem
+import com.github.yukkimoru.sdtm.utility.ItemFactory
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class VillagerWeapon(private val plugin: JavaPlugin) {
 
-	private val factoryItem = FactoryItem(plugin)
+	private val itemFactory = ItemFactory(plugin)
 
 	fun summonVillagerWeapon(location: Location, yaw: Float) {
 		object : BukkitRunnable() {
@@ -53,7 +53,7 @@ class VillagerWeapon(private val plugin: JavaPlugin) {
 	}
 
 	private fun createExplosiveSword(): ItemStack {
-		return factoryItem.createItemStack(
+		return itemFactory.createItemStack(
 			Material.NETHERITE_SWORD,
 			1,
 			"§aExplosive Sword",

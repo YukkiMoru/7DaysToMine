@@ -1,5 +1,7 @@
-package com.github.yukkimoru.sdtm.world
+package com.github.yukkimoru.sdtm.trade.pickaxe
 
+import com.github.yukkimoru.sdtm.utility.ItemFactory
+import com.github.yukkimoru.sdtm.utility.Translate
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -7,15 +9,15 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 
-class FactoryTool(private val plugin: JavaPlugin) {
+class ToolFactory(private val plugin: JavaPlugin) {
 
 	// データ構造の定義
 		// ピッケルの情報を格納するデータクラス
 		data class OreData(
-			val material: Material,
-			val miningSpeed: Double,
-			val dropRate: Double,
-			val isShard: Boolean = false // シャード(ガラス板)かどうか
+        val material: Material,
+        val miningSpeed: Double,
+        val dropRate: Double,
+        val isShard: Boolean = false // シャード(ガラス板)かどうか
 		)
 	// ピッケルの価格を格納するデータクラス
 	data class PickaxeData(
@@ -113,15 +115,15 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		allBreakableOreMaterials + allBreakableGemMaterials + allBreakableGemShardMaterials
 
 	private fun createUnbreakableTool(
-		material: Material,
-		name: String,
-		lore: List<String>,
-		rarity: String,
-		destroyableBlocks: String,
-		customModelData: Int? = null
+        material: Material,
+        name: String,
+        lore: List<String>,
+        rarity: String,
+        destroyableBlocks: String,
+        customModelData: Int? = null
 	): ItemStack {
-		val factoryItem = FactoryItem(plugin)
-		val itemStack = factoryItem.createItemStack(material, 1, name, lore, rarity, customModelData)
+		val itemFactory = ItemFactory(plugin)
+		val itemStack = itemFactory.createItemStack(material, 1, name, lore, rarity, customModelData)
 		val meta: ItemMeta = itemStack.itemMeta
 		meta.isUnbreakable = true
 		val container = meta.persistentDataContainer
@@ -142,7 +144,7 @@ class FactoryTool(private val plugin: JavaPlugin) {
 		if (displayMode) {
 			val lore = listOf("§f鉱石が掘れそうだ",
 				"§a必要素材:",
-				*(pickaxeData.pickaxeCosts.entries.map { "§a${it.key.name} x${it.value}" }.toTypedArray())
+				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" }.toTypedArray())
 			)
 			return createUnbreakableTool(
 				Material.NETHERITE_PICKAXE,
