@@ -14,7 +14,6 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 	private fun createPotion(
 		potionDisplayName: String,
-		potionName: String,
 		potionLevel: Int,
 		duration: Int,
 		enableLore: Boolean? = false,
@@ -26,7 +25,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
-		meta.setDisplayName(potionDisplayName)
+		meta.setDisplayName(potionDisplayName+"のポーション")
 		if (enableLore == true) {
 			meta.lore = listOf(
 				"§r${RarityUtil.getInfo(rarity).section}=============",
@@ -44,7 +43,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 
 		val container = meta.persistentDataContainer
 		val potionNameKey = NamespacedKey(plugin, "potion_name")
-		container.set(potionNameKey, PersistentDataType.STRING, potionName)
+		container.set(potionNameKey, PersistentDataType.STRING, potionDisplayName)
 		val potionLevelKey = NamespacedKey(plugin, "potion_level")
 		container.set(potionLevelKey, PersistentDataType.INTEGER, potionLevel)
 		val durationKey = NamespacedKey(plugin, "duration")
@@ -65,8 +64,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 	fun distroPotion(potionName: String, potionLevel: Int): ItemStack {
 		return when {
 			potionName == "healing" && potionLevel == 1 -> createPotion(
-				"§c治癒のポーション",
-				"healing",
+				"§c治癒",
 				1,
 				10,
 				false,
@@ -79,8 +77,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				)
 			)
 			potionName == "strength" && potionLevel == 1 -> createPotion(
-				"§6力のポーション",
-				"strength",
+				"§6力",
 				1,
 				10,
 				false,
@@ -91,8 +88,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
 			)
 			potionName == "speed" && potionLevel == 1 -> createPotion(
-				"§b俊敏のポーション",
-				"speed",
+				"§b俊敏",
 				1,
 				10,
 				false,
@@ -103,8 +99,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
 			)
 			potionName == "giant" && potionLevel == 1 -> createPotion(
-				"§a巨人のポーション",
-				"giant",
+				"§a巨人",
 				1,
 				10,
 				true,
@@ -115,8 +110,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
 			)
 			potionName == "midget" && potionLevel == 1 -> createPotion(
-				"§e小人のポーション",
-				"midget",
+				"§e小人",
 				1,
 				10,
 				true,

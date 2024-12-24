@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
-import kotlin.text.get
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
@@ -41,40 +40,53 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				}
 
 				when (potionName to potionLevel) {
-					"healing" to 1 -> {
+					"§c治癒" to 1 -> {
 						// Healing Potion Level 1
-						player.sendMessage("§aYou drank a Healing Potion Level 1!")
 					}
-					"strength" to 1 -> {
+					"§6力" to 1 -> {
 						// Strength Potion Level 1
-						player.sendMessage("§aYou drank a Strength Potion Level 1!")
 					}
-					"speed" to 1 -> {
+					"§b俊敏" to 1 -> {
 						// Speed Potion Level 1
-						player.sendMessage("§aYou drank a Speed Potion Level 1!")
 					}
-					"giant" to 1 -> {
+					"§a巨人" to 1 -> {
 						// Giant Potion Level 1
 						smoothScale(player, 1.0, 2.0, 20, 10)
-						player.sendMessage("§aYou drank a Giant Potion Level 1!")
 					}
-					"midget" to 1 -> {
+					"§e小人" to 1 -> {
 						// Midget Potion Level 1
 						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-						player.sendMessage("§aYou drank a Midget Potion Level 1!")
 					}
 					else -> {
 						player.sendMessage("§cUnknown PotionName: $potionName or Level: $potionLevel")
 					}
 				}
+				player.sendMessage("§a${potionName}のポーション${intToRoman((potionLevel))}を飲んだ！")
 				setTimer(player, potionName, duration)
 				startCooldown(player, potionName, duration)
 			} else {
-				player.sendMessage("§cPotionName not found.")
+				// player.sendMessage("§cPotionName not found.")
 			}
 		} else {
-			player.sendMessage("§cYou drank a non-potion item.")
+			// player.sendMessage("§cYou drank a non-potion item.")
 		}
+	}
+
+	private fun intToRoman(num: Int): String {
+		val romanNumerals = listOf(
+			1000 to "M", 900 to "CM", 500 to "D", 400 to "CD",
+			100 to "C", 90 to "XC", 50 to "L", 40 to "XL",
+			10 to "X", 9 to "IX", 5 to "V", 4 to "IV", 1 to "I"
+		)
+		var number = num
+		val result = StringBuilder()
+		for ((value, symbol) in romanNumerals) {
+			while (number >= value) {
+				result.append(symbol)
+				number -= value
+			}
+		}
+		return result.toString()
 	}
 
 	private fun setTimer(player: Player, potionName: String, duration: Int) {
@@ -90,34 +102,30 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		playerCooldowns[player]?.remove(potionName)
 
 		when (potionName) {
-			"strength" -> {
+			"§c治癒" -> {
 				// Strength Potion effect ends
-				player.sendMessage("§cThe effect of the Strength Potion has worn off.")
 			}
-
-			"speed" -> {
+			"§6力" -> {
 				// Speed Potion effect ends
-				player.sendMessage("§cThe effect of the Speed Potion has worn off.")
 			}
-
-			"giant" -> {
+			"§b俊敏" -> {
 				// Giant Potion effect ends
 				smoothScale(player, 2.0, 1.0, 20, 10)
-				player.sendMessage("§cThe effect of the Giant Potion has worn off.")
 			}
-
-			"midget" -> {
+			"§a巨人" -> {
 				// Midget Potion effect ends
 				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
-				player.sendMessage("§cThe effect of the Midget Potion has worn off.")
 			}
-
+			"§e小人" -> {
+				// Midget Potion effect ends
+				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
+			}
 			else -> {
 				player.sendMessage("§cThe effect of potion $potionName has worn off.")
 			}
 		}
+		player.sendMessage("§c${potionName}の効果が切れた！")
 	}
-
 
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
 		val stepDuration = duration / steps
@@ -130,7 +138,6 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 			override fun run() {
 				if (currentStep >= steps) {
 					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
-//					player.sendMessage("SmoothScaleを終了します")
 					task?.cancel()
 					return
 				}
@@ -164,5 +171,4 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	fun getCooldowns(player: Player): Map<String, Int> {
 		return playerCooldowns[player] ?: emptyMap()
 	}
-
 }
