@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.trade.villagers
+package com.github.yukkimoru.sdtm.trade.utility
 
 import com.github.yukkimoru.sdtm.utility.ItemFactory
 import net.kyori.adventure.text.Component

@@ -10,23 +10,63 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import kotlin.text.get
 
 class PotionFactory(private val plugin: JavaPlugin) {
+	data class PotionData(
+		val potionName: String,
+		val rarity: String = "NULL",
+		val duration: Int,
+		val potionCosts: Map<Material, Int> = mapOf(Material.EMERALD to 1)
+	)
+
+	private val potions = mapOf(
+		"healing" to PotionData(
+			"§c治癒",
+			"common",
+			10,
+			mapOf(Material.EMERALD to 1)
+		),
+		"strength" to PotionData(
+			"§6力",
+			"rare",
+			10,
+			mapOf(Material.DIAMOND to 1)
+		),
+		"speed" to PotionData(
+			"§b俊敏",
+			"uncommon",
+			10,
+			mapOf(Material.GOLD_INGOT to 1)
+		),
+		"giant" to PotionData(
+			"§a巨人",
+			"rare",
+			10,
+			mapOf(Material.IRON_INGOT to 1)
+		),
+		"midget" to PotionData(
+			"§e小人",
+			"rare",
+			10,
+			mapOf(Material.NETHERITE_INGOT to 1)
+		)
+	)
 
 	private fun createPotion(
-        potionDisplayName: String,
-        potionLevel: Int,
-        duration: Int,
-        enableLore: Boolean? = false,
-        lore: List<String>,
-        rarity: String,
-        customModelData: Int? = null,
-        color: Color? = null,
-        effects: List<PotionEffect> = listOf()
+		potionDisplayName: String,
+		potionLevel: Int,
+		duration: Int,
+		enableLore: Boolean? = false,
+		lore: List<String>,
+		rarity: String,
+		customModelData: Int? = null,
+		color: Color? = null,
+		effects: List<PotionEffect> = listOf()
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
-		meta.setDisplayName(potionDisplayName+"のポーション")
+		meta.setDisplayName("$(potionDisplayName)のポーション")
 		if (enableLore == true) {
 			meta.lore = listOf(
 				"§r${RarityUtil.getInfo(rarity).section}=============",
@@ -36,9 +76,9 @@ class PotionFactory(private val plugin: JavaPlugin) {
 			)
 		} else {
 			meta.lore = listOf(
-				"§r${RarityUtil.getInfo(rarity).section}=============",
+//				"§r${RarityUtil.getInfo(rarity).section}=============",
 				RarityUtil.getInfo(rarity).name,
-				"§r${RarityUtil.getInfo(rarity).section}============="
+//				"§r${RarityUtil.getInfo(rarity).section}============="
 			)
 		}
 
@@ -62,66 +102,35 @@ class PotionFactory(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun getPotion(potionName: String, potionLevel: Int): ItemStack {
-		return when {
-			potionName == "healing" && potionLevel == 1 -> createPotion(
-				"§c治癒",
-				1,
-				10,
-				false,
-				lore = listOf(),
-				"common",
-				color = Color.RED,
-				effects = listOf(
-                    PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
-                    PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
-				)
+	fun getPotion(potionName: String, potionLevel: Int, displayMode: Boolean): ItemStack {
+		val potionData = potions[potionName] ?: throw IllegalArgumentException("Invalid potion name")
+		val lore = if (displayMode) {
+			listOf(
+				"§fポーションの効果:",
+				"§a必要素材:",
+				*(potionData.potionCosts.entries.map { "§a${it.key.name} x${it.value}" }.toTypedArray())
 			)
-			potionName == "strength" && potionLevel == 1 -> createPotion(
-				"§6力",
-				1,
-				10,
-				false,
-				lore = listOf(),
-				"rare",
-				301,
-				color = Color.ORANGE,
-				effects = listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
-			)
-			potionName == "speed" && potionLevel == 1 -> createPotion(
-				"§b俊敏",
-				1,
-				10,
-				false,
-				lore = listOf(),
-				"uncommon",
-				302,
-				color = Color.BLUE,
-				effects = listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
-			)
-			potionName == "giant" && potionLevel == 1 -> createPotion(
-				"§a巨人",
-				1,
-				10,
-				true,
-				listOf("§a巨人 I (00:10)"),
-				"rare",
-				303,
-				Color.GREEN,
-				listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
-			)
-			potionName == "midget" && potionLevel == 1 -> createPotion(
-				"§e小人",
-				1,
-				10,
-				true,
-				listOf("§e小人 I (00:10)"),
-				"rare",
-				304,
-				color = Color.YELLOW,
-				effects = listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
-			)
-			else -> throw IllegalArgumentException("Invalid potion name or level")
+		} else {
+			listOf("§fポーションの効果")
 		}
+		val (color, effects) = when (potionName to potionLevel) {
+			"healing" to 1 -> Color.RED to listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1))
+			"strength" to 1 -> Color.ORANGE to listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1))
+			"speed" to 1 -> Color.BLUE to listOf(PotionEffect(PotionEffectType.SPEED, 200, 1))
+			"giant" to 1 -> Color.GREEN to listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
+			"midget" to 1 -> Color.YELLOW to listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1))
+			else -> null to listOf()
+		}
+		return createPotion(
+			potionData.potionName,
+			potionLevel,
+			potionData.duration,
+			displayMode,
+			lore,
+			potionData.rarity,
+			customModelData = null,
+			color = color,
+			effects = effects
+		)
 	}
 }

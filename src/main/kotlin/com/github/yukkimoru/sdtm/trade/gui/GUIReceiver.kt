@@ -20,7 +20,7 @@ class GUIReceiver() : Listener {
 			when (event.view.title) {
 //				"雑貨商人" -> handleUtilityShopGUI(event)
 				"ツルハシの商人" -> handlePickaxeShopGUI(event)
-//				"ポーション商人" -> handlePotionShopGUI(event)
+				"ポーション商人" -> handlePotionShopGUI(event)
 //				"武器商人" -> handleWeaponShopGUI(event)
 			}
 		}
@@ -44,6 +44,12 @@ class GUIReceiver() : Listener {
 		}
 	}
 
+	private fun handlePotionShopGUI(event: InventoryClickEvent){
+		when(event.slot){
+			10 -> purchasePotion(event, "healing")
+		}
+	}
+
 	private fun purchasePickaxe(
 		event: InventoryClickEvent,
 		customModelID: Int,
@@ -53,6 +59,37 @@ class GUIReceiver() : Listener {
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
 		val costMaterial = toolFactory.pickaxes[customModelID]?.pickaxeCosts ?: emptyMap()
+		// プレイヤーのインベントリがいっぱいならば購入できない
+		if (isInventoryFull(playerInventory)) {
+			player.sendMessage("インベントリがいっぱいです!")
+			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
+			return
+		}
+		val hasAllMaterials = costMaterial.all { (material, amount) ->
+			playerInventory.all(material).values.sumOf { it.amount } >= amount
+		}
+		if (hasAllMaterials) {
+			costMaterial.forEach { (material, amount) ->
+				playerInventory.removeItem(ItemStack(material, amount))
+			}
+
+			playerInventory.addItem(toolFactory.createPickaxe(customModelID, false))
+			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
+		} else {
+			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
+			player.sendMessage("必要な材料が不足しています!")
+		}
+	}
+
+	private fun purchasePotion(
+		event: InventoryClickEvent,
+		potionType: String
+	){
+		event.isCancelled = true
+		val world = Bukkit.getWorld("world")
+		val player = event.whoClicked as Player
+		val playerInventory = player.inventory
+		val costMaterial = potionFactory.potions[customModelID]?.pickaxeCosts ?: emptyMap()
 		// プレイヤーのインベントリがいっぱいならば購入できない
 		if (isInventoryFull(playerInventory)) {
 			player.sendMessage("インベントリがいっぱいです!")
