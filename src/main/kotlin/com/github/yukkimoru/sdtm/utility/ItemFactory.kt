@@ -1,4 +1,4 @@
-package com.github.yukkimoru.sdtm.world
+package com.github.yukkimoru.sdtm.utility
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
@@ -8,16 +8,17 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
+import kotlin.collections.plus
 
-class FactoryItem(private val plugin: JavaPlugin) {
+class ItemFactory(private val plugin: JavaPlugin) {
 
 	fun createItemStack(
-		material: Material,
-		amount: Int,
-		name: String,
-		lore: List<String>,
-		rarity: String,
-		customModelData: Int? = null
+        material: Material,
+        amount: Int,
+        name: String,
+        lore: List<String>,
+        rarity: String,
+        customModelData: Int? = null
 	): ItemStack {
 		val itemStack = ItemStack(material, amount)
 		val itemMeta = itemStack.itemMeta

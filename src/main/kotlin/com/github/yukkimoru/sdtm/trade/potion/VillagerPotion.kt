@@ -1,6 +1,5 @@
-package com.github.yukkimoru.sdtm.trade.villagers
+package com.github.yukkimoru.sdtm.trade.potion
 
-import com.github.yukkimoru.sdtm.world.FactoryPotion
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -44,40 +43,40 @@ class VillagerPotion(private val plugin: JavaPlugin) {
 	}
 
 	private fun createPotionTrades(): List<MerchantRecipe> {
-		val factoryPotion = FactoryPotion(plugin)
+		val potionFactory = PotionFactory(plugin)
 		val recipes = mutableListOf<MerchantRecipe>()
 
 		// Trade 1: Healing Potion for 5 emeralds
 		val buyItem1 = ItemStack(Material.EMERALD, 5)
-		val sellItem1 = factoryPotion.distroPotion("healing", 1)
+		val sellItem1 = potionFactory.getPotion("healing", 1)
 		val recipe1 = MerchantRecipe(sellItem1, 9999999)
 		recipe1.addIngredient(buyItem1)
 		recipes.add(recipe1)
 
 		// Trade 2: Strength Potion for 8 emeralds
 		val buyItem2 = ItemStack(Material.EMERALD, 8)
-		val sellItem2 = factoryPotion.distroPotion("strength", 1)
+		val sellItem2 = potionFactory.getPotion("strength", 1)
 		val recipe2 = MerchantRecipe(sellItem2, 9999999)
 		recipe2.addIngredient(buyItem2)
 		recipes.add(recipe2)
 
 		// Trade 3: Speed Potion for 6 emeralds
 		val buyItem3 = ItemStack(Material.EMERALD, 6)
-		val sellItem3 = factoryPotion.distroPotion("speed", 1)
+		val sellItem3 = potionFactory.getPotion("speed", 1)
 		val recipe3 = MerchantRecipe(sellItem3, 9999999)
 		recipe3.addIngredient(buyItem3)
 		recipes.add(recipe3)
 
 		// Trade 4: Giant Potion for 10 emeralds
 		val buyItem4 = ItemStack(Material.EMERALD, 10)
-		val sellItem4 = factoryPotion.distroPotion("giant", 1)
+		val sellItem4 = potionFactory.getPotion("giant", 1)
 		val recipe4 = MerchantRecipe(sellItem4, 9999999)
 		recipe4.addIngredient(buyItem4)
 		recipes.add(recipe4)
 
 		// Trade 5: Midget Potion for 3 emeralds
 		val buyItem5 = ItemStack(Material.EMERALD, 3)
-		val sellItem5 = factoryPotion.distroPotion("midget", 1)
+		val sellItem5 = potionFactory.getPotion("midget", 1)
 		val recipe5 = MerchantRecipe(sellItem5, 9999999)
 		recipe5.addIngredient(buyItem5)
 		recipes.add(recipe5)

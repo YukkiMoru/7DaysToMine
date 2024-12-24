@@ -1,5 +1,6 @@
-package com.github.yukkimoru.sdtm.world
+package com.github.yukkimoru.sdtm.trade.potion
 
+import com.github.yukkimoru.sdtm.utility.RarityUtil
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -10,18 +11,18 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-class FactoryPotion(private val plugin: JavaPlugin) {
+class PotionFactory(private val plugin: JavaPlugin) {
 
 	private fun createPotion(
-		potionDisplayName: String,
-		potionLevel: Int,
-		duration: Int,
-		enableLore: Boolean? = false,
-		lore: List<String>,
-		rarity: String,
-		customModelData: Int? = null,
-		color: Color? = null,
-		effects: List<PotionEffect> = listOf()
+        potionDisplayName: String,
+        potionLevel: Int,
+        duration: Int,
+        enableLore: Boolean? = false,
+        lore: List<String>,
+        rarity: String,
+        customModelData: Int? = null,
+        color: Color? = null,
+        effects: List<PotionEffect> = listOf()
 	): ItemStack {
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -61,7 +62,7 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 		return itemStack
 	}
 
-	fun distroPotion(potionName: String, potionLevel: Int): ItemStack {
+	fun getPotion(potionName: String, potionLevel: Int): ItemStack {
 		return when {
 			potionName == "healing" && potionLevel == 1 -> createPotion(
 				"§c治癒",
@@ -72,8 +73,8 @@ class FactoryPotion(private val plugin: JavaPlugin) {
 				"common",
 				color = Color.RED,
 				effects = listOf(
-					PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
-					PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
+                    PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 1),
+                    PotionEffect(PotionEffectType.BLINDNESS, 200, 2)
 				)
 			)
 			potionName == "strength" && potionLevel == 1 -> createPotion(

@@ -1,6 +1,6 @@
 package com.github.yukkimoru.sdtm.utility.items
 
-import com.github.yukkimoru.sdtm.world.FactoryItem
+import com.github.yukkimoru.sdtm.utility.ItemFactory
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -13,10 +13,10 @@ class ExplosiveSword(private val plugin: JavaPlugin) : Listener {
 
 	private val cooldownTime = 5000 // 5 seconds
 	private val lastUseTime = mutableMapOf<Player, Long>()
-	private val factoryItem = FactoryItem(plugin)
+	private val itemFactory = ItemFactory(plugin)
 
 	private fun isSpecialWeapon(item: ItemStack?): Boolean {
-		return item?.let { factoryItem.isItemWithCustomModelData(it, 302) } ?: false
+		return item?.let { itemFactory.isItemWithCustomModelData(it, 302) } ?: false
 	}
 
 	@EventHandler

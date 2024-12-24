@@ -7,14 +7,14 @@ import com.github.yukkimoru.sdtm.trade.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.trade.gui.Interface
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
-import com.github.yukkimoru.sdtm.utility.ability.DrinkPotion
+import com.github.yukkimoru.sdtm.trade.potion.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
 import com.github.yukkimoru.sdtm.utility.items.ExplosiveSword
 import com.github.yukkimoru.sdtm.world.DropOres
-import com.github.yukkimoru.sdtm.world.FactoryTool
+import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import com.github.yukkimoru.sdtm.world.enemy.ControlMobs
@@ -125,12 +125,12 @@ class SDTM : JavaPlugin() {
 		initNexus()
 
 		// MiningOresを登録 (鉱石の採掘)
-		server.pluginManager.registerEvents(DropOres(this, FactoryTool(this)), this)
+		server.pluginManager.registerEvents(DropOres(this, ToolFactory(this)), this)
 		// ItemCreateは登録していない (アイテムの生成)、各インスタンスで使う(e.g.村人)
 		// MiningOresを登録 (プレイヤーによるブロックの破壊速度の変更)
 		server.pluginManager.registerEvents(MiningOres(this), this)
 		// RegenerateBlocksを登録 (ブロックの再生)
-		server.pluginManager.registerEvents(RegenerateBlocks(FactoryTool(this), this), this)
+		server.pluginManager.registerEvents(RegenerateBlocks(ToolFactory(this), this), this)
 	}
 
 	private fun initEnemy() {

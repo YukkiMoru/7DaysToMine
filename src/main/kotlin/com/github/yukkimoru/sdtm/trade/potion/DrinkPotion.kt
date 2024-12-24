@@ -1,5 +1,6 @@
-package com.github.yukkimoru.sdtm.utility.ability
+package com.github.yukkimoru.sdtm.trade.potion
 
+import com.github.yukkimoru.sdtm.utility.NumConv
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -12,6 +13,7 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import kotlin.math.abs
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
@@ -61,7 +63,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						player.sendMessage("§cUnknown PotionName: $potionName or Level: $potionLevel")
 					}
 				}
-				player.sendMessage("§a${potionName}のポーション${intToRoman((potionLevel))}を飲んだ！")
+				player.sendMessage("§a${potionName}のポーション${NumConv.intToRoman((potionLevel))}を飲んだ！")
 				setTimer(player, potionName, duration)
 				startCooldown(player, potionName, duration)
 			} else {
@@ -70,23 +72,6 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		} else {
 			// player.sendMessage("§cYou drank a non-potion item.")
 		}
-	}
-
-	private fun intToRoman(num: Int): String {
-		val romanNumerals = listOf(
-			1000 to "M", 900 to "CM", 500 to "D", 400 to "CD",
-			100 to "C", 90 to "XC", 50 to "L", 40 to "XL",
-			10 to "X", 9 to "IX", 5 to "V", 4 to "IV", 1 to "I"
-		)
-		var number = num
-		val result = StringBuilder()
-		for ((value, symbol) in romanNumerals) {
-			while (number >= value) {
-				result.append(symbol)
-				number -= value
-			}
-		}
-		return result.toString()
 	}
 
 	private fun setTimer(player: Player, potionName: String, duration: Int) {
@@ -129,7 +114,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
 		val stepDuration = duration / steps
-		val scaleStep = kotlin.math.abs(startScale - endScale) / steps
+		val scaleStep = abs(startScale - endScale) / steps
 		val increasing = startScale < endScale
 
 		var task: BukkitTask? = null
