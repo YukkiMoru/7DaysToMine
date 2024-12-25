@@ -5,6 +5,7 @@ import com.github.yukkimoru.sdtm.utility.RarityUtil
 import com.github.yukkimoru.sdtm.utility.Translate
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
@@ -119,25 +120,6 @@ class ToolFactory(private val plugin: JavaPlugin) {
 	val allBreakableMaterials: List<Material> =
 		allBreakableOreMaterials + allBreakableGemMaterials + allBreakableGemShardMaterials
 
-	private fun createUnbreakableTool(
-		material: Material,
-		name: String,
-		lore: List<String>,
-		rarity: String,
-		destroyableBlocks: String,
-		customModelData: Int? = null
-	): ItemStack {
-		val itemFactory = ItemFactory(plugin)
-		val itemStack = itemFactory.createItemStack(material, 1, name, lore, rarity, customModelData)
-		val meta: ItemMeta = itemStack.itemMeta
-		meta.isUnbreakable = true
-		val container = meta.persistentDataContainer
-		val key = NamespacedKey(plugin, "destroyable_blocks")
-		container.set(key, PersistentDataType.STRING, destroyableBlocks)
-		itemStack.itemMeta = meta
-		return itemStack
-	}
-
 	fun createPickaxe(
 		customModelID: Int,
 		displayMode: Boolean
@@ -147,31 +129,37 @@ class ToolFactory(private val plugin: JavaPlugin) {
 			"minecraft:${it.material.name.lowercase()}:${it.miningSpeed}:${it.dropRate}"
 		}
 
-		if (displayMode) {
-			val lore = listOf(
+		val itemFactory = ItemFactory(plugin)
+		val lore = if (displayMode) {
+			listOf(
 				"§f鉱石が掘れそうだ",
 				"§a必要素材:",
-				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" }
+				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)}§r x${it.value}§r" }
 					.toTypedArray()),
 				RarityUtil.getInfo(pickaxeData.rarity).name
 			)
-			return createUnbreakableTool(
-				Material.NETHERITE_PICKAXE,
-				pickaxeData.pickaxeName,
-				lore,
-				pickaxeData.rarity,
-				destroyableBlocks,
-				customModelID
-			)
 		} else {
-			return createUnbreakableTool(
-				Material.NETHERITE_PICKAXE,
-				pickaxeData.pickaxeName,
-				listOf("§f鉱石が掘れそうだ"),
-				pickaxeData.rarity,
-				destroyableBlocks,
-				customModelID
+			listOf(
+				"§f鉱石が掘れそうだ",
+				RarityUtil.getInfo(pickaxeData.rarity).name
 			)
 		}
+
+		val itemStack = itemFactory.createItemStack(
+			Material.NETHERITE_PICKAXE,
+			1,
+			pickaxeData.pickaxeName,
+			lore,
+			pickaxeData.rarity,
+			customModelID
+		)
+		val meta: ItemMeta = itemStack.itemMeta
+		meta.isUnbreakable = true
+		meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE)
+		val container = meta.persistentDataContainer
+		val key = NamespacedKey(plugin, "destroyable_blocks")
+		container.set(key, PersistentDataType.STRING, destroyableBlocks)
+		itemStack.itemMeta = meta
+		return itemStack
 	}
 }
