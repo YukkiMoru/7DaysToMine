@@ -29,14 +29,15 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		if (item.type == Material.POTION) {
 			val meta = item.itemMeta as PotionMeta
 			val container = meta.persistentDataContainer
-			val customModelID = container.get(NamespacedKey(plugin, "custom_model_id"), PersistentDataType.INTEGER)
+			val customModelID: Int? =
+				container.get(NamespacedKey(plugin, "custom_model_id"), PersistentDataType.INTEGER)
 
 			val potionFactory = PotionFactory(plugin)
 			customModelID?.let {
 				potionFactory.getPotionInfo(it)?.let { potionData ->
 					val potionName = potionData.potionName
 					val duration = potionData.duration
-					drinkPotion(player, potionName, it, duration, event)
+					drinkPotion(player, customModelID, duration, event)
 
 					val cooldowns = playerCooldowns[player]
 					if (cooldowns != null && cooldowns.containsKey(potionName)) {
@@ -73,7 +74,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						}
 					}
 					player.sendMessage("§a${potionName}のポーション,customModelID:${customModelID}を飲んだ！")
-					setTimer(player, potionName, duration)
+					setTimer(player, customModelID, duration)
 					startCooldown(player, potionName, duration)
 				}
 			}
@@ -84,48 +85,47 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private fun drinkPotion(
 		player: Player,
-		potionName: String,
 		customModelID: Int,
 		duration: Int,
 		event: PlayerItemConsumeEvent
 	) {
 		// Example implementation
-		player.sendMessage("You drank a potion: $potionName for $duration seconds.")
+		player.sendMessage("You drank a potion: ${customModelID} for $duration seconds.")
 	}
 
-	private fun setTimer(player: Player, potionName: String, duration: Int) {
+	private fun setTimer(player: Player, customModelID: Int, duration: Int) {
 		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-			removeTimer(player, potionName)
+			removeTimer(player, customModelID, "potionName")
 		}, duration * 20L)
 	}
 
-	private fun removeTimer(player: Player, potionName: String) {
+	private fun removeTimer(player: Player, customModelID: Int, potionName: String) {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
 
-		playerCooldowns[player]?.remove(potionName)
+		playerCooldowns[player]?.remove(customModelID.toString())
 
-		when (potionName.toInt()) {
-			1 -> {
-				// Strength Potion effect ends
+		when (customModelID) {
+			1000 -> {
+				// 治癒ポーション1の効果が切れた
 			}
 
-			2 -> {
-				// Speed Potion effect ends
+			1010 -> {
+				// 力のポーション1の効果が切れた
 			}
 
-			3 -> {
-				// Giant Potion effect ends
+			1020 -> {
+				// 俊敏ポーション1の効果が切れた
+
+			}
+
+			1030 -> {
+				// 巨人ポーション1の効果が切れた
 				smoothScale(player, 2.0, 1.0, 20, 10)
 			}
 
-			4 -> {
-				// Midget Potion effect ends
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
-			}
-
-			5 -> {
-				// Midget Potion effect ends
+			1040 -> {
+				// 小人ポーション1の効果が切れた
 				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
 			}
 
@@ -164,14 +164,15 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	private fun startCooldown(player: Player, potionName: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionName] = duration
-		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		var task: BukkitTask? = null
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			override fun run() {
 				val timeLeft = cooldowns[potionName] ?: return
 				if (timeLeft > 0) {
 					cooldowns[potionName] = timeLeft - 1
 				} else {
 					cooldowns.remove(potionName)
-					Bukkit.getScheduler().cancelTask(this.hashCode())
+					task?.cancel()
 				}
 			}
 		}, 0L, 20L)
