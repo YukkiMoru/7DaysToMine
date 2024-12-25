@@ -20,6 +20,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	private var potionEffectTask: BukkitTask? = null
 	private val playerCooldowns = mutableMapOf<Player, MutableMap<String, Int>>()
 
+	@Suppress("SpellCheckingInspection")
 	@EventHandler
 	fun onPlayerDrink(event: PlayerItemConsumeEvent) {
 		val player = event.player
@@ -44,31 +45,31 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						return
 					}
 
-					when (it) {
-						1 -> {
+					when (customModelID) {
+						1000 -> {
 							// Healing Potion Level 1
 						}
 
-						2 -> {
+						1010 -> {
 							// Strength Potion Level 1
 						}
 
-						3 -> {
+						1020 -> {
 							// Speed Potion Level 1
 						}
 
-						4 -> {
+						1030 -> {
 							// Giant Potion Level 1
 							smoothScale(player, 1.0, 2.0, 20, 10)
 						}
 
-						5 -> {
+						1040 -> {
 							// Midget Potion Level 1
 							player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
 						}
 
 						else -> {
-							player.sendMessage("§a${potionName}のポーション,customModelID:${customModelID}を飲んだ！")
+							player.sendMessage("§aerror:${potionName}のポーション,無効なcustomModelID:${customModelID}を飲んだ！")
 						}
 					}
 					player.sendMessage("§a${potionName}のポーション,customModelID:${customModelID}を飲んだ！")
