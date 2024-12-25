@@ -22,7 +22,8 @@ object Interface {
 	}
 
 	fun shopPickaxe(): Inventory {
-		val gui = createInventory("ツルハシの商人", 36)
+		val inventorySize = 36
+		val gui = createInventory("ツルハシの商人", inventorySize)
 
 		val toolFactory = ToolFactory(plugin)
 
@@ -33,13 +34,14 @@ object Interface {
 		gui.setItem(19, toolFactory.createPickaxe(300, true))
 		gui.setItem(20, toolFactory.createPickaxe(301, true))
 
-		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
+		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE, inventorySize)
 
 		return gui
 	}
 
 	fun shopPotion(): Inventory {
-		val gui = createInventory("ポーションの商人", 36)
+		val inventorySize = 27
+		val gui = createInventory("ポーションの商人", inventorySize)
 
 		val potionFactory = PotionFactory(plugin)
 
@@ -49,7 +51,7 @@ object Interface {
 		gui.setItem(13, potionFactory.createPotion(1030, true))
 		gui.setItem(14, potionFactory.createPotion(1040, true))
 
-		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE)
+		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE, inventorySize)
 
 		return gui
 	}
@@ -118,15 +120,40 @@ object Interface {
 		return playerHead
 	}
 
-	private fun addFrames(gui: Inventory, material: Material) {
+	private fun addFrames(gui: Inventory, material: Material, size: Int) {
+//		*********
+//		*       *
+//		*       *
+//		*       *
+//		*       *
+//		*********
+//		e.g) column = 6 , effectiveColumn = 4
+
 		for (i in 0..8) {
 			gui.setItem(i, createItem(material, 1, "", TextColor.color(0x000000)))
 		}
-		gui.setItem(9, createItem(material, 1, "", TextColor.color(0x000000)))
-		gui.setItem(18, createItem(material, 1, "", TextColor.color(0x000000)))
-		gui.setItem(17, createItem(material, 1, "", TextColor.color(0x000000)))
-		gui.setItem(26, createItem(material, 1, "", TextColor.color(0x000000)))
-		for (i in 27..35) {
+		var effectiveColumn = size / 9 - 2
+		var row = 9
+		while(effectiveColumn > 0) {
+			gui.setItem(row, createItem(material, 1, "", TextColor.color(0x000000)))
+			gui.setItem(row+8, createItem(material, 1, "", TextColor.color(0x000000)))
+			effectiveColumn--
+			row+=9
+		}
+//		if(effectiveColumn <= 1) {
+//			gui.setItem(9, createItem(material, 1, "", TextColor.color(0x000000)))
+//			gui.setItem(17, createItem(material, 1, "", TextColor.color(0x000000)))
+//		}
+//		if(effectiveColumn <= 4) {
+//			gui.setItem(18, createItem(material, 1, "", TextColor.color(0x000000)))
+//			gui.setItem(26, createItem(material, 1, "", TextColor.color(0x000000)))
+//		}
+//		if(effectiveColumn <= 5) {
+//			gui.setItem(27, createItem(material, 1, "", TextColor.color(0x000000)))
+//			gui.setItem(35, createItem(material, 1, "", TextColor.color(0x000000)))
+//		}
+//
+		for (i in row..row+8) {
 			gui.setItem(i, createItem(material, 1, "", TextColor.color(0x000000)))
 		}
 	}
