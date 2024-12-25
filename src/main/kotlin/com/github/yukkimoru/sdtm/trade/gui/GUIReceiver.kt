@@ -93,8 +93,7 @@ class GUIReceiver() : Listener {
 			costMaterial.forEach { (material: Material, amount: Int) ->
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
-			val effects = potionData?.effects ?: listOf()
-			playerInventory.addItem(potionFactory.createPotion(1000, false))
+			playerInventory.addItem(potionFactory.createPotion(customModelID, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)
