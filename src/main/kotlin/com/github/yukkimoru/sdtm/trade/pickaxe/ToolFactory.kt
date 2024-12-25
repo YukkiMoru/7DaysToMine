@@ -12,13 +12,14 @@ import org.bukkit.plugin.java.JavaPlugin
 class ToolFactory(private val plugin: JavaPlugin) {
 
 	// データ構造の定義
-		// ピッケルの情報を格納するデータクラス
-		data class OreData(
-        val material: Material,
-        val miningSpeed: Double,
-        val dropRate: Double,
-        val isShard: Boolean = false // シャード(ガラス板)かどうか
-		)
+	// ピッケルの情報を格納するデータクラス
+	data class OreData(
+		val material: Material,
+		val miningSpeed: Double,
+		val dropRate: Double,
+		val isShard: Boolean = false // シャード(ガラス板)かどうか
+	)
+
 	// ピッケルの価格を格納するデータクラス
 	data class PickaxeData(
 		val pickaxeName: String,
@@ -30,7 +31,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 	// ピッケルの情報を書き込む
 	val pickaxes = mapOf(
 		200 to PickaxeData(
-			"木のツルハシ",
+			"§7§l木のツルハシ",
 			"common",
 			listOf(
 				OreData(Material.COAL_ORE, 0.5, 1.0),
@@ -42,7 +43,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 			)
 		),
 		201 to PickaxeData(
-			"石のツルハシ",
+			"§7§l石のツルハシ",
 			"uncommon",
 			listOf(
 				OreData(Material.COAL_ORE, 0.8, 1.0),
@@ -52,7 +53,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 			)
 		),
 		202 to PickaxeData(
-			"鉄のつるはし",
+			"§7§l鉄のつるはし",
 			"rare",
 			listOf(
 				OreData(Material.COAL_ORE, 1.1, 1.0),
@@ -66,7 +67,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 
 
 		300 to PickaxeData(
-			"ルビーのツルハシ",
+			"§d§lルビーのツルハシ",
 			"epic",
 			listOf(
 				OreData(Material.RED_STAINED_GLASS, 0.4, 1.0),
@@ -75,7 +76,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 			)
 		),
 		301 to PickaxeData(
-			"サファイアのツルハシ",
+			"§d§lサファイアのツルハシ",
 			"legendary",
 			listOf(
 				OreData(Material.RED_STAINED_GLASS, 0.6, 1.0),
@@ -91,21 +92,24 @@ class ToolFactory(private val plugin: JavaPlugin) {
 	// 破壊可能な鉱石(鉱石ブロック)
 	val allBreakableOreMaterials: List<Material> =
 		(200..299).mapNotNull {
-			pickaxes[it]?.miningOres?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.map { ore -> ore.material }
+		}
 			.flatten()
 			.toSet()
 			.toList()
 
 	val allBreakableGemMaterials: List<Material> =
 		(300..399).mapNotNull {
-			pickaxes[it]?.miningOres?.filter { ore -> !ore.isShard }?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.filter { ore -> !ore.isShard }?.map { ore -> ore.material }
+		}
 			.flatten()
 			.toSet()
 			.toList()
 
 	val allBreakableGemShardMaterials: List<Material> =
 		(300..399).mapNotNull {
-			pickaxes[it]?.miningOres?.filter { ore -> ore.isShard }?.map { ore -> ore.material } }
+			pickaxes[it]?.miningOres?.filter { ore -> ore.isShard }?.map { ore -> ore.material }
+		}
 			.flatten()
 			.toSet()
 			.toList()
@@ -115,12 +119,12 @@ class ToolFactory(private val plugin: JavaPlugin) {
 		allBreakableOreMaterials + allBreakableGemMaterials + allBreakableGemShardMaterials
 
 	private fun createUnbreakableTool(
-        material: Material,
-        name: String,
-        lore: List<String>,
-        rarity: String,
-        destroyableBlocks: String,
-        customModelData: Int? = null
+		material: Material,
+		name: String,
+		lore: List<String>,
+		rarity: String,
+		destroyableBlocks: String,
+		customModelData: Int? = null
 	): ItemStack {
 		val itemFactory = ItemFactory(plugin)
 		val itemStack = itemFactory.createItemStack(material, 1, name, lore, rarity, customModelData)
@@ -142,9 +146,11 @@ class ToolFactory(private val plugin: JavaPlugin) {
 			"minecraft:${it.material.name.lowercase()}:${it.miningSpeed}:${it.dropRate}"
 		}
 		if (displayMode) {
-			val lore = listOf("§f鉱石が掘れそうだ",
+			val lore = listOf(
+				"§f鉱石が掘れそうだ",
 				"§a必要素材:",
-				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" }.toTypedArray())
+				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" }
+					.toTypedArray())
 			)
 			return createUnbreakableTool(
 				Material.NETHERITE_PICKAXE,
