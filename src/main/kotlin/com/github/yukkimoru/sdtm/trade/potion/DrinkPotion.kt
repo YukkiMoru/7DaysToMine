@@ -12,7 +12,10 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import kotlin.collections.remove
 import kotlin.math.abs
+import kotlin.text.get
+import kotlin.text.set
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
@@ -164,14 +167,15 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 	private fun startCooldown(player: Player, potionName: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionName] = duration
-		Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		var task: BukkitTask? = null
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			override fun run() {
 				val timeLeft = cooldowns[potionName] ?: return
 				if (timeLeft > 0) {
 					cooldowns[potionName] = timeLeft - 1
 				} else {
 					cooldowns.remove(potionName)
-					Bukkit.getScheduler().cancelTask(this.hashCode())
+					task?.cancel()
 				}
 			}
 		}, 0L, 20L)
