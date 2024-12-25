@@ -12,7 +12,10 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import kotlin.collections.remove
 import kotlin.math.abs
+import kotlin.text.get
+import kotlin.text.set
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
