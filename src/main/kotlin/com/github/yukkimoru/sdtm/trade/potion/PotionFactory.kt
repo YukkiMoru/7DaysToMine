@@ -1,5 +1,7 @@
 package com.github.yukkimoru.sdtm.trade.potion
 
+import com.github.yukkimoru.sdtm.utility.RarityUtil
+import com.github.yukkimoru.sdtm.utility.Translate
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -94,6 +96,15 @@ class PotionFactory(private val plugin: Plugin) {
 		potionData.effects.forEach { effect ->
 			meta.addCustomEffect(effect, true)
 		}
+		val rarity = potionData.rarity
+		meta.lore = mutableListOf<String>().apply {
+			if (displayMode) {
+				add("§a必要素材:")
+				addAll(potionData.potionCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" })
+			}
+			add(RarityUtil.getInfo(rarity).name)
+		}
+
 		itemStack.itemMeta = meta
 		return itemStack
 	}
