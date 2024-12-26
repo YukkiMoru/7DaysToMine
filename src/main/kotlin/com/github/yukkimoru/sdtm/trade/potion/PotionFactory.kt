@@ -14,8 +14,9 @@ import org.bukkit.potion.PotionEffectType
 
 class PotionFactory(private val plugin: Plugin) {
 	data class PotionData(
+		val potionDisplayName: String,
 		val potionName: String,
-		val customModelID: Int,
+		val potionLevel: Int,
 		val effects: List<PotionEffect> = listOf(),
 		val rarity: String = "NULL",
 		val duration: Int,
@@ -23,10 +24,22 @@ class PotionFactory(private val plugin: Plugin) {
 		val potionCosts: Map<Material, Int> = mapOf(Material.EMERALD to 1)
 	)
 
+	private val potionSize: Map<Int, String> = mapOf(
+		1 to "ちょびっとな",
+		2 to "そこそこの", // デフォルトのポーションの形
+		3 to "まぁまぁな",
+		4 to "どっさりな"
+	)
+
+	private fun transPotionSize(size: Int): String {
+		return potionSize[size] ?: "大きさが不明な"
+	}
+
 	val potions = mapOf(
 		"healing" to PotionData(
 			"§c治癒",
-			1000,
+			"healing",
+			1,
 			listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 200, 1)),
 			"common",
 			10,
@@ -35,7 +48,8 @@ class PotionFactory(private val plugin: Plugin) {
 		),
 		"strength" to PotionData(
 			"§6力",
-			1010,
+			"strength",
+			1,
 			listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1)),
 			"rare",
 			10,
@@ -44,7 +58,8 @@ class PotionFactory(private val plugin: Plugin) {
 		),
 		"speed" to PotionData(
 			"§b俊敏",
-			1020,
+			"speed",
+			1,
 			listOf(PotionEffect(PotionEffectType.SPEED, 200, 1)),
 			"uncommon",
 			10,
@@ -53,7 +68,8 @@ class PotionFactory(private val plugin: Plugin) {
 		),
 		"giant" to PotionData(
 			"§a巨人",
-			1030,
+			"giant",
+			1,
 			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
 			"rare",
 			10,
@@ -62,7 +78,8 @@ class PotionFactory(private val plugin: Plugin) {
 		),
 		"midget" to PotionData(
 			"§e小人",
-			1040,
+			"midget",
+			1,
 			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
 			"rare",
 			10,
@@ -72,19 +89,21 @@ class PotionFactory(private val plugin: Plugin) {
 	)
 
 	fun createPotion(
-		customModelID: Int,
+		potionName: String,
+		potionLevel: Int,
 		displayMode: Boolean
 	): ItemStack {
-		val potionData = potions.values.find { it.customModelID == customModelID }
-			?: throw IllegalArgumentException("Invalid customModelID")
+		val potionData = potions.values.find { it.potionName == potionName && it.potionLevel == potionLevel }
+			?: throw IllegalArgumentException("Invalid potionName:$potionName or potionLevel$potionLevel")
 
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
-		meta.setDisplayName("${potionData.potionName}のポーション")
+
+		meta.setDisplayName("§a${transPotionSize(potionLevel)}${potionData.potionDisplayName}ポーション")
 
 		val container = meta.persistentDataContainer
 		val potionLevelKey = NamespacedKey(plugin, "custom_model_id")
-		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.customModelID)
+		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.potionLevel)
 
 		potionData.color?.let { meta.color = it }
 		potionData.effects.forEach { effect ->
@@ -107,7 +126,7 @@ class PotionFactory(private val plugin: Plugin) {
 		return itemStack
 	}
 
-	fun getPotionInfo(customModelID: Int): PotionData? {
-		return potions.values.find { it.customModelID == customModelID }
+	fun getPotionInfo(potionName: String, potionLevel: Int): PotionData? {
+		return potions.values.find { it.potionName == potionName && it.potionLevel == potionLevel }
 	}
 }
