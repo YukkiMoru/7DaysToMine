@@ -73,15 +73,10 @@ class PotionFactory(private val plugin: Plugin) {
 
 	fun createPotion(
 		customModelID: Int,
-		displayMode: Boolean,
+		displayMode: Boolean
 	): ItemStack {
-		// get potion name from the map using the potion
-
 		val potionData = potions.values.find { it.customModelID == customModelID }
-		if (potionData == null) {
-			plugin.logger.warning("PotionData not found for customModelID: $customModelID")
-			return ItemStack(Material.AIR)
-		}
+			?: throw IllegalArgumentException("Invalid customModelID")
 
 		val itemStack = ItemStack(Material.POTION)
 		val meta = itemStack.itemMeta as PotionMeta
@@ -91,20 +86,23 @@ class PotionFactory(private val plugin: Plugin) {
 		val potionLevelKey = NamespacedKey(plugin, "custom_model_id")
 		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.customModelID)
 
-		// Add effects to the potion
 		potionData.color?.let { meta.color = it }
 		potionData.effects.forEach { effect ->
 			meta.addCustomEffect(effect, true)
 		}
-		val rarity = potionData.rarity
-		meta.lore = mutableListOf<String>().apply {
-			if (displayMode) {
-				add("§a必要素材:")
+
+		val lore = if (displayMode) {
+			mutableListOf<String>().apply {
+				add("§r§5§l===必要素材===")
 				addAll(potionData.potionCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)} x${it.value}" })
+				add("§r§5§l============")
+				add(RarityUtil.getInfo(potionData.rarity).name)
 			}
-			add(RarityUtil.getInfo(rarity).name)
+		} else {
+			mutableListOf(RarityUtil.getInfo(potionData.rarity).name)
 		}
 
+		meta.lore = lore
 		itemStack.itemMeta = meta
 		return itemStack
 	}

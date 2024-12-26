@@ -133,9 +133,10 @@ class ToolFactory(private val plugin: JavaPlugin) {
 		val lore = if (displayMode) {
 			listOf(
 				"§f鉱石が掘れそうだ",
-				"§a必要素材:",
+				"§r§5§l===必要素材===",
 				*(pickaxeData.pickaxeCosts.entries.map { "§a${Translate.transEN2JP(it.key.name)}§r x${it.value}§r" }
 					.toTypedArray()),
+				"§r§5§l============",
 				RarityUtil.getInfo(pickaxeData.rarity).name
 			)
 		} else {
@@ -144,6 +145,7 @@ class ToolFactory(private val plugin: JavaPlugin) {
 				RarityUtil.getInfo(pickaxeData.rarity).name
 			)
 		}
+
 
 		val itemStack = itemFactory.createItemStack(
 			Material.NETHERITE_PICKAXE,
