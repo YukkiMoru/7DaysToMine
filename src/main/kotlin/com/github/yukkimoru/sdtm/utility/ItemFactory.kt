@@ -7,9 +7,9 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.plugin.Plugin
 
-class ItemFactory(private val plugin: JavaPlugin) {
+class ItemFactory(private val plugin: Plugin) {
 
 	fun createItemStack(
 		material: Material,

@@ -12,10 +12,7 @@ import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
-import kotlin.collections.remove
 import kotlin.math.abs
-import kotlin.text.get
-import kotlin.text.set
 
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
@@ -32,16 +29,19 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		if (item.type == Material.POTION) {
 			val meta = item.itemMeta as PotionMeta
 			val container = meta.persistentDataContainer
-			val customModelID: Int? =
-				container.get(NamespacedKey(plugin, "custom_model_id"), PersistentDataType.INTEGER)
-
+			val potionName: String? =
+				container.get(NamespacedKey(plugin, "potion_name"), PersistentDataType.STRING)
+			val potionLevel: Int? =
+				container.get(NamespacedKey(plugin, "potion_level"), PersistentDataType.INTEGER)
+			if (potionLevel == null) {
+				player.sendMessage("§cInvalid potion level.")
+				return
+			}
 			val potionFactory = PotionFactory(plugin)
-			customModelID?.let {
-				potionFactory.getPotionInfo(it)?.let { potionData ->
+			potionName?.let {
+				potionFactory.getPotionInfo(potionName, potionLevel)?.let { potionData ->
 					val potionName = potionData.potionName
 					val duration = potionData.duration
-					drinkPotion(player, customModelID, duration, event)
-
 					val cooldowns = playerCooldowns[player]
 					if (cooldowns != null && cooldowns.containsKey(potionName)) {
 						player.sendMessage("§cクールダウン中です：残り${cooldowns[potionName]}秒")
@@ -49,35 +49,56 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						return
 					}
 
-					when (customModelID) {
-						1000 -> {
-							// Healing Potion Level 1
+					when (potionName) {
+						"Healing" -> {
+							when (potionLevel) {
+								1 -> {
+									// Healing Potion Level 1
+								}
+								// 他のレベルの処理
+							}
 						}
 
-						1010 -> {
-							// Strength Potion Level 1
+						"Strength" -> {
+							when (potionLevel) {
+								1 -> {
+									// Strength Potion Level 1
+								}
+								// 他のレベルの処理
+							}
 						}
 
-						1020 -> {
-							// Speed Potion Level 1
+						"Speed" -> {
+							when (potionLevel) {
+								1 -> {
+									// Speed Potion Level 1
+								}
+								// 他のレベルの処理
+							}
 						}
 
-						1030 -> {
-							// Giant Potion Level 1
-							smoothScale(player, 1.0, 2.0, 20, 10)
+						"Giant" -> {
+							when (potionLevel) {
+								1 -> {
+									// Giant Potion Level 1
+									smoothScale(player, 1.0, 2.0, 20, 10)
+								}
+								// 他のレベルの処理
+							}
 						}
 
-						1040 -> {
-							// Midget Potion Level 1
-							player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-						}
-
-						else -> {
-							player.sendMessage("§aerror:${potionName}のポーション,無効なcustomModelID:${customModelID}を飲んだ！")
+						"Midget" -> {
+							when (potionLevel) {
+								1 -> {
+									// Midget Potion Level 1
+									player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
+								}
+								// 他のレベルの処理
+							}
 						}
 					}
-					player.sendMessage("§a${potionName}のポーション,customModelID:${customModelID}を飲んだ！")
-					setTimer(player, customModelID, duration)
+					player.sendMessage("§a${potionName}のポーション,potionLevel:${potionLevel}を飲んだ！")
+					setTimer(player, potionName, potionLevel, duration)
 					startCooldown(player, potionName, duration)
 				}
 			}
@@ -86,54 +107,73 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}
 	}
 
-	private fun drinkPotion(
+	private fun setTimer(
 		player: Player,
-		customModelID: Int,
-		duration: Int,
-		event: PlayerItemConsumeEvent
+		potionName: String,
+		potionLevel: Int,
+		duration: Int
 	) {
-		// Example implementation
-		player.sendMessage("You drank a potion: ${customModelID} for $duration seconds.")
-	}
-
-	private fun setTimer(player: Player, customModelID: Int, duration: Int) {
 		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-			removeTimer(player, customModelID, "potionName")
+			removeTimer(player, potionName, potionLevel)
 		}, duration * 20L)
 	}
 
-	private fun removeTimer(player: Player, customModelID: Int, potionName: String) {
+	private fun removeTimer(
+		player: Player,
+		potionName: String,
+		potionLevel: Int
+	) {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
 
-		playerCooldowns[player]?.remove(customModelID.toString())
+		playerCooldowns[player]?.remove(potionName.toString())
 
-		when (customModelID) {
-			1000 -> {
-				// 治癒ポーション1の効果が切れた
+		when (potionName) {
+			"Healing" -> {
+				when (potionLevel) {
+					1 -> {
+						// Healing Potion Level 1
+					}
+					// 他のレベルの処理
+				}
 			}
 
-			1010 -> {
-				// 力のポーション1の効果が切れた
+			"Strength" -> {
+				when (potionLevel) {
+					1 -> {
+						// Strength Potion Level 1
+					}
+					// 他のレベルの処理
+				}
 			}
 
-			1020 -> {
-				// 俊敏ポーション1の効果が切れた
-
+			"Speed" -> {
+				when (potionLevel) {
+					1 -> {
+						// Speed Potion Level 1
+					}
+					// 他のレベルの処理
+				}
 			}
 
-			1030 -> {
-				// 巨人ポーション1の効果が切れた
-				smoothScale(player, 2.0, 1.0, 20, 10)
+			"Giant" -> {
+				when (potionLevel) {
+					1 -> {
+						// Giant Potion Level 1
+						smoothScale(player, 2.0, 1.0, 20, 10)
+					}
+					// 他のレベルの処理
+				}
 			}
 
-			1040 -> {
-				// 小人ポーション1の効果が切れた
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
-			}
-
-			else -> {
-				player.sendMessage("§cThe effect of potion $potionName has worn off.")
+			"Midget" -> {
+				when (potionLevel) {
+					1 -> {
+						// Midget Potion Level 1
+						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
+					}
+					// 他のレベルの処理
+				}
 			}
 		}
 		player.sendMessage("§c${potionName}の効果が切れた！")

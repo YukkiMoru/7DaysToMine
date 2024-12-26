@@ -1,5 +1,6 @@
 package com.github.yukkimoru.sdtm.trade.potion
 
+import com.github.yukkimoru.sdtm.utility.ItemFactory
 import com.github.yukkimoru.sdtm.utility.RarityUtil
 import com.github.yukkimoru.sdtm.utility.Translate
 import org.bukkit.Color
@@ -13,6 +14,8 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
 class PotionFactory(private val plugin: Plugin) {
+	private val itemFactory = ItemFactory(plugin)
+
 	data class PotionData(
 		val potionDisplayName: String,
 		val potionName: String,
@@ -96,20 +99,6 @@ class PotionFactory(private val plugin: Plugin) {
 		val potionData = potions.values.find { it.potionName == potionName && it.potionLevel == potionLevel }
 			?: throw IllegalArgumentException("Invalid potionName:$potionName or potionLevel$potionLevel")
 
-		val itemStack = ItemStack(Material.POTION)
-		val meta = itemStack.itemMeta as PotionMeta
-
-		meta.setDisplayName("§a${transPotionSize(potionLevel)}${potionData.potionDisplayName}ポーション")
-
-		val container = meta.persistentDataContainer
-		val potionLevelKey = NamespacedKey(plugin, "custom_model_id")
-		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.potionLevel)
-
-		potionData.color?.let { meta.color = it }
-		potionData.effects.forEach { effect ->
-			meta.addCustomEffect(effect, true)
-		}
-
 		val lore = if (displayMode) {
 			mutableListOf<String>().apply {
 				add("§r§5§l===必要素材===")
@@ -121,7 +110,27 @@ class PotionFactory(private val plugin: Plugin) {
 			mutableListOf(RarityUtil.getInfo(potionData.rarity).name)
 		}
 
-		meta.lore = lore
+		val itemStack = itemFactory.createItemStack(
+			Material.POTION,
+			1,
+			"§a${transPotionSize(potionLevel)}${potionData.potionDisplayName}ポーション",
+			lore,
+			potionData.rarity,
+			customModelID = potionData.potionLevel
+		)
+
+		val meta = itemStack.itemMeta as PotionMeta
+		val container = meta.persistentDataContainer
+		val customModelIDKey = NamespacedKey(plugin, "potion_name")
+		container.set(customModelIDKey, PersistentDataType.STRING, potionData.potionName)
+		val potionLevelKey = NamespacedKey(plugin, "potion_level")
+		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.potionLevel)
+
+		potionData.color?.let { meta.color = it }
+		potionData.effects.forEach { effect ->
+			meta.addCustomEffect(effect, true)
+		}
+
 		itemStack.itemMeta = meta
 		return itemStack
 	}

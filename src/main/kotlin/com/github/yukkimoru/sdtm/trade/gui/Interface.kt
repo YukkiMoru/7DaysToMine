@@ -45,11 +45,11 @@ object Interface {
 
 		val potionFactory = PotionFactory(plugin)
 
-		gui.setItem(10, potionFactory.createPotion(1000, true))
-		gui.setItem(11, potionFactory.createPotion(1010, true))
-		gui.setItem(12, potionFactory.createPotion(1020, true))
-		gui.setItem(13, potionFactory.createPotion(1030, true))
-		gui.setItem(14, potionFactory.createPotion(1040, true))
+		gui.setItem(10, potionFactory.createPotion("healing", 1, true))
+		gui.setItem(11, potionFactory.createPotion("strength", 1, true))
+		gui.setItem(12, potionFactory.createPotion("speed", 1, true))
+		gui.setItem(13, potionFactory.createPotion("giant", 1, true))
+		gui.setItem(14, potionFactory.createPotion("midget", 1, true))
 
 		addFrames(gui, Material.BLACK_STAINED_GLASS_PANE, inventorySize)
 
@@ -134,11 +134,11 @@ object Interface {
 		}
 		var effectiveColumn = size / 9 - 2
 		var row = 9
-		while(effectiveColumn > 0) {
+		while (effectiveColumn > 0) {
 			gui.setItem(row, createItem(material, 1, "", TextColor.color(0x000000)))
-			gui.setItem(row+8, createItem(material, 1, "", TextColor.color(0x000000)))
+			gui.setItem(row + 8, createItem(material, 1, "", TextColor.color(0x000000)))
 			effectiveColumn--
-			row+=9
+			row += 9
 		}
 //		if(effectiveColumn <= 1) {
 //			gui.setItem(9, createItem(material, 1, "", TextColor.color(0x000000)))
@@ -153,7 +153,7 @@ object Interface {
 //			gui.setItem(35, createItem(material, 1, "", TextColor.color(0x000000)))
 //		}
 //
-		for (i in row..row+8) {
+		for (i in row..row + 8) {
 			gui.setItem(i, createItem(material, 1, "", TextColor.color(0x000000)))
 		}
 	}
