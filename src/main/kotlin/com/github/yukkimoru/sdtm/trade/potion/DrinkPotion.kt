@@ -50,7 +50,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					}
 
 					when (potionName) {
-						"Healing" -> {
+						"healing" -> {
 							when (potionLevel) {
 								1 -> {
 									// Healing Potion Level 1
@@ -59,7 +59,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 							}
 						}
 
-						"Strength" -> {
+						"strength" -> {
 							when (potionLevel) {
 								1 -> {
 									// Strength Potion Level 1
@@ -68,7 +68,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 							}
 						}
 
-						"Speed" -> {
+						"speed" -> {
 							when (potionLevel) {
 								1 -> {
 									// Speed Potion Level 1
@@ -77,7 +77,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 							}
 						}
 
-						"Giant" -> {
+						"giant" -> {
 							when (potionLevel) {
 								1 -> {
 									// Giant Potion Level 1
@@ -87,7 +87,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 							}
 						}
 
-						"Midget" -> {
+						"midget" -> {
 							when (potionLevel) {
 								1 -> {
 									// Midget Potion Level 1
@@ -129,7 +129,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		playerCooldowns[player]?.remove(potionName.toString())
 
 		when (potionName) {
-			"Healing" -> {
+			"healing" -> {
 				when (potionLevel) {
 					1 -> {
 						// Healing Potion Level 1
@@ -138,7 +138,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				}
 			}
 
-			"Strength" -> {
+			"strength" -> {
 				when (potionLevel) {
 					1 -> {
 						// Strength Potion Level 1
@@ -147,7 +147,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				}
 			}
 
-			"Speed" -> {
+			"speed" -> {
 				when (potionLevel) {
 					1 -> {
 						// Speed Potion Level 1
@@ -156,7 +156,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				}
 			}
 
-			"Giant" -> {
+			"giant" -> {
 				when (potionLevel) {
 					1 -> {
 						// Giant Potion Level 1
@@ -166,11 +166,11 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				}
 			}
 
-			"Midget" -> {
+			"midget" -> {
 				when (potionLevel) {
 					1 -> {
 						// Midget Potion Level 1
-						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
+						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
 					}
 					// 他のレベルの処理
 				}
@@ -198,24 +198,30 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				} else {
 					startScale - (scaleStep * currentStep)
 				}
-				player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = newScale
+				player.getAttribute(Attribute.GENERIC_SCALE)?.let {
+					it.baseValue = newScale
+				}
 				currentStep++
 			}
 		}, 0L, stepDuration)
 	}
 
+	private var cooldownTask: BukkitTask? = null
+
 	private fun startCooldown(player: Player, potionName: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionName] = duration
-		var task: BukkitTask? = null
-		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		cooldownTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			override fun run() {
-				val timeLeft = cooldowns[potionName] ?: return
-				if (timeLeft > 0) {
-					cooldowns[potionName] = timeLeft - 1
-				} else {
-					cooldowns.remove(potionName)
-					task?.cancel()
+				cooldowns[potionName]?.let { timeLeft ->
+					if (timeLeft > 0) {
+						cooldowns[potionName] = timeLeft - 1
+						player.sendMessage("§a${potionName}のクールダウン${cooldowns[potionName]}")
+					} else {
+						player.sendMessage("§a${potionName}のクールダウンが終了しました！")
+						cooldowns.remove(potionName)
+						cooldownTask?.cancel()
+					}
 				}
 			}
 		}, 0L, 20L)
