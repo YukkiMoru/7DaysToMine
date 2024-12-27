@@ -98,8 +98,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						}
 					}
 					player.sendMessage("§a${potionName}のポーション,potionLevel:${potionLevel}を飲んだ！")
-					setTimer(player, potionName, potionLevel, duration)
-					startCooldown(player, potionName, duration)
+					startCooldown(player, potionName, potionLevel, duration)
 				}
 			}
 		} else {
@@ -107,18 +106,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}
 	}
 
-	private fun setTimer(
-		player: Player,
-		potionName: String,
-		potionLevel: Int,
-		duration: Int
-	) {
-		potionEffectTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-			removeTimer(player, potionName, potionLevel)
-		}, duration * 20L)
-	}
-
-	private fun removeTimer(
+	private fun durationEnd(
 		player: Player,
 		potionName: String,
 		potionLevel: Int
@@ -206,23 +194,20 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}, 0L, stepDuration)
 	}
 
-	private var cooldownTask: BukkitTask? = null
-
-	private fun startCooldown(player: Player, potionName: String, duration: Int) {
+	private fun startCooldown(player: Player, potionName: String, potionLevel: Int, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionName] = duration
-		cooldownTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+
+		potionEffectTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+			var remainingTime = duration
 			override fun run() {
-				cooldowns[potionName]?.let { timeLeft ->
-					if (timeLeft > 0) {
-						cooldowns[potionName] = timeLeft - 1
-						player.sendMessage("§a${potionName}のクールダウン${cooldowns[potionName]}")
-					} else {
-						player.sendMessage("§a${potionName}のクールダウンが終了しました！")
-						cooldowns.remove(potionName)
-						cooldownTask?.cancel()
-					}
+				if (remainingTime < 0) {
+					potionEffectTask?.cancel()
+					durationEnd(player, potionName, potionLevel)
+					return
 				}
+				cooldowns[potionName] = remainingTime
+				remainingTime--
 			}
 		}, 0L, 20L)
 	}
