@@ -5,16 +5,17 @@ import com.github.yukkimoru.sdtm.trade.DeployVillagers
 import com.github.yukkimoru.sdtm.trade.ProtectVillagers
 import com.github.yukkimoru.sdtm.trade.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.trade.gui.Interface
+import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
+import com.github.yukkimoru.sdtm.trade.potion.DrinkPotion
+import com.github.yukkimoru.sdtm.trade.potion.PotionFactory
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
-import com.github.yukkimoru.sdtm.trade.potion.DrinkPotion
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
 import com.github.yukkimoru.sdtm.utility.commands.SDCommand
 import com.github.yukkimoru.sdtm.utility.items.DoubleJumper
 import com.github.yukkimoru.sdtm.utility.items.EnderPack
 import com.github.yukkimoru.sdtm.utility.items.ExplosiveSword
 import com.github.yukkimoru.sdtm.world.DropOres
-import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import com.github.yukkimoru.sdtm.world.MiningOres
 import com.github.yukkimoru.sdtm.world.RegenerateBlocks
 import com.github.yukkimoru.sdtm.world.enemy.ControlMobs
@@ -85,7 +86,7 @@ class SDTM : JavaPlugin() {
 		initAbility()
 		initItems()
 		initCommands()
-		playerList = TabList()
+		playerList = TabList(PotionFactory(this))
 		playerList.initialize()
 	}
 
@@ -158,6 +159,7 @@ class SDTM : JavaPlugin() {
 			}
 		}, 0L, 20L)
 	}
+
 	override fun onDisable() {
 		// Plugin shutdown logic
 	}
