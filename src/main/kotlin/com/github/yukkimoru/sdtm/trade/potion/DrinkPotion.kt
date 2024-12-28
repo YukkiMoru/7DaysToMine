@@ -17,9 +17,10 @@ import kotlin.math.abs
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
 
+	private var potionEffectTask: BukkitTask? = null
 	private val playerCooldowns = mutableMapOf<Player, MutableMap<String, Int>>()
-	private val playerTasks = mutableMapOf<Player, MutableMap<String, BukkitTask>>()
 
+	@Suppress("SpellCheckingInspection")
 	@EventHandler
 	fun onPlayerDrink(event: PlayerItemConsumeEvent) {
 		val player = event.player
@@ -110,10 +111,10 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		potionName: String,
 		potionLevel: Int
 	) {
-		playerTasks[player]?.get(potionName)?.cancel()
-		playerTasks[player]?.remove(potionName) // タスクをマップから削除
+		potionEffectTask?.cancel()
+		potionEffectTask = null
 
-		playerCooldowns[player]?.remove(potionName)
+		playerCooldowns[player]?.remove(potionName.toString())
 
 		when (potionName) {
 			"healing" -> {
@@ -171,12 +172,13 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		val scaleStep = abs(startScale - endScale) / steps
 		val increasing = startScale < endScale
 
-		val task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		var task: BukkitTask? = null
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var currentStep = 0
 			override fun run() {
 				if (currentStep >= steps) {
 					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
-					playerTasks[player]?.remove("smoothScale")?.cancel()
+					task?.cancel()
 					return
 				}
 				val newScale = if (increasing) {
@@ -190,21 +192,17 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				currentStep++
 			}
 		}, 0L, stepDuration)
-
-		val tasks = playerTasks.getOrPut(player) { mutableMapOf() }
-		tasks["smoothScale"] = task
 	}
 
 	private fun startCooldown(player: Player, potionName: String, potionLevel: Int, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
 		cooldowns[potionName] = duration
 
-		val task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		potionEffectTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var remainingTime = duration
 			override fun run() {
 				if (remainingTime < 0) {
-					playerTasks[player]?.get(potionName)?.cancel()
-					playerTasks[player]?.remove(potionName) // タスクをマップから削除
+					potionEffectTask?.cancel()
 					durationEnd(player, potionName, potionLevel)
 					return
 				}
@@ -212,9 +210,6 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 				remainingTime--
 			}
 		}, 0L, 20L)
-
-		val tasks = playerTasks.getOrPut(player) { mutableMapOf() }
-		tasks[potionName] = task
 	}
 
 	fun getCooldowns(player: Player): Map<String, Int> {
