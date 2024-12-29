@@ -42,11 +42,26 @@ class GUIReceiver() : Listener {
 	private fun handlePotionShopGUI(event: InventoryClickEvent) {
 		event.isCancelled = true
 		when (event.slot) {
-			10 -> purchasePotion(event, "healing", 1)
-			11 -> purchasePotion(event, "strength", 1)
-			12 -> purchasePotion(event, "speed", 1)
-			13 -> purchasePotion(event, "giant", 1)
-			14 -> purchasePotion(event, "midget", 1)
+			9 -> purchasePotion(event, "healing/1")
+			10 -> purchasePotion(event, "healing/2")
+			11 -> purchasePotion(event, "healing/3")
+			12 -> purchasePotion(event, "healing/4")
+			18 -> purchasePotion(event, "strength/1")
+			19 -> purchasePotion(event, "strength/2")
+			20 -> purchasePotion(event, "strength/3")
+			21 -> purchasePotion(event, "strength/4")
+			27 -> purchasePotion(event, "speed/1")
+			28 -> purchasePotion(event, "speed/2")
+			29 -> purchasePotion(event, "speed/3")
+			30 -> purchasePotion(event, "speed/4")
+			36 -> purchasePotion(event, "giant/1")
+			37 -> purchasePotion(event, "giant/2")
+			38 -> purchasePotion(event, "giant/3")
+			39 -> purchasePotion(event, "giant/4")
+			45 -> purchasePotion(event, "midget/1")
+			46 -> purchasePotion(event, "midget/2")
+			47 -> purchasePotion(event, "midget/3")
+			48 -> purchasePotion(event, "midget/4")
 		}
 	}
 
@@ -75,11 +90,11 @@ class GUIReceiver() : Listener {
 		}
 	}
 
-	private fun purchasePotion(event: InventoryClickEvent, potionName: String, potionLevel: Int) {
+	private fun purchasePotion(event: InventoryClickEvent, potionNameLevel: String) {
 		val world = Bukkit.getWorld("world")
 		val player = event.whoClicked as Player
 		val playerInventory = player.inventory
-		val potionData = potionFactory.getPotionInfo(potionName, potionLevel)
+		val potionData = potionFactory.getPotionInfo(potionNameLevel)
 		val costMaterial = potionData?.potionCosts ?: emptyMap()
 		if (isInventoryFull(playerInventory)) {
 			player.sendMessage("インベントリがいっぱいです!")
@@ -93,7 +108,7 @@ class GUIReceiver() : Listener {
 			costMaterial.forEach { (material: Material, amount: Int) ->
 				playerInventory.removeItem(ItemStack(material, amount))
 			}
-			playerInventory.addItem(potionFactory.createPotion(potionName, potionLevel, false))
+			playerInventory.addItem(potionFactory.createPotion(potionNameLevel, false))
 			world?.playSound(player.location, "minecraft:block.note_block.pling", 1.2f, 2.0f)
 		} else {
 			world?.playSound(player.location, "entity.enderman.teleport", 1.2f, 0.1f)

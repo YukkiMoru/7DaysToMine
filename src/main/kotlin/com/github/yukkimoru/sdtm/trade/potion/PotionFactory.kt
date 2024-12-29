@@ -16,13 +16,13 @@ class PotionFactory(private val plugin: Plugin) {
 	private val itemFactory = ItemFactory(plugin)
 
 	fun createPotion(
-		potionName: String,
-		potionLevel: Int,
+		potionNameLevel: String,
 		displayMode: Boolean
 	): ItemStack {
 		val potionData =
-			PotionsRegistry.potions.values.find { it.potionName == potionName && it.potionLevel == potionLevel }
-				?: throw IllegalArgumentException("Invalid potionName:$potionName or potionLevel$potionLevel")
+			getPotionInfo(potionNameLevel) ?: throw IllegalArgumentException("Potion not found: $potionNameLevel")
+
+		val potionLevel = potionData.potionLevel
 
 		val lore = if (displayMode) {
 			mutableListOf<String>().apply {
@@ -46,10 +46,8 @@ class PotionFactory(private val plugin: Plugin) {
 
 		val meta = itemStack.itemMeta as PotionMeta
 		val container = meta.persistentDataContainer
-		val customModelIDKey = NamespacedKey(plugin, "potion_name")
-		container.set(customModelIDKey, PersistentDataType.STRING, potionData.potionName)
-		val potionLevelKey = NamespacedKey(plugin, "potion_level")
-		container.set(potionLevelKey, PersistentDataType.INTEGER, potionData.potionLevel)
+		val customModelIDKey = NamespacedKey(plugin, "potion_name_level")
+		container.set(customModelIDKey, PersistentDataType.STRING, potionData.potionName + "/" + potionData.potionLevel)
 
 		potionData.color?.let { meta.color = it }
 		potionData.effects.forEach { effect ->
@@ -60,7 +58,8 @@ class PotionFactory(private val plugin: Plugin) {
 		return itemStack
 	}
 
-	fun getPotionInfo(potionName: String, potionLevel: Int): PotionsRegistry.PotionData? {
+	fun getPotionInfo(potionNameLevel: String): PotionsRegistry.PotionData? {
+		val (potionName, potionLevel) = potionNameLevel.split("/").let { it[0] to it[1].toInt() }
 		return potions.values.find { it.potionName == potionName && it.potionLevel == potionLevel }
 	}
 }

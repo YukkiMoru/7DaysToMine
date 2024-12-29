@@ -1,6 +1,5 @@
 package com.github.yukkimoru.sdtm.utility
 
-import com.github.yukkimoru.sdtm.trade.potion.PotionFactory
 import com.github.yukkimoru.sdtm.trade.potion.PotionsRegistry
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -8,7 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-class TabList(private val potionFactory: PotionFactory) {
+class TabList {
 
 	fun initialize() {
 		for (player in Bukkit.getOnlinePlayers()) {
@@ -19,9 +18,9 @@ class TabList(private val potionFactory: PotionFactory) {
 	fun updatePotionCooldowns(player: Player, cooldowns: Map<String, Int>) {
 		val header = Component.text("Potion Cooldowns", NamedTextColor.GOLD, TextDecoration.BOLD)
 		val footer = Component.text(buildString {
-			for ((potionName, timeLeft) in cooldowns) {
+			for ((potionNameLevel, timeLeft) in cooldowns) {
 				if (isNotEmpty()) append("§r/")
-				val potionData = PotionsRegistry.potions[potionName]
+				val potionData = PotionsRegistry.potions[potionNameLevel]
 				append("${potionData?.potionDisplayName}:${timeLeft}s")
 			}
 		}, NamedTextColor.WHITE)

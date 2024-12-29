@@ -28,56 +28,70 @@ object PotionsRegistry {
 		return potionSize[size] ?: "大きさが不明な"
 	}
 
-	val potions = mapOf(
-		"healing" to PotionData(
+	private val healingPotions = (1..4).associate { level ->
+		"healing$level" to PotionData(
 			"§c治癒",
 			"healing",
-			1,
-			listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 200, 1)),
+			level,
+			listOf(PotionEffect(PotionEffectType.INSTANT_HEALTH, 200 * level, level)),
 			"common",
 			10,
 			Color.RED,
-			mapOf(Material.EMERALD to 1)
-		),
-		"strength" to PotionData(
+			mapOf(Material.EMERALD to 1 * level)
+		)
+	}
+
+	private val strengthPotions = (1..4).associate { level ->
+		"strength$level" to PotionData(
 			"§6力",
 			"strength",
-			1,
-			listOf(PotionEffect(PotionEffectType.STRENGTH, 200, 1)),
-			"rare",
+			level,
+			listOf(PotionEffect(PotionEffectType.STRENGTH, 200 * level, level)),
+			"common",
 			10,
 			Color.ORANGE,
-			mapOf(Material.EMERALD to 1)
-		),
-		"speed" to PotionData(
+			mapOf(Material.EMERALD to 1 * level)
+		)
+	}
+
+	private val speedPotions = (1..4).associate { level ->
+		"speed$level" to PotionData(
 			"§b俊敏",
 			"speed",
-			1,
-			listOf(PotionEffect(PotionEffectType.SPEED, 200, 1)),
-			"uncommon",
+			level,
+			listOf(PotionEffect(PotionEffectType.SPEED, 200 * level, level)),
+			"common",
 			10,
 			Color.BLUE,
-			mapOf(Material.EMERALD to 1)
-		),
-		"giant" to PotionData(
+			mapOf(Material.EMERALD to 1 * level)
+		)
+	}
+
+	private val giantPotion = (1..4).associate { level ->
+		"giant$level" to PotionData(
 			"§a巨人",
 			"giant",
-			1,
-			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
+			level,
+			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200 * level, level)),
 			"rare",
 			10,
 			Color.GREEN,
-			mapOf(Material.EMERALD to 1)
-		),
-		"midget" to PotionData(
-			"§e小人",
+			mapOf(Material.EMERALD to 1 * level)
+		)
+	}
+
+	private val midgetPotion = (1..4).associate { level ->
+		"midget$level" to PotionData(
+			"§7小人",
 			"midget",
-			1,
-			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200, 1)),
+			level,
+			listOf(PotionEffect(PotionEffectType.SLOWNESS, 200 * level, level)),
 			"rare",
 			10,
-			Color.YELLOW,
-			mapOf(Material.EMERALD to 1)
+			Color.GRAY,
+			mapOf(Material.EMERALD to 1 * level)
 		)
-	)
+	}
+
+	val potions = healingPotions + strengthPotions + speedPotions + giantPotion + midgetPotion
 }

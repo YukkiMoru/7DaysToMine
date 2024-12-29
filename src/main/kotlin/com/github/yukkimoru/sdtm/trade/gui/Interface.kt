@@ -45,30 +45,30 @@ object Interface {
 
 		val potionFactory = PotionFactory(plugin)
 
-		gui.setItem(9, potionFactory.createPotion("healing", 1, true))
-		gui.setItem(10, potionFactory.createPotion("healing", 2, true))
-		gui.setItem(11, potionFactory.createPotion("healing", 3, true))
-		gui.setItem(12, potionFactory.createPotion("healing", 4, true))
+		gui.setItem(9, potionFactory.createPotion("healing/1", true))
+		gui.setItem(10, potionFactory.createPotion("healing/2", true))
+		gui.setItem(11, potionFactory.createPotion("healing/3", true))
+		gui.setItem(12, potionFactory.createPotion("healing/4", true))
 
-		gui.setItem(18, potionFactory.createPotion("strength", 1, true))
-		gui.setItem(19, potionFactory.createPotion("strength", 2, true))
-		gui.setItem(20, potionFactory.createPotion("strength", 3, true))
-		gui.setItem(21, potionFactory.createPotion("strength", 4, true))
+		gui.setItem(18, potionFactory.createPotion("strength/1", true))
+		gui.setItem(19, potionFactory.createPotion("strength/2", true))
+		gui.setItem(20, potionFactory.createPotion("strength/3", true))
+		gui.setItem(21, potionFactory.createPotion("strength/4", true))
 
-		gui.setItem(27, potionFactory.createPotion("speed", 1, true))
-		gui.setItem(28, potionFactory.createPotion("speed", 2, true))
-		gui.setItem(29, potionFactory.createPotion("speed", 3, true))
-		gui.setItem(30, potionFactory.createPotion("speed", 4, true))
+		gui.setItem(27, potionFactory.createPotion("speed/1", true))
+		gui.setItem(28, potionFactory.createPotion("speed/2", true))
+		gui.setItem(29, potionFactory.createPotion("speed/3", true))
+		gui.setItem(30, potionFactory.createPotion("speed/4", true))
 
-		gui.setItem(36, potionFactory.createPotion("giant", 1, true))
-		gui.setItem(37, potionFactory.createPotion("giant", 2, true))
-		gui.setItem(38, potionFactory.createPotion("giant", 3, true))
-		gui.setItem(39, potionFactory.createPotion("giant", 4, true))
+		gui.setItem(36, potionFactory.createPotion("giant/1", true))
+		gui.setItem(37, potionFactory.createPotion("giant/2", true))
+		gui.setItem(38, potionFactory.createPotion("giant/3", true))
+		gui.setItem(39, potionFactory.createPotion("giant/4", true))
 
-		gui.setItem(45, potionFactory.createPotion("midget", 1, true))
-		gui.setItem(46, potionFactory.createPotion("midget", 2, true))
-		gui.setItem(47, potionFactory.createPotion("midget", 3, true))
-		gui.setItem(48, potionFactory.createPotion("midget", 4, true))
+		gui.setItem(45, potionFactory.createPotion("midget/1", true))
+		gui.setItem(46, potionFactory.createPotion("midget/2", true))
+		gui.setItem(47, potionFactory.createPotion("midget/3", true))
+		gui.setItem(48, potionFactory.createPotion("midget/4", true))
 
 		addTFrame(gui, Material.BLACK_STAINED_GLASS_PANE, inventorySize)
 
@@ -176,6 +176,7 @@ object Interface {
 			gui.setItem(i, createItem(material, 1, "", TextColor.color(0x000000)))
 		}
 	}
+
 	private fun addTFrame(gui: Inventory, material: Material, size: Int) {
 		for (i in 0..8) {
 			gui.setItem(i, createItem(material, 1, "", TextColor.color(0x000000)))

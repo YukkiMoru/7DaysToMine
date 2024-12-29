@@ -29,18 +29,18 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		if (item.type == Material.POTION) {
 			val meta = item.itemMeta as PotionMeta
 			val container = meta.persistentDataContainer
-			val potionName: String? =
-				container.get(NamespacedKey(plugin, "potion_name"), PersistentDataType.STRING)
-			val potionLevel: Int? =
-				container.get(NamespacedKey(plugin, "potion_level"), PersistentDataType.INTEGER)
-			if (potionLevel == null) {
-				player.sendMessage("§cInvalid potion level.")
+			val potionNameLevel: String? =
+				container.get(NamespacedKey(plugin, "potion_name_level"), PersistentDataType.STRING)
+
+			if (potionNameLevel == null) {
+				player.sendMessage("§cポーションの名前とレベルが見つかりませんでした。")
 				return
 			}
+
+			val (potionName, potionLevel) = potionNameLevel.split("/").let { it[0] to it[1].toInt() }
 			val potionFactory = PotionFactory(plugin)
-			potionName?.let {
-				potionFactory.getPotionInfo(potionName, potionLevel)?.let { potionData ->
-					val potionName = potionData.potionName
+			potionName.let {
+				potionFactory.getPotionInfo(potionNameLevel)?.let { potionData ->
 					val duration = potionData.duration
 					val cooldowns = playerCooldowns[player]
 					if (cooldowns != null && cooldowns.containsKey(potionName)) {
@@ -49,56 +49,52 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						return
 					}
 
-					when (potionName) {
-						"healing" -> {
-							when (potionLevel) {
-								1 -> {
-									// Healing Potion Level 1
-								}
-								// 他のレベルの処理
-							}
+					when (potionNameLevel) {
+						"healing/1" -> {
 						}
 
-						"strength" -> {
-							when (potionLevel) {
-								1 -> {
-									// Strength Potion Level 1
-								}
-								// 他のレベルの処理
-							}
+						"strength/1" -> {
 						}
 
-						"speed" -> {
-							when (potionLevel) {
-								1 -> {
-									// Speed Potion Level 1
-								}
-								// 他のレベルの処理
-							}
+						"speed/1" -> {
 						}
 
-						"giant" -> {
-							when (potionLevel) {
-								1 -> {
-									// Giant Potion Level 1
-									smoothScale(player, 1.0, 2.0, 20, 10)
-								}
-								// 他のレベルの処理
-							}
+						"giant/1" -> {
+							smoothScale(player, 1.0, 2.0, 20, 10)
 						}
 
-						"midget" -> {
-							when (potionLevel) {
-								1 -> {
-									// Midget Potion Level 1
-									player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 0.5
-								}
-								// 他のレベルの処理
-							}
+						"giant/2" -> {
+							smoothScale(player, 1.0, 3.0, 20, 10)
+						}
+
+						"giant/3" -> {
+							smoothScale(player, 1.0, 4.0, 20, 10)
+						}
+
+						"giant/4" -> {
+							smoothScale(player, 1.0, 5.0, 20, 10)
+						}
+
+						"midget/1" -> {
+							smoothScale(player, 1.0, 0.5, 20, 10)
+						}
+
+						"midget/2" -> {
+							smoothScale(player, 1.0, 0.25, 20, 10)
+						}
+
+						"midget/3" -> {
+							smoothScale(player, 1.0, 0.125, 20, 10)
+						}
+
+						"midget/4" -> {
+							smoothScale(player, 1.0, 0.0625, 20, 10)
 						}
 					}
-					player.sendMessage("§a${potionName}のポーション,potionLevel:${potionLevel}を飲んだ！")
-					startCooldown(player, potionName, potionLevel, duration)
+					player.sendMessage("§a${potionNameLevel}を飲んだ！")
+					startCooldown(player, potionNameLevel, duration)
+				} ?: run {
+					player.sendMessage("§cポーション情報が見つかりませんでした。")
 				}
 			}
 		} else {
@@ -108,63 +104,47 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private fun durationEnd(
 		player: Player,
-		potionName: String,
-		potionLevel: Int
+		potionNameLevel: String,
 	) {
 		potionEffectTask?.cancel()
 		potionEffectTask = null
 
-		playerCooldowns[player]?.remove(potionName.toString())
+		playerCooldowns[player]?.remove(potionNameLevel.toString())
 
-		when (potionName) {
-			"healing" -> {
-				when (potionLevel) {
-					1 -> {
-						// Healing Potion Level 1
-					}
-					// 他のレベルの処理
-				}
+		when (potionNameLevel) {
+			"giant/1" -> {
+				smoothScale(player, 2.0, 1.0, 20, 10)
 			}
 
-			"strength" -> {
-				when (potionLevel) {
-					1 -> {
-						// Strength Potion Level 1
-					}
-					// 他のレベルの処理
-				}
+			"giant/2" -> {
+				smoothScale(player, 3.0, 1.0, 20, 10)
 			}
 
-			"speed" -> {
-				when (potionLevel) {
-					1 -> {
-						// Speed Potion Level 1
-					}
-					// 他のレベルの処理
-				}
+			"giant/3" -> {
+				smoothScale(player, 4.0, 1.0, 20, 10)
 			}
 
-			"giant" -> {
-				when (potionLevel) {
-					1 -> {
-						// Giant Potion Level 1
-						smoothScale(player, 2.0, 1.0, 20, 10)
-					}
-					// 他のレベルの処理
-				}
+			"giant/4" -> {
+				smoothScale(player, 5.0, 1.0, 20, 10)
 			}
 
-			"midget" -> {
-				when (potionLevel) {
-					1 -> {
-						// Midget Potion Level 1
-						player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = 1.0
-					}
-					// 他のレベルの処理
-				}
+			"midget/1" -> {
+				smoothScale(player, 0.5, 1.0, 20, 10)
+			}
+
+			"midget/2" -> {
+				smoothScale(player, 0.25, 1.0, 20, 10)
+			}
+
+			"midget/3" -> {
+				smoothScale(player, 0.125, 1.0, 20, 10)
+			}
+
+			"midget/4" -> {
+				smoothScale(player, 0.0625, 1.0, 20, 10)
 			}
 		}
-		player.sendMessage("§c${potionName}の効果が切れた！")
+		player.sendMessage("§c${potionNameLevel}の効果が切れた！")
 	}
 
 	private fun smoothScale(player: Player, startScale: Double, endScale: Double, duration: Long, steps: Int) {
@@ -194,19 +174,19 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		}, 0L, stepDuration)
 	}
 
-	private fun startCooldown(player: Player, potionName: String, potionLevel: Int, duration: Int) {
+	private fun startCooldown(player: Player, potionNameLevel: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
-		cooldowns[potionName] = duration
+		cooldowns[potionNameLevel] = duration
 
 		potionEffectTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var remainingTime = duration
 			override fun run() {
 				if (remainingTime < 0) {
 					potionEffectTask?.cancel()
-					durationEnd(player, potionName, potionLevel)
+					durationEnd(player, potionNameLevel)
 					return
 				}
-				cooldowns[potionName] = remainingTime
+				cooldowns[potionNameLevel] = remainingTime
 				remainingTime--
 			}
 		}, 0L, 20L)
