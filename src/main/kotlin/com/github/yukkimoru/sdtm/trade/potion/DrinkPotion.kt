@@ -47,7 +47,24 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 						event.isCancelled = true
 						return
 					}
-
+					// 同種類のポーションを飲んでいる場合は、キャンセル
+					if (cooldowns != null && cooldowns.keys.any { it.startsWith(potionName) }) {
+						player.sendMessage("§c同種類のポーションを飲んでいます。")
+						event.isCancelled = true
+						return
+					}
+					// 相反するポーションを飲んでいる場合は、キャンセル
+					if (cooldowns != null && cooldowns.keys.any { it.startsWith("giant") } && potionName.startsWith("midget")) {
+						player.sendMessage("§c巨大化中に縮小するポーションを飲むことはできません。")
+						event.isCancelled = true
+						return
+					}
+					if (cooldowns != null && cooldowns.keys.any { it.startsWith("midget") } && potionName.startsWith("giant")) {
+						player.sendMessage("§c縮小中に巨大化するポーションを飲むことはできません。")
+						event.isCancelled = true
+						return
+					}
+					
 					when (potionNameLevel) {
 						"healing/1" -> {
 						}

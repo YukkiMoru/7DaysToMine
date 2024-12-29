@@ -21,7 +21,7 @@ class TabList {
 			for ((potionNameLevel, timeLeft) in cooldowns) {
 				if (isNotEmpty()) append("§r/")
 				val potionData = PotionsRegistry.potions[potionNameLevel]
-				append("${potionData?.potionDisplayName}:${timeLeft}s")
+				append("${potionData?.potionDisplayName}${potionData?.potionLevel?.let { NumConv.intToRoman(it) }}:${timeLeft}s")
 			}
 		}, NamedTextColor.WHITE)
 
