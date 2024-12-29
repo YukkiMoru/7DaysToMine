@@ -7,7 +7,6 @@ import com.github.yukkimoru.sdtm.trade.gui.GUIReceiver
 import com.github.yukkimoru.sdtm.trade.gui.Interface
 import com.github.yukkimoru.sdtm.trade.pickaxe.ToolFactory
 import com.github.yukkimoru.sdtm.trade.potion.DrinkPotion
-import com.github.yukkimoru.sdtm.trade.potion.PotionFactory
 import com.github.yukkimoru.sdtm.utility.TabList
 import com.github.yukkimoru.sdtm.utility.ability.DamageIndicator
 import com.github.yukkimoru.sdtm.utility.ability.GrapplingHook
@@ -86,7 +85,7 @@ class SDTM : JavaPlugin() {
 		initAbility()
 		initItems()
 		initCommands()
-		playerList = TabList(PotionFactory(this))
+		playerList = TabList()
 		playerList.initialize()
 	}
 
