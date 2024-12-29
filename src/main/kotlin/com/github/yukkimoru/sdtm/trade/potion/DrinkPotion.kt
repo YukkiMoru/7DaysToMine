@@ -17,8 +17,7 @@ import kotlin.math.abs
 @Suppress("SameParameterValue")
 class DrinkPotion(private val plugin: Plugin) : Listener {
 
-	private var potionEffectTask: BukkitTask? = null
-	private val playerCooldowns = mutableMapOf<Player, MutableMap<String, Int>>()
+	private val playerCooldowns = mutableMapOf<Player, MutableMap<String, Pair<Int, BukkitTask?>>>()
 
 	@Suppress("SpellCheckingInspection")
 	@EventHandler
@@ -44,7 +43,7 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 					val duration = potionData.duration
 					val cooldowns = playerCooldowns[player]
 					if (cooldowns != null && cooldowns.containsKey(potionName)) {
-						player.sendMessage("§cクールダウン中です：残り${cooldowns[potionName]}秒")
+						player.sendMessage("§cクールダウン中です：残り${cooldowns[potionName]?.first}秒")
 						event.isCancelled = true
 						return
 					}
@@ -106,10 +105,9 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		player: Player,
 		potionNameLevel: String,
 	) {
-		potionEffectTask?.cancel()
-		potionEffectTask = null
-
-		playerCooldowns[player]?.remove(potionNameLevel.toString())
+		val cooldowns = playerCooldowns[player]
+		cooldowns?.get(potionNameLevel)?.second?.cancel()
+		cooldowns?.remove(potionNameLevel)
 
 		when (potionNameLevel) {
 			"giant/1" -> {
@@ -152,13 +150,13 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 		val scaleStep = abs(startScale - endScale) / steps
 		val increasing = startScale < endScale
 
-		var task: BukkitTask? = null
+		lateinit var task: BukkitTask
 		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var currentStep = 0
 			override fun run() {
 				if (currentStep >= steps) {
 					player.getAttribute(Attribute.GENERIC_SCALE)?.baseValue = endScale
-					task?.cancel()
+					task.cancel()
 					return
 				}
 				val newScale = if (increasing) {
@@ -176,23 +174,23 @@ class DrinkPotion(private val plugin: Plugin) : Listener {
 
 	private fun startCooldown(player: Player, potionNameLevel: String, duration: Int) {
 		val cooldowns = playerCooldowns.getOrPut(player) { mutableMapOf() }
-		cooldowns[potionNameLevel] = duration
-
-		potionEffectTask = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
+		lateinit var task: BukkitTask
+		task = Bukkit.getScheduler().runTaskTimer(plugin, object : Runnable {
 			var remainingTime = duration
 			override fun run() {
 				if (remainingTime < 0) {
-					potionEffectTask?.cancel()
+					cooldowns[potionNameLevel]?.second?.cancel()
 					durationEnd(player, potionNameLevel)
 					return
 				}
-				cooldowns[potionNameLevel] = remainingTime
+				cooldowns[potionNameLevel] = remainingTime to task
 				remainingTime--
 			}
 		}, 0L, 20L)
+		cooldowns[potionNameLevel] = duration to task
 	}
 
 	fun getCooldowns(player: Player): Map<String, Int> {
-		return playerCooldowns[player] ?: emptyMap()
+		return playerCooldowns[player]?.mapValues { it.value.first } ?: emptyMap()
 	}
 }
