@@ -29,7 +29,7 @@ object PotionsRegistry {
 	}
 
 	private val healingPotions = (1..4).associate { level ->
-		"healing$level" to PotionData(
+		"healing/$level" to PotionData(
 			"§c治癒",
 			"healing",
 			level,
@@ -42,7 +42,7 @@ object PotionsRegistry {
 	}
 
 	private val strengthPotions = (1..4).associate { level ->
-		"strength$level" to PotionData(
+		"strength/$level" to PotionData(
 			"§6力",
 			"strength",
 			level,
@@ -55,7 +55,7 @@ object PotionsRegistry {
 	}
 
 	private val speedPotions = (1..4).associate { level ->
-		"speed$level" to PotionData(
+		"speed/$level" to PotionData(
 			"§b俊敏",
 			"speed",
 			level,
@@ -68,7 +68,7 @@ object PotionsRegistry {
 	}
 
 	private val giantPotion = (1..4).associate { level ->
-		"giant$level" to PotionData(
+		"giant/$level" to PotionData(
 			"§a巨人",
 			"giant",
 			level,
@@ -81,7 +81,7 @@ object PotionsRegistry {
 	}
 
 	private val midgetPotion = (1..4).associate { level ->
-		"midget$level" to PotionData(
+		"midget/$level" to PotionData(
 			"§7小人",
 			"midget",
 			level,
