@@ -34,10 +34,10 @@ class ItemLib(val plugin: JavaPlugin) {
 		}.runTaskLater(plugin, ticks)
 	}
 
-	fun runWithCooldown(delay: Long, cooldown: Long, task: () -> Unit) {
+	fun runWithCooldown(cooldown: Long, task: () -> Unit) {
 		if (!isRunning) {
 			isRunning = true
-			delayTick(delay) {
+			delayTick(1L) {
 				task()
 				delayTick(cooldown) {
 					isRunning = false

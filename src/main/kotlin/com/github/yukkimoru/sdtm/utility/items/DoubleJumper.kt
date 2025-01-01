@@ -13,8 +13,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	private val cooldown = 3000L // 3 seconds
 	private var wearArmor: Boolean = false
 	private val debugMode = false
-	private val wearCooldown = 2000L // 2 seconds
-	private var isRunning = false // クールダウン中に再度イベントが発生しないようにする
+	private val wearCooldown = 3000L // 3 seconds
 
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
@@ -28,9 +27,11 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 
 			val itemLib = ItemLib(plugin)
 			itemLib.delayTick(cooldown / 50) {
-				player.allowFlight = true
-				player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
-				if (debugMode) player.sendMessage("§a2段ジャンプが可能!")
+				if (wearArmor) {
+					player.allowFlight = true
+					player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
+					if (debugMode) player.sendMessage("§a2段ジャンプが可能!")
+				}
 			}
 		}
 	}
@@ -43,7 +44,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			wearArmor = itemLib.isWearingEquip(player, ItemLib.Equip.BOOTS, 301)
 			if (wearArmor) {
 				if (debugMode) player.sendMessage("§a2段ジャンプ装備を装備しました")
-				itemLib.runWithCooldown(1L, wearCooldown / 50) {
+				itemLib.runWithCooldown(wearCooldown / 50) {
 					if (debugMode) player.sendMessage("§a2段ジャンプが可能!")
 					player.allowFlight = true
 					player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE)?.baseValue = 8.0
