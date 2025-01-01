@@ -57,7 +57,9 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	fun onPlayerArmorChange(event: PlayerArmorChangeEvent) {
 		val player = event.player
 
-		ItemLibrary(plugin).delay(player, 1L, {
+		ItemLibrary(plugin).delay(
+			1L
+		) {
 			wearArmor = ItemLibrary(plugin).isWearingEquip(player, "boots", 301)
 			if (wearArmor) {
 				player.sendMessage("§aYou are wearing Double Jumper Boots by equip!")
@@ -66,6 +68,6 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 				player.sendMessage("§cYou are not wearing Double Jumper Boots by equip!")
 				player.allowFlight = false
 			}
-		}, plugin)
+		}
 	}
 }
