@@ -25,9 +25,8 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			player.allowFlight = false
 			player.velocity = player.location.direction.multiply(1.0).setY(1)
 
-			ItemLib(plugin).delay(
-				(cooldown / 50)
-			) {
+			val itemLib = ItemLib(plugin)
+			itemLib.delay(cooldown / 50) {
 				player.allowFlight = true
 				player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
 				if (debugMode) player.sendMessage("§a2ダブルジャンプが可能!")
@@ -38,15 +37,12 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	@EventHandler
 	fun onPlayerArmorChange(event: PlayerArmorChangeEvent) {
 		val player = event.player
-		ItemLib(plugin).delay(
-			1L
-		) {
-			wearArmor = ItemLib(plugin).isWearingEquip(player, ItemLib.Equip.BOOTS, 301)
+		val itemLib = ItemLib(plugin)
+		itemLib.delay(1L) {
+			wearArmor = itemLib.isWearingEquip(player, ItemLib.Equip.BOOTS, 301)
 			if (wearArmor) {
 				if (debugMode) player.sendMessage("§a2段ジャンプ装備を装備しました")
-				ItemLib(plugin).delay(
-					(wearCooldown / 50)
-				) {
+				itemLib.delay(wearCooldown / 50) {
 					if (debugMode) player.sendMessage("§a2ダブルジャンプが可能!")
 					player.allowFlight = true
 					// デフォルトのGENERIC_SAFE_FALL_DISTANCEは3.0
