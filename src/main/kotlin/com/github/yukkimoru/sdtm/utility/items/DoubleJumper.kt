@@ -24,7 +24,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			player.allowFlight = false
 			player.velocity = player.location.direction.multiply(1.0).setY(1)
 
-			ItemLibrary(plugin).delay(
+			ItemLib(plugin).delay(
 				cooldownTime / (cooldownTime / 50).toLong()
 			) {
 				player.allowFlight = true
@@ -37,10 +37,10 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	@EventHandler
 	fun onPlayerArmorChange(event: PlayerArmorChangeEvent) {
 		val player = event.player
-		ItemLibrary(plugin).delay(
+		ItemLib(plugin).delay(
 			1L
 		) {
-			wearArmor = ItemLibrary(plugin).isWearingEquip(player, "boots", 301)
+			wearArmor = ItemLib(plugin).isWearingEquip(player, ItemLib.Equip.BOOTS, 301)
 			if (wearArmor) {
 				if (debugMode) player.sendMessage("§a2段ジャンプ装備を装備しました")
 				player.allowFlight = true
