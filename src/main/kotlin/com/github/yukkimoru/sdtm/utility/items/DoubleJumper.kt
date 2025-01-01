@@ -29,7 +29,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			itemLib.delay(cooldown / 50) {
 				player.allowFlight = true
 				player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
-				if (debugMode) player.sendMessage("§a2ダブルジャンプが可能!")
+				if (debugMode) player.sendMessage("§a2段ジャンプが可能!")
 			}
 		}
 	}
@@ -43,7 +43,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			if (wearArmor) {
 				if (debugMode) player.sendMessage("§a2段ジャンプ装備を装備しました")
 				itemLib.delay(wearCooldown / 50) {
-					if (debugMode) player.sendMessage("§a2ダブルジャンプが可能!")
+					if (debugMode) player.sendMessage("§a2段ジャンプが可能!")
 					player.allowFlight = true
 					// デフォルトのGENERIC_SAFE_FALL_DISTANCEは3.0
 					player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE)?.baseValue = 8.0
