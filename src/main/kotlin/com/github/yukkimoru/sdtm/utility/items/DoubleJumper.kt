@@ -10,9 +10,10 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 
-	private val cooldownTime = 3000 // 3 seconds
+	private val cooldown = 3000L // 3 seconds
 	private var wearArmor: Boolean = false
 	private val debugMode = false
+	private val wearCooldown = 2000L // 2 seconds
 
 	@EventHandler
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
@@ -25,7 +26,7 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			player.velocity = player.location.direction.multiply(1.0).setY(1)
 
 			ItemLib(plugin).delay(
-				cooldownTime / (cooldownTime / 50).toLong()
+				(cooldown / 50)
 			) {
 				player.allowFlight = true
 				player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
@@ -43,9 +44,15 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 			wearArmor = ItemLib(plugin).isWearingEquip(player, ItemLib.Equip.BOOTS, 301)
 			if (wearArmor) {
 				if (debugMode) player.sendMessage("§a2段ジャンプ装備を装備しました")
-				player.allowFlight = true
-				// デフォルトのGENERIC_SAFE_FALL_DISTANCEは3.0
-				player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE)?.baseValue = 8.0
+				ItemLib(plugin).delay(
+					(wearCooldown / 50)
+				) {
+					if (debugMode) player.sendMessage("§a2ダブルジャンプが可能!")
+					player.allowFlight = true
+					// デフォルトのGENERIC_SAFE_FALL_DISTANCEは3.0
+					player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE)?.baseValue = 8.0
+					player.world.playSound(player.location, "entity.wither.shoot", 0.05f, 0.1f)
+				}
 			} else {
 				if (debugMode) player.sendMessage("§c2段ジャンプ装備を外しました")
 				player.allowFlight = false
