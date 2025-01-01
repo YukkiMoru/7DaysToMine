@@ -26,11 +26,27 @@ class ItemLib(val plugin: JavaPlugin) {
 		return ItemFactory(plugin).isItemWithCustomModelData(item, customModelData)
 	}
 
-	fun delay(delay: Long = 1L, task: () -> Unit) {
+	fun delayTick(ticks: Long = 1L, task: () -> Unit) {
 		object : BukkitRunnable() {
 			override fun run() {
 				task()
 			}
-		}.runTaskLater(plugin, delay)
+		}.runTaskLater(plugin, ticks)
+	}
+
+	fun runWithCooldown(delay: Long, cooldown: Long, task: () -> Unit) {
+		if (!isRunning) {
+			isRunning = true
+			delayTick(delay) {
+				task()
+				delayTick(cooldown) {
+					isRunning = false
+				}
+			}
+		}
+	}
+
+	companion object {
+		private var isRunning = false
 	}
 }
