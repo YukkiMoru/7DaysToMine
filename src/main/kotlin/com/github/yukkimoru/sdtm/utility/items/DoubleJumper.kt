@@ -20,17 +20,17 @@ class DoubleJumper(private val plugin: JavaPlugin) : Listener {
 	fun onPlayerToggleFlight(event: PlayerToggleFlightEvent) {
 		if (wearArmor) {
 			val player = event.player
-			if (player.gameMode == GameMode.CREATIVE) return
-			event.isCancelled = true
-
 			val currentTime = System.currentTimeMillis()
 			val playerUUID = player.uniqueId
+			if (player.gameMode == GameMode.CREATIVE) return // クリエ時の無効化
 
 			if (doubleJumpPlayers.contains(player.name)) {
 				//↓使うとクールダウン中に２段ジャンプすると落下ダメージを食らう
 //              player.allowFlight = false
 				player.sendMessage("§aDouble Jump is on cooldown!")
 			} else {
+				event.isCancelled = true
+				player.allowFlight = false
 				player.sendMessage("§cDouble Jump")
 				val lastJump = lastJumpTime[playerUUID] ?: 0
 				if (currentTime - lastJump >= cooldownTime) {
