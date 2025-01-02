@@ -26,6 +26,11 @@ class ItemLib(val plugin: JavaPlugin) {
 		return ItemFactory(plugin).isItemWithCustomModelData(item, customModelData)
 	}
 
+	fun isHoldingItem(player: Player, customModelData: Int): Boolean {
+		val item = player.inventory.itemInMainHand
+		return ItemFactory(plugin).isItemWithCustomModelData(item, customModelData)
+	}
+
 	fun delayTick(ticks: Long = 1L, task: () -> Unit) {
 		object : BukkitRunnable() {
 			override fun run() {
